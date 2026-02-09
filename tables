@@ -1,0 +1,60 @@
+users (
+    id
+    nom
+    mail UNIQUE
+    pwd
+    role
+)
+
+categorie (
+    id
+    nom
+)
+
+produit (
+    id
+    nom
+    description
+    prix
+    id_proprietaire
+    id_categorie
+)
+
+image_produit (
+    id
+    id_produit
+    image
+)
+
+status_demande (
+    id
+    status
+)
+
+demande_echange (
+    id
+    id_demandeur
+    id_produit_demande
+    id_produit_offert
+    date_demande
+    id_status
+)
+
+echange (
+    id
+    date_echange
+)
+
+info_echange (
+    id
+    id_echange
+    id_produit1
+    id_produit2
+)
+
+historique_propriete (
+    id
+    id_produit
+    id_user
+    date_acquisition
+)

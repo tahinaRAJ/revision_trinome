@@ -1,0 +1,90 @@
+ARCHITECTURE MVC - PROJET TAKALO-TAKALO (FLIGHT PHP)
+
+STRUCTURE GENERALE 
+app/ 
+├── controllers/ 
+├── models/ 
+├── repositories/
+├── services/ 
+├── views/ 
+config/ 
+public/
+
+PRINCIPE DES COUCHES - Model : représente une table. - Repository :
+contient les requêtes SQL. - Service : logique métier. - Controller :
+gère les routes et appelle les services.
+
+==================== MODELS NECESSAIRES ====================
+
+User - id - nom - mail - pwd
+
+Categorie - id - nom
+
+Produit - id - nom - description - prix - id_proprietaire - id_categorie
+
+ImageProduit - id - id_produit - image
+
+DemandeEchange - id - id_demandeur - id_produit_demande - id_produit_offert - date_demande - id_status
+
+StatusDemande - id - status
+
+Echange - id - date_echange
+
+InfoEchange - id - id_echange - id_produit1 - id_produit2
+
+HistoriquePropriete - id - id_produit - id_user - date_acquisition
+
+==================== REPOSITORIES ====================
+
+UserRepository - inscription - login - trouver user par mail - compter utilisateurs
+
+CategorieRepository - lister catégories - ajouter - modifier - supprimer
+
+ProduitRepository - ajouter produit - modifier produit - supprimer produit - produits d’un utilisateur - produits des autres utilisateurs - recherche par nom ou catégorie
+
+ImageProduitRepository - ajouter image - supprimer images d’un produit - récupérer images d’un produit
+
+DemandeEchangeRepository - créer une demande - lister demandes reçues - lister demandes envoyées - changer statut
+
+EchangeRepository - créer un échange - lister échanges - stats échanges
+
+HistoriqueRepository - ajouter entrée historique - récupérer historique d’un produit
+
+==================== SERVICES ====================
+
+AuthService - inscription utilisateur - login - gestion session Utilise
+: UserRepository
+
+ProduitService - création produit - modification - suppression - ajout
+images - récupération produits Utilise : - ProduitRepository -
+ImageProduitRepository - HistoriqueRepository
+
+EchangeService - créer demande d’échange - accepter demande * créer
+échange * échanger propriétaires * enregistrer historique * statut =
+accepté - refuser demande Utilise : - DemandeEchangeRepository -
+ProduitRepository - EchangeRepository - HistoriqueRepository
+
+AdminService - stats utilisateurs - stats échanges Utilise : -
+UserRepository - EchangeRepository
+
+==================== CONTROLLERS ====================
+
+AuthController Routes : GET /login POST /login GET /register POST
+/register GET /logout
+
+ProduitController Routes : GET /mes-produits GET /produit/ajout POST
+/produit/ajout GET /produit/{id} GET /produits GET /recherche
+
+EchangeController Routes : POST /demande-echange GET /mes-demandes POST
+/demande/{id}/accepter POST /demande/{id}/refuser
+
+AdminController Routes : GET /admin/login POST /admin/login GET
+/admin/dashboard GET /admin/categories POST /admin/categorie/ajout POST
+/admin/categorie/modif POST /admin/categorie/supp
+
+==================== VERSION MINIMALE ====================
+
+Services : - AuthService - ProduitService - EchangeService
+
+Controllers : - AuthController - ProduitController - EchangeController -
+AdminController
