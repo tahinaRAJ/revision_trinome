@@ -51,7 +51,10 @@ include __DIR__ . '/../pages/header.php';
 
                 <div class="form-group mb-5">
                   <label class="text-black" for="password">Password</label>
-                  <input type="password" class="form-control" id="password" name="password" required>
+                  <div class="input-group">
+                    <input type="password" class="form-control" id="password" name="password" required>
+                    <button type="button" class="btn btn-outline-secondary btn-toggle-password" data-target="password" aria-label="Afficher/Masquer le mot de passe"><i class="fa fa-eye"></i></button>
+                  </div>
                 </div>
 
                 <button type="submit" class="btn btn-primary-hover-outline">Login</button>
@@ -72,5 +75,5 @@ include __DIR__ . '/../pages/header.php';
 
 		
 
-<?php $pageScripts = ['js/login-validation.js']; ?>
+<?php $pageScripts = ['js/login-validation.js','js/password-toggle.js']; ?>
 <?php include __DIR__ . '/../pages/footer.php'; ?>
