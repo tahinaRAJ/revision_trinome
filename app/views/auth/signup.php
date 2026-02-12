@@ -88,24 +88,33 @@
 
 
             <div class="col-md-8 col-lg-8 pb-4">
-              <form id="signupForm" method="POST">
+              <?php if (!empty($errors)) : ?>
+                <div class="alert alert-danger">
+                  <?php foreach ($errors as $msg) : ?>
+                    <?php if ($msg !== '') : ?>
+                      <div><?= htmlspecialchars($msg, ENT_QUOTES, 'UTF-8') ?></div>
+                    <?php endif; ?>
+                  <?php endforeach; ?>
+                </div>
+              <?php endif; ?>
+              <form id="signupForm" method="POST" action="<?= BASE_URL ?>/auth/signup">
                 <div class="row">
                   <div class="col-6">
                     <div class="form-group">
                       <label class="text-black" for="fname">First name</label>
-                      <input type="text" class="form-control" id="fname" name="fname" required>
+                      <input type="text" class="form-control" id="fname" name="fname" required value="<?= htmlspecialchars($values['fname'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
                     </div>
                   </div>
                   <div class="col-6">
                     <div class="form-group">
                       <label class="text-black" for="lname">Last name</label>
-                      <input type="text" class="form-control" id="lname" name="lname" required>
+                      <input type="text" class="form-control" id="lname" name="lname" required value="<?= htmlspecialchars($values['lname'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
                     </div>
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="text-black" for="email">Email address</label>
-                  <input type="email" class="form-control" id="email" name="email" required>
+                  <input type="email" class="form-control" id="email" name="email" required value="<?= htmlspecialchars($values['email'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
                 </div>
 
                 <div class="form-group mb-5">

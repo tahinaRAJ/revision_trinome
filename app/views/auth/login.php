@@ -88,10 +88,19 @@
 
 
             <div class="col-md-8 col-lg-8 pb-4">
-              <form id="loginForm" method="POST">
+              <?php if (!empty($errors)) : ?>
+                <div class="alert alert-danger">
+                  <?php foreach ($errors as $msg) : ?>
+                    <?php if ($msg !== '') : ?>
+                      <div><?= htmlspecialchars($msg, ENT_QUOTES, 'UTF-8') ?></div>
+                    <?php endif; ?>
+                  <?php endforeach; ?>
+                </div>
+              <?php endif; ?>
+              <form id="loginForm" method="POST" action="<?= BASE_URL ?>/auth/login">
                 <div class="form-group">
                   <label class="text-black" for="email">Email address</label>
-                  <input type="email" class="form-control" id="email" name="email" required>
+                  <input type="email" class="form-control" id="email" name="email" required value="<?= htmlspecialchars($values['email'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
                 </div>
 
                 <div class="form-group mb-5">

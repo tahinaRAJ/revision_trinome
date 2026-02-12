@@ -49,4 +49,34 @@ class Validator {
 
     return ['ok' => $ok, 'errors' => $errors, 'values' => $values];
   }
+
+  public static function validateSignupSimple(array $input, UserRepository $repo = null) {
+    $errors = ['fname' => '', 'lname' => '', 'email' => '', 'password' => ''];
+
+    $values = [
+      'fname' => trim((string)($input['fname'] ?? '')),
+      'lname' => trim((string)($input['lname'] ?? '')),
+      'email' => trim((string)($input['email'] ?? '')),
+    ];
+
+    $password = (string)($input['password'] ?? '');
+
+    if (mb_strlen($values['fname']) < 2) $errors['fname'] = "Le prénom doit contenir au moins 2 caractères.";
+    if (mb_strlen($values['lname']) < 2) $errors['lname'] = "Le nom doit contenir au moins 2 caractères.";
+
+    if ($values['email'] === '') $errors['email'] = "L'email est obligatoire.";
+    elseif (!filter_var($values['email'], FILTER_VALIDATE_EMAIL))
+      $errors['email'] = "L'email n'est pas valide (ex: nom@domaine.com).";
+
+    if (strlen($password) < 8) $errors['password'] = "Le mot de passe doit contenir au moins 8 caractères.";
+
+    if ($repo && $errors['email'] === '' && $repo->emailExists($values['email'])) {
+      $errors['email'] = "Cet email est déjà utilisé.";
+    }
+
+    $ok = true;
+    foreach ($errors as $m) { if ($m !== '') { $ok = false; break; } }
+
+    return ['ok' => $ok, 'errors' => $errors, 'values' => $values];
+  }
 }
