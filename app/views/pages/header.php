@@ -39,10 +39,6 @@ $isActive = function (string $name) use ($activePage): string {
 					<a class="nav-link" href="<?= BASE_URL ?>/home/index">Home</a>
 				</li>
 				<li class="<?= $isActive('shop') ?>"><a class="nav-link" href="<?= BASE_URL ?>/shop/shop">Shop</a></li>
-				<li class="<?= $isActive('about') ?>"><a class="nav-link" href="<?= BASE_URL ?>/pages/about">About us</a></li>
-				<li class="<?= $isActive('services') ?>"><a class="nav-link" href="<?= BASE_URL ?>/pages/services">Services</a></li>
-				<li class="<?= $isActive('blog') ?>"><a class="nav-link" href="<?= BASE_URL ?>/pages/blog">Blog</a></li>
-				<li class="<?= $isActive('contact') ?>"><a class="nav-link" href="<?= BASE_URL ?>/pages/contact">Contact us</a></li>
 			</ul>
 
 					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
