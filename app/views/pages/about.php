@@ -17,10 +17,10 @@
   <meta name="keywords" content="bootstrap, bootstrap4" />
 
 		<!-- Bootstrap CSS -->
-		<link href="<?= BASE_URL ?>css/bootstrap.min.css" rel="stylesheet">
-		<link href="<?= BASE_URL ?>https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-		<link href="<?= BASE_URL ?>css/tiny-slider.css" rel="stylesheet">
-		<link href="<?= BASE_URL ?>css/style.css" rel="stylesheet">
+		<link href="<?= BASE_URL ?>/css/bootstrap.min.css" rel="stylesheet">
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+		<link href="<?= BASE_URL ?>/css/tiny-slider.css" rel="stylesheet">
+		<link href="<?= BASE_URL ?>/css/style.css" rel="stylesheet">
 		<title>Furni Free Bootstrap 5 Template for Furniture and Interior Design Websites by Untree.co </title>
 	</head>
 
@@ -38,14 +38,14 @@
 
 				<div class="collapse navbar-collapse" id="navbarsFurni">
 					<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-						<li class="nav-item ">
-							<a class="nav-link" href="index.php">Home</a>
+						<li class="nav-item">
+							<a class="nav-link" href="<?= BASE_URL?>/home/index">Home</a>
 						</li>
-						<li><a class="nav-link" href="../shop/shop.php">Shop</a></li>
-						<li><a class="nav-link" href="../pages/about.php">About us</a></li>
-						<li><a class="nav-link" href="../pages/services.php">Services</a></li>
-						<li><a class="nav-link" href="../pages/blog.php">Blog</a></li>
-						<li><a class="nav-link" href="../pages/contact.php">Contact us</a></li>
+						<li><a class="nav-link" href="<?= BASE_URL?>/shop/shop">Shop</a></li>
+						<li class="active"><a class="nav-link" href="<?= BASE_URL?>/pages/about">About us</a></li>
+						<li><a class="nav-link" href="<?= BASE_URL?>/pages/services">Services</a></li>
+						<li><a class="nav-link" href="<?= BASE_URL?>/pages/blog">Blog</a></li>
+						<li><a class="nav-link" href="<?= BASE_URL?>/pages/contact">Contact us</a></li>
 					</ul>
 
 					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">

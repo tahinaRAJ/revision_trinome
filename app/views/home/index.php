@@ -39,13 +39,13 @@
 				<div class="collapse navbar-collapse" id="navbarsFurni">
 					<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
 						<li class="nav-item active">
-							<a class="nav-link" href="index.php">Home</a>
+							<a class="nav-link" href="<?= BASE_URL?>/home/index">Home</a>
 						</li>
 						<li><a class="nav-link" href="<?= BASE_URL?>/shop/shop">Shop</a></li>
-						<li><a class="nav-link" href="../pages/about.php">About us</a></li>
-						<li><a class="nav-link" href="../pages/services.php">Services</a></li>
-						<li><a class="nav-link" href="../pages/blog.php">Blog</a></li>
-						<li><a class="nav-link" href="../pages/contact.php">Contact us</a></li>
+						<li><a class="nav-link" href="<?= BASE_URL?>/pages/about">About us</a></li>
+						<li><a class="nav-link" href="<?= BASE_URL?>/pages/services">Services</a></li>
+						<li><a class="nav-link" href="<?= BASE_URL?>/pages/blog">Blog</a></li>
+						<li><a class="nav-link" href="<?= BASE_URL?>/pages/contact">Contact us</a></li>
 					</ul>
 
 					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
