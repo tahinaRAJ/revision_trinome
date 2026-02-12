@@ -1,4 +1,5 @@
 -- Création de la base de données
+DROP DATABASE IF EXISTS takalo_db;
 CREATE DATABASE IF NOT EXISTS takalo_db;
 USE takalo_db;
 
@@ -6,9 +7,11 @@ USE takalo_db;
 CREATE TABLE tk_users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(100) NOT NULL,
+    prenom VARCHAR(100) NOT NULL,
     mail VARCHAR(255) UNIQUE NOT NULL,
     pwd VARCHAR(255) NOT NULL,
-    role ENUM('user', 'admin') DEFAULT 'user'
+    role ENUM('user', 'admin') DEFAULT 'user',
+    avatar VARCHAR(255) DEFAULT '/assets/images/avatar-placeholder.svg'
 );
 
 -- Table des catégories
