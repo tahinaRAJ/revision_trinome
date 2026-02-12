@@ -7,15 +7,18 @@ require_once __DIR__ . '/controllers/RedirectController.php';
 
 Flight::route('GET /', ['RedirectController', 'redirectAccueil']);
 
-// Routes pour les pages d'accueil
-Flight::route('GET /home/@page', ['RedirectController', 'redirectHome']);
+//home pages
+Flight::route('GET /home/@file', function($file) { 
+    RedirectController::redirectHome($file);
+});
 
-// Routes pour les pages génériques
-Flight::route('GET /pages/@page', ['RedirectController', 'redirectPages']);
+//pages
+Flight::route('GET /pages/@file', function($file) { 
+    RedirectController::redirectPages($file);
+});
 
-// Routes pour les pages de la boutique
-Flight::route('GET /shop/@page', ['RedirectController', 'redirectShop']);
+//shop
+Flight::route('GET /shop/@file', function($file) { 
+    RedirectController::redirectShop($file);
+});
 
-Flight::route('GET /register', ['AuthController', 'showRegister']);
-Flight::route('POST /register', ['AuthController', 'postRegister']);
-Flight::route('POST /api/validate/register', ['AuthController', 'validateRegisterAjax']);
