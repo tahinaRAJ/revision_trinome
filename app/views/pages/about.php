@@ -17,10 +17,10 @@
   <meta name="keywords" content="bootstrap, bootstrap4" />
 
 		<!-- Bootstrap CSS -->
-		<link href="css/bootstrap.min.css" rel="stylesheet">
-		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-		<link href="css/tiny-slider.css" rel="stylesheet">
-		<link href="css/style.css" rel="stylesheet">
+		<link href="<?= BASE_URL ?>css/bootstrap.min.css" rel="stylesheet">
+		<link href="<?= BASE_URL ?>https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+		<link href="<?= BASE_URL ?>css/tiny-slider.css" rel="stylesheet">
+		<link href="<?= BASE_URL ?>css/style.css" rel="stylesheet">
 		<title>Furni Free Bootstrap 5 Template for Furniture and Interior Design Websites by Untree.co </title>
 	</head>
 
@@ -42,15 +42,15 @@
 							<a class="nav-link" href="index.php">Home</a>
 						</li>
 						<li><a class="nav-link" href="../shop/shop.php">Shop</a></li>
-						<li class="active"><a class="nav-link" href="../pages/about.php">About us</a></li>
+						<li><a class="nav-link" href="../pages/about.php">About us</a></li>
 						<li><a class="nav-link" href="../pages/services.php">Services</a></li>
 						<li><a class="nav-link" href="../pages/blog.php">Blog</a></li>
 						<li><a class="nav-link" href="../pages/contact.php">Contact us</a></li>
 					</ul>
 
 					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-						<li><a class="nav-link" href="#"><img src="images/user.svg"></a></li>
-						<li><a class="nav-link" href="cart.php"><img src="images/cart.svg"></a></li>
+						<li><a class="nav-link" href="#"><img src="<?= BASE_URL ?>/images/user.svg"></a></li>
+						<li><a class="nav-link" href="cart.php"><img src="<?= BASE_URL ?>/images/cart.svg"></a></li>
 					</ul>
 				</div>
 			</div>
@@ -71,7 +71,7 @@
 						</div>
 						<div class="col-lg-7">
 							<div class="hero-img-wrap">
-								<img src="images/couch.png" class="img-fluid">
+								<img src="<?= BASE_URL ?>/images/couch.png" class="img-fluid">
 							</div>
 						</div>
 					</div>
@@ -93,7 +93,7 @@
 							<div class="col-6 col-md-6">
 								<div class="feature">
 									<div class="icon">
-										<img src="images/truck.svg" alt="Image" class="imf-fluid">
+										<img src="<?= BASE_URL ?>/images/truck.svg" alt="Image" class="imf-fluid">
 									</div>
 									<h3>Fast &amp; Free Shipping</h3>
 									<p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate.</p>
@@ -103,7 +103,7 @@
 							<div class="col-6 col-md-6">
 								<div class="feature">
 									<div class="icon">
-										<img src="images/bag.svg" alt="Image" class="imf-fluid">
+										<img src="<?= BASE_URL ?>/images/bag.svg" alt="Image" class="imf-fluid">
 									</div>
 									<h3>Easy to Shop</h3>
 									<p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate.</p>
@@ -113,7 +113,7 @@
 							<div class="col-6 col-md-6">
 								<div class="feature">
 									<div class="icon">
-										<img src="images/support.svg" alt="Image" class="imf-fluid">
+										<img src="<?= BASE_URL ?>/images/support.svg" alt="Image" class="imf-fluid">
 									</div>
 									<h3>24/7 Support</h3>
 									<p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate.</p>
@@ -123,7 +123,7 @@
 							<div class="col-6 col-md-6">
 								<div class="feature">
 									<div class="icon">
-										<img src="images/return.svg" alt="Image" class="imf-fluid">
+										<img src="<?= BASE_URL ?>/images/return.svg" alt="Image" class="imf-fluid">
 									</div>
 									<h3>Hassle Free Returns</h3>
 									<p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate.</p>
@@ -135,7 +135,7 @@
 
 					<div class="col-lg-5">
 						<div class="img-wrap">
-							<img src="images/why-choose-us-img.jpg" alt="Image" class="img-fluid">
+							<img src="<?= BASE_URL ?>/images/why-choose-us-img.jpg" alt="Image" class="img-fluid">
 						</div>
 					</div>
 
@@ -158,7 +158,7 @@
 
 					<!-- Start Column 1 -->
 					<div class="col-12 col-md-6 col-lg-3 mb-5 mb-md-0">
-						<img src="images/person_1.jpg" class="img-fluid mb-5">
+						<img src="<?= BASE_URL ?>/images/person_1.jpg" class="img-fluid mb-5">
 						<h3 clas><a href="#"><span class="">Lawson</span> Arnold</a></h3>
             <span class="d-block position mb-4">CEO, Founder, Atty.</span>
             <p>Separated they live in.
@@ -169,7 +169,7 @@
 
 					<!-- Start Column 2 -->
 					<div class="col-12 col-md-6 col-lg-3 mb-5 mb-md-0">
-						<img src="images/person_2.jpg" class="img-fluid mb-5">
+						<img src="<?= BASE_URL ?>/images/person_2.jpg" class="img-fluid mb-5">
 
 						<h3 clas><a href="#"><span class="">Jeremy</span> Walker</a></h3>
             <span class="d-block position mb-4">CEO, Founder, Atty.</span>
@@ -182,7 +182,7 @@
 
 					<!-- Start Column 3 -->
 					<div class="col-12 col-md-6 col-lg-3 mb-5 mb-md-0">
-						<img src="images/person_3.jpg" class="img-fluid mb-5">
+						<img src="<?= BASE_URL ?>/images/person_3.jpg" class="img-fluid mb-5">
 						<h3 clas><a href="#"><span class="">Patrik</span> White</a></h3>
             <span class="d-block position mb-4">CEO, Founder, Atty.</span>
             <p>Separated they live in.
@@ -193,7 +193,7 @@
 
 					<!-- Start Column 4 -->
 					<div class="col-12 col-md-6 col-lg-3 mb-5 mb-md-0">
-						<img src="images/person_4.jpg" class="img-fluid mb-5">
+						<img src="<?= BASE_URL ?>/images/person_4.jpg" class="img-fluid mb-5">
 
 						<h3 clas><a href="#"><span class="">Kathryn</span> Ryan</a></h3>
             <span class="d-block position mb-4">CEO, Founder, Atty.</span>
@@ -245,7 +245,7 @@
 
 												<div class="author-info">
 													<div class="author-pic">
-														<img src="images/person-1.png" alt="Maria Jones" class="img-fluid">
+														<img src="<?= BASE_URL ?>/images/person-1.png" alt="Maria Jones" class="img-fluid">
 													</div>
 													<h3 class="font-weight-bold">Maria Jones</h3>
 													<span class="position d-block mb-3">CEO, Co-Founder, XYZ Inc.</span>
@@ -268,7 +268,7 @@
 
 												<div class="author-info">
 													<div class="author-pic">
-														<img src="images/person-1.png" alt="Maria Jones" class="img-fluid">
+														<img src="<?= BASE_URL ?>/images/person-1.png" alt="Maria Jones" class="img-fluid">
 													</div>
 													<h3 class="font-weight-bold">Maria Jones</h3>
 													<span class="position d-block mb-3">CEO, Co-Founder, XYZ Inc.</span>
@@ -291,7 +291,7 @@
 
 												<div class="author-info">
 													<div class="author-pic">
-														<img src="images/person-1.png" alt="Maria Jones" class="img-fluid">
+														<img src="<?= BASE_URL ?>/images/person-1.png" alt="Maria Jones" class="img-fluid">
 													</div>
 													<h3 class="font-weight-bold">Maria Jones</h3>
 													<span class="position d-block mb-3">CEO, Co-Founder, XYZ Inc.</span>
@@ -319,13 +319,13 @@
 			<div class="container relative">
 
 				<div class="sofa-img">
-					<img src="images/sofa.png" alt="Image" class="img-fluid">
+					<img src="<?= BASE_URL ?>/images/sofa.png" alt="Image" class="img-fluid">
 				</div>
 
 				<div class="row">
 					<div class="col-lg-8">
 						<div class="subscription-form">
-							<h3 class="d-flex align-items-center"><span class="me-1"><img src="images/envelope-outline.svg" alt="Image" class="img-fluid"></span><span>Subscribe to Newsletter</span></h3>
+							<h3 class="d-flex align-items-center"><span class="me-1"><img src="<?= BASE_URL ?>/images/envelope-outline.svg" alt="Image" class="img-fluid"></span><span>Subscribe to Newsletter</span></h3>
 
 							<form action="#" class="row g-3">
 								<div class="col-auto">
@@ -420,9 +420,9 @@
 		<!-- End Footer Section -->	
 
 
-		<script src="js/bootstrap.bundle.min.js"></script>
-		<script src="js/tiny-slider.js"></script>
-		<script src="js/custom.js"></script>
+		<script src="<?= BASE_URL ?>js/bootstrap.bundle.min.js"></script>
+		<script src="<?= BASE_URL ?>js/tiny-slider.js"></script>
+		<script src="<?= BASE_URL ?>js/custom.js"></script>
 	</body>
 
 </php>

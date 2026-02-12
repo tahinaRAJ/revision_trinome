@@ -17,10 +17,10 @@
   <meta name="keywords" content="bootstrap, bootstrap4" />
 
 		<!-- Bootstrap CSS -->
-		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="<?= BASE_URL ?>/css/bootstrap.min.css" rel="stylesheet">
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-		<link href="css/tiny-slider.css" rel="stylesheet">
-		<link href="css/style.css" rel="stylesheet">
+		<link href="<?= BASE_URL ?>/css/tiny-slider.css" rel="stylesheet">
+		<link href="<?= BASE_URL ?>/css/style.css" rel="stylesheet">
 		<title>Furni Free Bootstrap 5 Template for Furniture and Interior Design Websites by Untree.co </title>
 	</head>
 
@@ -41,7 +41,7 @@
 						<li class="nav-item">
 							<a class="nav-link" href="index.html">Home</a>
 						</li>
-						<li><a class="nav-link" href="shop.html">Shop</a></li>
+						<li><a class="nav-link" href="<?= BASE_URL?>/shop/shop">Shop</a></li>
 						<li><a class="nav-link" href="about.html">About us</a></li>
 						<li><a class="nav-link" href="services.html">Services</a></li>
 						<li class="active"><a class="nav-link" href="blog.html">Blog</a></li>
@@ -49,8 +49,8 @@
 					</ul>
 
 					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-						<li><a class="nav-link" href="#"><img src="images/user.svg"></a></li>
-						<li><a class="nav-link" href="cart.html"><img src="images/cart.svg"></a></li>
+						<li><a class="nav-link" href="#"><img src="<?= BASE_URL ?>/images/user.svg"></a></li>
+						<li><a class="nav-link" href="cart.html"><img src="<?= BASE_URL ?>/images/cart.svg"></a></li>
 					</ul>
 				</div>
 			</div>
@@ -71,7 +71,7 @@
 						</div>
 						<div class="col-lg-7">
 							<div class="hero-img-wrap">
-								<img src="images/couch.png" class="img-fluid">
+								<img src="<?= BASE_URL ?>/images/couch.png" class="img-fluid">
 							</div>
 						</div>
 					</div>
@@ -89,7 +89,7 @@
 
 					<div class="col-12 col-sm-6 col-md-4 mb-5">
 						<div class="post-entry">
-							<a href="#" class="post-thumbnail"><img src="images/post-1.jpg" alt="Image" class="img-fluid"></a>
+							<a href="#" class="post-thumbnail"><img src="<?= BASE_URL ?>/images/post-1.jpg" alt="Image" class="img-fluid"></a>
 							<div class="post-content-entry">
 								<h3><a href="#">First Time Home Owner Ideas</a></h3>
 								<div class="meta">
@@ -101,7 +101,7 @@
 
 					<div class="col-12 col-sm-6 col-md-4 mb-5">
 						<div class="post-entry">
-							<a href="#" class="post-thumbnail"><img src="images/post-2.jpg" alt="Image" class="img-fluid"></a>
+							<a href="#" class="post-thumbnail"><img src="<?= BASE_URL ?>/images/post-2.jpg" alt="Image" class="img-fluid"></a>
 							<div class="post-content-entry">
 								<h3><a href="#">How To Keep Your Furniture Clean</a></h3>
 								<div class="meta">
@@ -113,7 +113,7 @@
 
 					<div class="col-12 col-sm-6 col-md-4 mb-5">
 						<div class="post-entry">
-							<a href="#" class="post-thumbnail"><img src="images/post-3.jpg" alt="Image" class="img-fluid"></a>
+							<a href="#" class="post-thumbnail"><img src="<?= BASE_URL ?>/images/post-3.jpg" alt="Image" class="img-fluid"></a>
 							<div class="post-content-entry">
 								<h3><a href="#">Small Space Furniture Apartment Ideas</a></h3>
 								<div class="meta">
@@ -125,7 +125,7 @@
 
 					<div class="col-12 col-sm-6 col-md-4 mb-5">
 						<div class="post-entry">
-							<a href="#" class="post-thumbnail"><img src="images/post-1.jpg" alt="Image" class="img-fluid"></a>
+							<a href="#" class="post-thumbnail"><img src="<?= BASE_URL ?>/images/post-1.jpg" alt="Image" class="img-fluid"></a>
 							<div class="post-content-entry">
 								<h3><a href="#">First Time Home Owner Ideas</a></h3>
 								<div class="meta">
@@ -137,7 +137,7 @@
 
 					<div class="col-12 col-sm-6 col-md-4 mb-5">
 						<div class="post-entry">
-							<a href="#" class="post-thumbnail"><img src="images/post-2.jpg" alt="Image" class="img-fluid"></a>
+							<a href="#" class="post-thumbnail"><img src="<?= BASE_URL ?>/images/post-2.jpg" alt="Image" class="img-fluid"></a>
 							<div class="post-content-entry">
 								<h3><a href="#">How To Keep Your Furniture Clean</a></h3>
 								<div class="meta">
@@ -149,7 +149,7 @@
 
 					<div class="col-12 col-sm-6 col-md-4 mb-5">
 						<div class="post-entry">
-							<a href="#" class="post-thumbnail"><img src="images/post-3.jpg" alt="Image" class="img-fluid"></a>
+							<a href="#" class="post-thumbnail"><img src="<?= BASE_URL ?>/images/post-3.jpg" alt="Image" class="img-fluid"></a>
 							<div class="post-content-entry">
 								<h3><a href="#">Small Space Furniture Apartment Ideas</a></h3>
 								<div class="meta">
@@ -161,7 +161,7 @@
 
 					<div class="col-12 col-sm-6 col-md-4 mb-5">
 						<div class="post-entry">
-							<a href="#" class="post-thumbnail"><img src="images/post-1.jpg" alt="Image" class="img-fluid"></a>
+							<a href="#" class="post-thumbnail"><img src="<?= BASE_URL ?>/images/post-1.jpg" alt="Image" class="img-fluid"></a>
 							<div class="post-content-entry">
 								<h3><a href="#">First Time Home Owner Ideas</a></h3>
 								<div class="meta">
@@ -173,7 +173,7 @@
 
 					<div class="col-12 col-sm-6 col-md-4 mb-5">
 						<div class="post-entry">
-							<a href="#" class="post-thumbnail"><img src="images/post-2.jpg" alt="Image" class="img-fluid"></a>
+							<a href="#" class="post-thumbnail"><img src="<?= BASE_URL ?>/images/post-2.jpg" alt="Image" class="img-fluid"></a>
 							<div class="post-content-entry">
 								<h3><a href="#">How To Keep Your Furniture Clean</a></h3>
 								<div class="meta">
@@ -185,7 +185,7 @@
 
 					<div class="col-12 col-sm-6 col-md-4 mb-5">
 						<div class="post-entry">
-							<a href="#" class="post-thumbnail"><img src="images/post-3.jpg" alt="Image" class="img-fluid"></a>
+							<a href="#" class="post-thumbnail"><img src="<?= BASE_URL ?>/images/post-3.jpg" alt="Image" class="img-fluid"></a>
 							<div class="post-content-entry">
 								<h3><a href="#">Small Space Furniture Apartment Ideas</a></h3>
 								<div class="meta">
@@ -233,7 +233,7 @@
 
 												<div class="author-info">
 													<div class="author-pic">
-														<img src="images/person-1.png" alt="Maria Jones" class="img-fluid">
+														<img src="<?= BASE_URL ?>/images/person-1.png" alt="Maria Jones" class="img-fluid">
 													</div>
 													<h3 class="font-weight-bold">Maria Jones</h3>
 													<span class="position d-block mb-3">CEO, Co-Founder, XYZ Inc.</span>
@@ -256,7 +256,7 @@
 
 												<div class="author-info">
 													<div class="author-pic">
-														<img src="images/person-1.png" alt="Maria Jones" class="img-fluid">
+														<img src="<?= BASE_URL ?>/images/person-1.png" alt="Maria Jones" class="img-fluid">
 													</div>
 													<h3 class="font-weight-bold">Maria Jones</h3>
 													<span class="position d-block mb-3">CEO, Co-Founder, XYZ Inc.</span>
@@ -279,7 +279,7 @@
 
 												<div class="author-info">
 													<div class="author-pic">
-														<img src="images/person-1.png" alt="Maria Jones" class="img-fluid">
+														<img src="<?= BASE_URL ?>/images/person-1.png" alt="Maria Jones" class="img-fluid">
 													</div>
 													<h3 class="font-weight-bold">Maria Jones</h3>
 													<span class="position d-block mb-3">CEO, Co-Founder, XYZ Inc.</span>
@@ -307,13 +307,13 @@
 			<div class="container relative">
 
 				<div class="sofa-img">
-					<img src="images/sofa.png" alt="Image" class="img-fluid">
+					<img src="<?= BASE_URL ?>/images/sofa.png" alt="Image" class="img-fluid">
 				</div>
 
 				<div class="row">
 					<div class="col-lg-8">
 						<div class="subscription-form">
-							<h3 class="d-flex align-items-center"><span class="me-1"><img src="images/envelope-outline.svg" alt="Image" class="img-fluid"></span><span>Subscribe to Newsletter</span></h3>
+							<h3 class="d-flex align-items-center"><span class="me-1"><img src="<?= BASE_URL ?>/images/envelope-outline.svg" alt="Image" class="img-fluid"></span><span>Subscribe to Newsletter</span></h3>
 
 							<form action="#" class="row g-3">
 								<div class="col-auto">
@@ -408,9 +408,9 @@
 		<!-- End Footer Section -->	
 
 
-		<script src="js/bootstrap.bundle.min.js"></script>
-		<script src="js/tiny-slider.js"></script>
-		<script src="js/custom.js"></script>
+		<script src="<?= BASE_URL ?>/js/bootstrap.bundle.min.js"></script>
+		<script src="<?= BASE_URL ?>/js/tiny-slider.js"></script>
+		<script src="<?= BASE_URL ?>/js/custom.js"></script>
 	</body>
 
 </html>
