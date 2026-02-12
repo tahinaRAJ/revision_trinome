@@ -45,10 +45,46 @@ $isActive = function (string $name) use ($activePage): string {
 				<li class="<?= $isActive('contact') ?>"><a class="nav-link" href="<?= BASE_URL ?>/pages/contact">Contact us</a></li>
 			</ul>
 
-			<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-				<li><a class="nav-link" href="<?= BASE_URL ?>/auth/login"><img src="<?= BASE_URL ?>/images/user.svg" alt="User"></a></li>
-				<li><a class="nav-link" href="<?= BASE_URL ?>/shop/cart"><img src="<?= BASE_URL ?>/images/cart.svg" alt="Cart"></a></li>
-			</ul>
+					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+						<?php
+							// Prepare user display values; use session if available, otherwise defaults
+							$user = $_SESSION['user'] ?? [];
+							$rawName = trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? ''));
+							$displayName = $rawName !== '' ? $rawName : trim((string)($user['email'] ?? ''));
+							if ($displayName === '') {
+								$displayName = 'Mon compte';
+							}
+							$displayName = htmlspecialchars($displayName, ENT_QUOTES, 'UTF-8');
+
+							$avatar = isset($user['avatar']) && $user['avatar'] !== '' ? $user['avatar'] : '';
+							if ($avatar !== '') {
+								if (preg_match('#^https?://#i', $avatar) || strpos($avatar, '/') === 0) {
+									$resolved = $avatar;
+								} else {
+									$resolved = rtrim(BASE_URL, '/') . '/' . ltrim($avatar, '/');
+								}
+								$avatarUrl = htmlspecialchars($resolved, ENT_QUOTES, 'UTF-8');
+							} else {
+								$avatarUrl = BASE_URL . '/images/user.svg';
+							}
+							?>
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+									<img src="<?= $avatarUrl ?>" alt="<?= $displayName ?>" class="rounded-circle" width="32" height="32">
+									<span class="ms-2"><?= $displayName ?></span>
+								</a>
+								<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+									<?php if (!empty($_SESSION['user'])): ?>
+										<li><a class="dropdown-item" href="<?= BASE_URL ?>/user/profile">Profile</a></li>
+										<li><a class="dropdown-item" href="<?= BASE_URL ?>/auth/logout">Logout</a></li>
+									<?php else: ?>
+										<li><a class="dropdown-item" href="<?= BASE_URL ?>/auth/login">Login</a></li>
+										<li><a class="dropdown-item" href="<?= BASE_URL ?>/auth/signup">Sign up</a></li>
+									<?php endif; ?>
+								</ul>
+							</li>
+						<li><a class="nav-link" href="<?= BASE_URL ?>/shop/cart"><img src="<?= BASE_URL ?>/images/cart.svg" alt="Cart"></a></li>
+					</ul>
 		</div>
 	</div>
 </nav>
