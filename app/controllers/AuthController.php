@@ -36,7 +36,8 @@ class AuthController {
           'nom' => $user['nom'],
           'prenom' => $user['prenom'],
           'email' => $user['mail'],
-          'role' => $user['role']
+          'role' => $user['role'],
+          'avatar' => $user['avatar']
         ];
         Flight::redirect(BASE_URL . '/');
         return;
