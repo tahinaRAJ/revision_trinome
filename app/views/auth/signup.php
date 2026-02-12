@@ -5,8 +5,8 @@
 * Template URI: https://untree.co/
 * License: https://creativecommons.org/licenses/by/3.0/
 */ -->
-<!doctype php>
-<php lang="en">
+<!doctype html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -21,7 +21,7 @@
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 		<link href="<?= BASE_URL ?>/css/tiny-slider.css" rel="stylesheet">
 		<link href="<?= BASE_URL ?>/css/style.css" rel="stylesheet">
-		<title>Furni Free Bootstrap 5 Template for Furniture and Interior Design Websites by Untree.co </title>
+		<title>Sign Up</title>
 	</head>
 
 	<body>
@@ -30,7 +30,7 @@
 		<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
 
 			<div class="container">
-				<a class="navbar-brand" href="<?= BASE_URL?>/home/index">Furni<span>.</span></a>
+				<a class="navbar-brand" href="index.html">Furni<span>.</span></a>
 
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
@@ -65,10 +65,13 @@
 						<div class="col-lg-5">
 							<div class="intro-excerpt">
 								<h1>Sign Up</h1>
+								<p class="mb-4">Create an account to get started.</p>
 							</div>
 						</div>
 						<div class="col-lg-7">
-							
+							<div class="hero-img-wrap">
+								<img src="<?= BASE_URL ?>/images/couch.png" class="img-fluid">
+							</div>
 						</div>
 					</div>
 				</div>
@@ -76,7 +79,7 @@
 		<!-- End Hero Section -->
 
 		
-		<!-- Start Contact Form -->
+		<!-- Start Sign Up Form -->
 		<div class="untree_co-section">
       <div class="container">
 
@@ -85,8 +88,6 @@
 
 
             <div class="col-md-8 col-lg-8 pb-4">
-
-
               <form id="signupForm" method="POST">
                 <div class="row">
                   <div class="col-6">
@@ -115,7 +116,6 @@
                 <button type="submit" class="btn btn-primary-hover-outline">Sign Up</button>
               </form>
               <p class="mt-3">Already have an account? <a href="<?= BASE_URL?>/auth/login">Login</a></p>
-
             </div>
 
           </div>
@@ -127,8 +127,7 @@
 
     </div>
   </div>
-
-  <!-- End Contact Form -->
+  <!-- End Sign Up Form -->
 
 		
 
@@ -166,7 +165,7 @@
 				<div class="row g-5 mb-5">
 					<div class="col-lg-4">
 						<div class="mb-4 footer-logo-wrap"><a href="#" class="footer-logo">Furni<span>.</span></a></div>
-						<p class="mb-4">Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant</p>
+						<p class="mb-4">Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant morbi tristique senectus et netus et malesuada</p>
 
 						<ul class="list-unstyled custom-social">
 							<li><a href="#"><span class="fa fa-brands fa-facebook-f"></span></a></li>
@@ -241,7 +240,7 @@
 		<script src="<?= BASE_URL ?>/js/bootstrap.bundle.min.js"></script>
 		<script src="<?= BASE_URL ?>/js/tiny-slider.js"></script>
 		<script src="<?= BASE_URL ?>/js/custom.js"></script>
-		<script src="<?= BASE_URL ?>/js/signup-validation.js"></script>
+    <script src="<?= BASE_URL ?>/js/signup-validation.js"></script>
 	</body>
 
 </html>

@@ -49,8 +49,8 @@
 					</ul>
 
 					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-						<li><a class="nav-link" href="#"><img src="<?= BASE_URL ?>/images/user.svg"></a></li>
-						<li><a class="nav-link" href="cart.html"><img src="<?= BASE_URL ?>/images/cart.svg"></a></li>
+						<li><a class="nav-link" href="<?= BASE_URL?>/auth/login"><img src="<?= BASE_URL ?>/images/user.svg"></a></li>
+						<li><a class="nav-link" href="<?= BASE_URL?>/shop/cart"><img src="<?= BASE_URL ?>/images/cart.svg"></a></li>
 					</ul>
 				</div>
 			</div>
