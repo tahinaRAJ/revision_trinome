@@ -1,0 +1,102 @@
+
+====================
+MODULE : AUTH
+--------------------
+UserRepository :
+	- inscription() (Noah)
+	- login() (Noah)
+	- findUserByMail() (Noah)
+	- countUsers() (Noah)
+UserModel :
+	- creationUserModel() (Noah)
+AuthService :
+	- inscriptionUtilisateur() (Tahina)
+	- loginUtilisateur() (Tahina)
+	- gestionSession() (Tahina)
+
+====================
+MODULE : PRODUIT
+--------------------
+ProduitRepository :
+	- ajouterProduit() (Noah)
+	- modifierProduit() (Noah)
+	- supprimerProduit() (Noah)
+	- produitsUtilisateur() (Noah)
+	- produitsAutres() (Noah)
+	- rechercheNomCategorie() (Noah)
+	- historique par objet
+ProduitModel :
+	- creationProduitModel() (Noah)
+ImageProduitRepository :
+	- ajouterImage() (Ayman)
+	- supprimerImagesProduit() (Ayman)
+	- getImagesProduit() (Ayman)
+ImageProduitModel :
+	- creationImageProduitModel() (Ayman)
+ProduitService :
+	- creerProduit() (Tahina)
+	- modifierProduit() (Tahina)
+	- supprimerProduit() (Tahina)
+	- ajoutImages() (Tahina)
+	- recuperationProduits() (Tahina)
+
+====================
+MODULE : ECHANGE
+--------------------
+DemandeEchangeRepository :
+	- creerDemande() (Noah)
+	- listerDemandesRecues() (Noah)
+	- listerDemandesEnvoyees() (Noah)
+	- changerStatut() (Noah)
+DemandeEchangeModel :
+	- creationDemandeEchangeModel() (Noah)
+EchangeRepository :
+	- creerEchange() (Ayman)
+	- listerEchanges() (Ayman)
+	- statsEchanges() (Ayman)
+EchangeModel :
+	- creationEchangeModel() (Ayman)
+HistoriqueRepository :
+	- ajouterHistorique() (Ayman)
+	- getHistoriqueProduit() (Ayman)
+HistoriqueModel :
+	- creationHistoriqueModel() (Ayman)
+EchangeService :
+	- creerDemandeEchange() (Tahina)
+	- accepterDemande() (Tahina)
+	- refuserDemande() (Tahina)
+
+====================
+MODULE : ADMIN
+--------------------
+AdminService :
+	- statsUtilisateurs() (Ayman)
+	- statsEchanges() (Ayman)
+AdminModel :
+	- creationAdminModel() (Ayman)
+
+====================
+MODULE : CONTROLLER
+--------------------
+AuthController :
+	- routesLoginRegister() (Tahina)
+ProduitController :
+	- routesProduits() (Tahina)
+EchangeController :
+	- routesEchanges() (Tahina)
+AdminController :
+	- routesAdmin() (Tahina)
+
+====================
+MODULE : VIEW
+--------------------
+Login.php :
+	- page de login (Noah)
+acceuil.php :
+	- presentation (Noah)
+shop.php :
+	- liste des produits (Noah)
+profil.php :
+	- profil, liste des demandes et liste des produits de l'user (Noah)
+hisorique.php :
+	- historique des échanges de l'user (Noah)
