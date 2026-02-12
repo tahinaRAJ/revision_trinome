@@ -44,10 +44,6 @@ $isActive = function (string $name) use ($activePage): string {
 				<li class="<?= $isActive('blog') ?>"><a class="nav-link" href="<?= BASE_URL ?>/pages/blog">Blog</a></li>
 				<li class="<?= $isActive('contact') ?>"><a class="nav-link" href="<?= BASE_URL ?>/pages/contact">Contact us</a></li>
 			</ul>
-			<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-				<li><a class="nav-link" href="<?= BASE_URL ?>/auth/login"><img src="<?= BASE_URL ?>/images/user.svg" alt="User"></a></li>
-				<li><a class="nav-link" href="<?= BASE_URL ?>/shop/cart"><img src="<?= BASE_URL ?>/images/cart.svg" alt="Cart"></a></li>
-			</ul>
 
 					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
 						<!-- existing login icon (kept) -->
