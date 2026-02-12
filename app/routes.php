@@ -8,6 +8,10 @@ require_once __DIR__ . '/controllers/ProfileController.php';
 require_once __DIR__ . '/repositories/ProduitRepository.php';
 require_once __DIR__ . '/repositories/DemandeEchangeRepository.php';
 require_once __DIR__ . '/repositories/StatusDemandeRepository.php';
+require_once __DIR__ . '/repositories/CategorieRepository.php';
+require_once __DIR__ . '/repositories/ImageProduitRepository.php';
+require_once __DIR__ . '/repositories/HistoriqueProprieteRepository.php';
+require_once __DIR__ . '/controllers/AdminController.php';
 
 Flight::route('GET /', ['RedirectController', 'redirectAccueil']);
 
@@ -37,6 +41,33 @@ Flight::route('GET /home/@file', function($file) {
 //pages
 Flight::route('GET /pages/@file', function($file) { 
     RedirectController::redirectPages($file);
+});
+
+// admin
+Flight::route('GET /system/admin', ['AdminController', 'index']);
+Flight::route('GET /system/admin/users', ['AdminController', 'users']);
+Flight::route('GET /system/admin/categories', ['AdminController', 'categories']);
+Flight::route('GET /system/admin/products', ['AdminController', 'products']);
+Flight::route('GET /system/admin/products/@id', function($id) {
+    AdminController::productDetails((int)$id);
+});
+Flight::route('POST /system/admin/users/@id/grant', function($id) {
+    AdminController::grantAdmin((int)$id);
+});
+Flight::route('POST /system/admin/users/@id/revoke', function($id) {
+    AdminController::revokeAdmin((int)$id);
+});
+Flight::route('POST /system/admin/categories/create', ['AdminController', 'createCategory']);
+Flight::route('POST /system/admin/categories/@id/update', function($id) {
+    AdminController::updateCategory((int)$id);
+});
+Flight::route('POST /system/admin/categories/@id/delete', function($id) {
+    AdminController::deleteCategory((int)$id);
+});
+
+//system
+Flight::route('GET /system/@file', function($file) { 
+    RedirectController::redirectSystem($file);
 });
 
 //shop

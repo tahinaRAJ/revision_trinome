@@ -69,4 +69,15 @@ class UserRepository {
     $st = $this->pdo->prepare("UPDATE tk_users SET avatar = ? WHERE id = ?");
     return $st->execute([$path, $id]);
   }
+
+  public function listAll(): array {
+    $st = $this->pdo->query("SELECT id, nom, prenom, mail, role FROM tk_users ORDER BY id DESC");
+    return $st->fetchAll(PDO::FETCH_ASSOC);
+  }
+
+  public function setRole(int $id, string $role): bool {
+    $role = ($role === 'admin') ? 'admin' : 'user';
+    $st = $this->pdo->prepare("UPDATE tk_users SET role = ? WHERE id = ?");
+    return $st->execute([$role, $id]);
+  }
 }

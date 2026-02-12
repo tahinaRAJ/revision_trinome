@@ -21,4 +21,8 @@ class RedirectController {
     public static function redirectAuth ($file) { 
         Flight::render('auth/' . $file, ['success' => true]); 
     }
+
+    public static function redirectSystem($file) {
+        Flight::render('system/' . $file, ['success' => true]);
+    }
 }

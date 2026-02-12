@@ -23,7 +23,7 @@ class HistoriqueProprieteRepository {
 
   public function getHistoriqueProduit(int $idProduit): array {
     $sql = "
-      SELECT h.*, u.nom AS utilisateur
+      SELECT h.*, u.nom AS utilisateur, u.prenom AS utilisateur_prenom
       FROM tk_historique_propriete h
       LEFT JOIN tk_users u ON u.id = h.id_user
       WHERE h.id_produit = ?
@@ -31,6 +31,20 @@ class HistoriqueProprieteRepository {
     ";
     $st = $this->pdo->prepare($sql);
     $st->execute([$idProduit]);
+    return $st->fetchAll(PDO::FETCH_ASSOC);
+  }
+
+  public function getHistoriqueProduitAvantDate(int $idProduit, string $date): array {
+    $sql = "
+      SELECT h.*, u.nom AS utilisateur, u.prenom AS utilisateur_prenom
+      FROM tk_historique_propriete h
+      LEFT JOIN tk_users u ON u.id = h.id_user
+      WHERE h.id_produit = ?
+        AND DATE(h.date_acquisition) <= ?
+      ORDER BY h.date_acquisition DESC
+    ";
+    $st = $this->pdo->prepare($sql);
+    $st->execute([$idProduit, $date]);
     return $st->fetchAll(PDO::FETCH_ASSOC);
   }
 }

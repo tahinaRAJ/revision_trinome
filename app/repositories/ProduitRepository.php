@@ -66,4 +66,34 @@ class ProduitRepository {
     $st->execute([$idProduit]);
     return $st->fetchAll(PDO::FETCH_ASSOC);
   }
+
+  public function listerAvecDetails(): array {
+    $sql = "
+      SELECT p.id, p.nom, p.description, p.prix,
+             p.id_categorie, c.nom AS categorie,
+             p.id_proprietaire, u.nom AS proprietaire_nom, u.prenom AS proprietaire_prenom
+      FROM tk_produit p
+      JOIN tk_categorie c ON c.id = p.id_categorie
+      JOIN tk_users u ON u.id = p.id_proprietaire
+      ORDER BY p.id DESC
+    ";
+    $st = $this->pdo->query($sql);
+    return $st->fetchAll(PDO::FETCH_ASSOC);
+  }
+
+  public function findWithDetails(int $id): ?array {
+    $sql = "
+      SELECT p.id, p.nom, p.description, p.prix,
+             p.id_categorie, c.nom AS categorie,
+             p.id_proprietaire, u.nom AS proprietaire_nom, u.prenom AS proprietaire_prenom
+      FROM tk_produit p
+      JOIN tk_categorie c ON c.id = p.id_categorie
+      JOIN tk_users u ON u.id = p.id_proprietaire
+      WHERE p.id = ?
+      LIMIT 1
+    ";
+    $st = $this->pdo->prepare($sql);
+    $st->execute([$id]);
+    return $st->fetch(PDO::FETCH_ASSOC) ?: null;
+  }
 }
