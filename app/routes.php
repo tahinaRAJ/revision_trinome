@@ -22,3 +22,7 @@ Flight::route('GET /shop/@file', function($file) {
     RedirectController::redirectShop($file);
 });
 
+// auth
+Flight::route('GET /auth/@file', function($file) { 
+    RedirectController::redirectAuth($file); 
+});
