@@ -11,23 +11,7 @@ $success = $success ?? '';
 ?>
 
 <!-- Start Hero Section -->
-<div class="hero">
-  <div class="container">
-    <div class="row justify-content-between">
-      <div class="col-lg-5">
-        <div class="intro-excerpt">
-          <h1>Mon Profil</h1>
-          <p class="mb-4">Gérez vos informations personnelles, vos objets et vos demandes.</p>
-        </div>
-      </div>
-      <div class="col-lg-7">
-        <div class="hero-img-wrap">
-          <img src="<?= BASE_URL ?>/images/couch.png" class="img-fluid">
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+
 <!-- End Hero Section -->
 
 <div class="untree_co-section">
@@ -48,32 +32,33 @@ $success = $success ?? '';
       </div>
     <?php endif; ?>
 
-    <!-- ====== Avatar + Infos card ====== -->
-    <div class="row g-5 mb-5">
-      <div class="col-lg-4">
-        <div class="p-4 border rounded text-center" style="background:#f8f9fa;">
-          <?php
-            $avatarSrc = (!empty($user['avatar'])) ? BASE_URL . $user['avatar'] : BASE_URL . '/images/user.svg';
-          ?>
-          <img src="<?= htmlspecialchars($avatarSrc, ENT_QUOTES, 'UTF-8') ?>" alt="Avatar" class="rounded-circle mb-3" width="120" height="120" style="object-fit:cover;border:3px solid #3b5d50;">
-          <h4 class="mb-1"><?= htmlspecialchars(trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? '')), ENT_QUOTES, 'UTF-8') ?></h4>
-          <p class="text-muted mb-3"><?= htmlspecialchars($user['mail'] ?? '', ENT_QUOTES, 'UTF-8') ?></p>
-
-          <form method="POST" action="<?= BASE_URL ?>/user/profile/avatar" enctype="multipart/form-data">
-            <div class="mb-2">
-              <input type="file" class="form-control form-control-sm" id="avatar" name="avatar" accept="image/*" required>
-            </div>
-            <button type="submit" class="btn btn-sm btn-primary-hover-outline w-100">
-              <i class="fa fa-camera me-1"></i> Changer la photo
-            </button>
-          </form>
+    <!-- ====== Nouveau header profil (bannière + avatar + contact) ====== -->
+    <?php
+      $avatarSrc = (!empty($user['avatar'])) ? BASE_URL . $user['avatar'] : BASE_URL . '/images/user.svg';
+      $fullName = htmlspecialchars(trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? '')), ENT_QUOTES, 'UTF-8');
+      $userMail = htmlspecialchars($user['mail'] ?? '', ENT_QUOTES, 'UTF-8');
+    ?>
+    <div class="row mb-5">
+      <div class="col-12">
+        <div class="position-relative mb-4" style="height:320px; background:linear-gradient(90deg,#e9f1ef,#ffffff); border-radius:8px; overflow:hidden;">
+          <!-- use existing image as fallback if custom cover missing -->
+          <img src="<?= BASE_URL ?>/images/img-grid-1.jpg" alt="cover" style="width:100%;height:100%;object-fit:cover;filter:brightness(.9);">
+          <div class="position-absolute" style="left:30px;bottom:10px;z-index:5;">
+            <img src="<?= htmlspecialchars($avatarSrc, ENT_QUOTES, 'UTF-8') ?>" alt="avatar" class="rounded-circle" width="140" height="140" style="object-fit:cover;border:6px solid #fff;box-shadow:0 6px 18px rgba(0,0,0,.12);display:block;">
+          </div>
+          <div class="position-absolute" style="left:190px;bottom:10px;">
+            <h2 class="mb-1" style="color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.5);"><?= $fullName ?></h2>
+            <p class="mb-0 text-white" style="text-shadow:0 1px 3px rgba(0,0,0,.35);"><?= $userMail ?></p>
+          </div>
         </div>
       </div>
+    </div>
 
+    <!-- ====== Formulaires d'édition repositionnés sous la bannière ====== -->
+    <div class="row g-4 mb-5" style="margin-top:40px;">
       <div class="col-lg-8">
-        <!-- Infos personnelles -->
-        <div class="p-4 border rounded mb-4">
-          <h3 class="mb-4"><i class="fa fa-user me-2" style="color:#3b5d50;"></i>Informations personnelles</h3>
+        <div class="card p-4 shadow-sm">
+          <h4 class="mb-4"><i class="fa fa-user me-2" style="color:#3b5d50;"></i>Modifier mes informations</h4>
           <form method="POST" action="<?= BASE_URL ?>/user/profile/update">
             <div class="row">
               <div class="col-md-6 mb-3">
@@ -89,33 +74,45 @@ $success = $success ?? '';
               <label class="text-black fw-bold" for="email">Email</label>
               <input type="email" class="form-control" id="email" name="email" value="<?= htmlspecialchars($user['mail'] ?? '', ENT_QUOTES, 'UTF-8') ?>" required>
             </div>
-            <button type="submit" class="btn btn-primary-hover-outline">
-              <i class="fa fa-save me-1"></i> Enregistrer
-            </button>
-          </form>
-        </div>
-
-        <!-- Mot de passe -->
-        <div class="p-4 border rounded">
-          <h3 class="mb-4"><i class="fa fa-lock me-2" style="color:#3b5d50;"></i>Changer le mot de passe</h3>
-          <form method="POST" action="<?= BASE_URL ?>/user/profile/password">
-            <div class="row">
-              <div class="col-md-4 mb-3">
-                <label class="text-black fw-bold" for="current_password">Mot de passe actuel</label>
-                <input type="password" class="form-control" id="current_password" name="current_password" required>
-              </div>
-              <div class="col-md-4 mb-3">
-                <label class="text-black fw-bold" for="new_password">Nouveau</label>
-                <input type="password" class="form-control" id="new_password" name="new_password" required>
-              </div>
-              <div class="col-md-4 mb-3">
-                <label class="text-black fw-bold" for="confirm_password">Confirmation</label>
-                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
-              </div>
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-primary-hover-outline">
+                <i class="fa fa-save me-1"></i> Enregistrer
+              </button>
+              <button type="button" class="btn btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#avatarCollapse" aria-expanded="false" aria-controls="avatarCollapse">
+                <i class="fa fa-camera me-1"></i> Changer la photo
+              </button>
             </div>
-            <button type="submit" class="btn btn-primary-hover-outline">
-              <i class="fa fa-key me-1"></i> Mettre à jour
-            </button>
+          </form>
+          <div class="collapse mt-3" id="avatarCollapse">
+            <form method="POST" action="<?= BASE_URL ?>/user/profile/avatar" enctype="multipart/form-data">
+              <div class="input-group">
+                <input type="file" class="form-control" id="avatar" name="avatar" accept="image/*" required>
+                <button class="btn btn-primary" type="submit">Téléverser</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="card p-4 shadow-sm">
+          <h5 class="mb-3"><i class="fa fa-lock me-2" style="color:#3b5d50;"></i>Changer le mot de passe</h5>
+          <form method="POST" action="<?= BASE_URL ?>/user/profile/password">
+            <div class="mb-2">
+              <label class="text-black fw-bold" for="current_password">Mot de passe actuel</label>
+              <input type="password" class="form-control" id="current_password" name="current_password" required>
+            </div>
+            <div class="mb-2">
+              <label class="text-black fw-bold" for="new_password">Nouveau</label>
+              <input type="password" class="form-control" id="new_password" name="new_password" required>
+            </div>
+            <div class="mb-2">
+              <label class="text-black fw-bold" for="confirm_password">Confirmation</label>
+              <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+            </div>
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary-hover-outline"><i class="fa fa-key me-1"></i> Mettre à jour</button>
+            </div>
           </form>
         </div>
       </div>
