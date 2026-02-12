@@ -64,7 +64,7 @@
 					<div class="row justify-content-between">
 						<div class="col-lg-5">
 							<div class="intro-excerpt">
-								<h1>Login</h1>
+								<h1>Login  <span clsas="d-block">into your account</span></h1>
 								<p class="mb-4">Enter your credentials to access your account.</p>
 							</div>
 						</div>

@@ -64,8 +64,8 @@
 					<div class="row justify-content-between">
 						<div class="col-lg-5">
 							<div class="intro-excerpt">
-								<h1>Sign Up</h1>
-								<p class="mb-4">Create an account to get started.</p>
+								<h1>Sign Up  <span clsas="d-block">to create an account</span></h1>
+								<p class="mb-4">Fill in the form below to get started.</p>
 							</div>
 						</div>
 						<div class="col-lg-7">
