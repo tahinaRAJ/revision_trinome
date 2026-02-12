@@ -6,10 +6,10 @@ class EchangeRepository {
 
   public function creerEchange(?string $dateEchange = null) {
     if ($dateEchange) {
-      $st = $this->pdo->prepare("INSERT INTO echange(date_echange) VALUES(?)");
+      $st = $this->pdo->prepare("INSERT INTO tk_echange(date_echange) VALUES(?)");
       $st->execute([$dateEchange]);
     } else {
-      $st = $this->pdo->prepare("INSERT INTO echange(date_echange) VALUES(NOW())");
+      $st = $this->pdo->prepare("INSERT INTO tk_echange(date_echange) VALUES(NOW())");
       $st->execute();
     }
     return $this->pdo->lastInsertId();
@@ -19,8 +19,8 @@ class EchangeRepository {
     if ($idUser === null) {
       $sql = "
         SELECT e.*, ie.id_produit1, ie.id_produit2
-        FROM echange e
-        LEFT JOIN info_echange ie ON e.id = ie.id_echange
+        FROM tk_echange e
+        LEFT JOIN tk_info_echange ie ON e.id = ie.id_echange
         ORDER BY e.date_echange DESC
       ";
       $st = $this->pdo->query($sql);
@@ -29,10 +29,10 @@ class EchangeRepository {
 
     $sql = "
       SELECT e.*, ie.id_produit1, ie.id_produit2
-      FROM echange e
-      JOIN info_echange ie ON e.id = ie.id_echange
-      JOIN produit p1 ON ie.id_produit1 = p1.id
-      JOIN produit p2 ON ie.id_produit2 = p2.id
+      FROM tk_echange e
+      JOIN tk_info_echange ie ON e.id = ie.id_echange
+      JOIN tk_produit p1 ON ie.id_produit1 = p1.id
+      JOIN tk_produit p2 ON ie.id_produit2 = p2.id
       WHERE p1.id_proprietaire = ? OR p2.id_proprietaire = ?
       ORDER BY e.date_echange DESC
     ";
@@ -42,10 +42,10 @@ class EchangeRepository {
   }
 
   public function statsEchanges(): array {
-    $total = (int)$this->pdo->query("SELECT COUNT(*) FROM echange")->fetchColumn();
+    $total = (int)$this->pdo->query("SELECT COUNT(*) FROM tk_echange")->fetchColumn();
     $perMonth = $this->pdo->query("
       SELECT DATE_FORMAT(date_echange, '%Y-%m') AS mois, COUNT(*) AS total
-      FROM echange
+      FROM tk_echange
       GROUP BY mois
       ORDER BY mois DESC
     ")->fetchAll(PDO::FETCH_ASSOC);

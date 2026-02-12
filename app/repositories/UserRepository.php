@@ -41,4 +41,32 @@ class UserRepository {
     $st->execute([(string)$nom, (string)$prenom, (string)$email, (string)$hash, (string)$role]);
     return $this->pdo->lastInsertId();
   }
+
+  public function findById(int $id) {
+    $st = $this->pdo->prepare("SELECT * FROM tk_users WHERE id = ? LIMIT 1");
+    $st->execute([$id]);
+    return $st->fetch(PDO::FETCH_ASSOC) ?: null;
+  }
+
+  public function emailExistsForOther(string $email, int $id): bool {
+    $st = $this->pdo->prepare("SELECT 1 FROM tk_users WHERE mail = ? AND id <> ? LIMIT 1");
+    $st->execute([$email, $id]);
+    return (bool)$st->fetchColumn();
+  }
+
+  public function updateProfile(int $id, string $nom, string $prenom, string $email): int {
+    $st = $this->pdo->prepare("UPDATE tk_users SET nom = ?, prenom = ?, mail = ? WHERE id = ?");
+    $st->execute([$nom, $prenom, $email, $id]);
+    return (int)$st->rowCount();
+  }
+
+  public function updatePassword(int $id, string $hash): bool {
+    $st = $this->pdo->prepare("UPDATE tk_users SET pwd = ? WHERE id = ?");
+    return $st->execute([$hash, $id]);
+  }
+
+  public function updateAvatar(int $id, string $path): bool {
+    $st = $this->pdo->prepare("UPDATE tk_users SET avatar = ? WHERE id = ?");
+    return $st->execute([$path, $id]);
+  }
 }

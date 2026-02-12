@@ -7,13 +7,13 @@ class HistoriqueProprieteRepository {
   public function ajouterHistorique(int $idProduit, int $idUser, ?string $dateAcquisition = null) {
     if ($dateAcquisition) {
       $st = $this->pdo->prepare("
-        INSERT INTO historique_propriete(id_produit, id_user, date_acquisition)
+        INSERT INTO tk_historique_propriete(id_produit, id_user, date_acquisition)
         VALUES(?,?,?)
       ");
       $st->execute([$idProduit, $idUser, $dateAcquisition]);
     } else {
       $st = $this->pdo->prepare("
-        INSERT INTO historique_propriete(id_produit, id_user, date_acquisition)
+        INSERT INTO tk_historique_propriete(id_produit, id_user, date_acquisition)
         VALUES(?, ?, NOW())
       ");
       $st->execute([$idProduit, $idUser]);
@@ -24,8 +24,8 @@ class HistoriqueProprieteRepository {
   public function getHistoriqueProduit(int $idProduit): array {
     $sql = "
       SELECT h.*, u.nom AS utilisateur
-      FROM historique_propriete h
-      LEFT JOIN users u ON u.id = h.id_user
+      FROM tk_historique_propriete h
+      LEFT JOIN tk_users u ON u.id = h.id_user
       WHERE h.id_produit = ?
       ORDER BY h.date_acquisition DESC
     ";

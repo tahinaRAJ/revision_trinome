@@ -4,8 +4,24 @@ require_once __DIR__ . '/services/Validator.php';
 require_once __DIR__ . '/services/UserService.php';
 require_once __DIR__ . '/repositories/UserRepository.php';
 require_once __DIR__ . '/controllers/RedirectController.php';
+require_once __DIR__ . '/controllers/ProfileController.php';
+require_once __DIR__ . '/repositories/ProduitRepository.php';
+require_once __DIR__ . '/repositories/DemandeEchangeRepository.php';
+require_once __DIR__ . '/repositories/StatusDemandeRepository.php';
 
 Flight::route('GET /', ['RedirectController', 'redirectAccueil']);
+
+// profile
+Flight::route('GET /user/profile', ['ProfileController', 'showProfile']);
+Flight::route('POST /user/profile/update', ['ProfileController', 'updateProfile']);
+Flight::route('POST /user/profile/password', ['ProfileController', 'updatePassword']);
+Flight::route('POST /user/profile/avatar', ['ProfileController', 'updateAvatar']);
+Flight::route('POST /user/profile/demande/@id/accept', function($id) {
+    ProfileController::accepterDemande($id);
+});
+Flight::route('POST /user/profile/demande/@id/refuse', function($id) {
+    ProfileController::refuserDemande($id);
+});
 
 // auth
 Flight::route('GET /auth/login', ['AuthController', 'showLogin']);
