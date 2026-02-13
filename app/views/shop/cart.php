@@ -1,157 +1,119 @@
 <?php
-$pageTitle = 'Cart';
+$pageTitle = 'Panier';
 $activePage = 'shop';
+$pageStyles = ['css/modern-pages.css'];
 include __DIR__ . '/../pages/header.php';
 ?>
 
-		<!-- Start Hero Section -->
-			<div class="hero">
-				<div class="container">
-					<div class="row justify-content-between">
-						<div class="col-lg-5">
-							<div class="intro-excerpt">
-								<h1>Cart</h1>
-							</div>
-						</div>
-						<div class="col-lg-7">
-							
-						</div>
-					</div>
-				</div>
-			</div>
-		<!-- End Hero Section -->
-
-		
-
-		<div class="untree_co-section before-footer-section">
-            <div class="container">
-              <div class="row mb-5">
-                <form class="col-md-12" method="post">
-                  <div class="site-blocks-table">
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th class="product-thumbnail">Image</th>
-                          <th class="product-name">Product</th>
-                          <th class="product-price">Price</th>
-                          <th class="product-quantity">Quantity</th>
-                          <th class="product-total">Total</th>
-                          <th class="product-remove">Remove</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td class="product-thumbnail">
-                            <img src="<?= BASE_URL ?>/images/product-1.png" alt="Image" class="img-fluid">
-                          </td>
-                          <td class="product-name">
-                            <h2 class="h5 text-black">Product 1</h2>
-                          </td>
-                          <td>$49.00</td>
-                          <td>
-                            <div class="input-group mb-3 d-flex align-items-center quantity-container" style="max-width: 120px;">
-                              <div class="input-group-prepend">
-                                <button class="btn btn-outline-black decrease" type="button">&minus;</button>
-                              </div>
-                              <input type="text" class="form-control text-center quantity-amount" value="1" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
-                              <div class="input-group-append">
-                                <button class="btn btn-outline-black increase" type="button">&plus;</button>
-                              </div>
-                            </div>
-        
-                          </td>
-                          <td>$49.00</td>
-                          <td><a href="#" class="btn btn-black btn-sm">X</a></td>
-                        </tr>
-        
-                        <tr>
-                          <td class="product-thumbnail">
-                            <img src="<?= BASE_URL ?>/images/product-2.png" alt="Image" class="img-fluid">
-                          </td>
-                          <td class="product-name">
-                            <h2 class="h5 text-black">Product 2</h2>
-                          </td>
-                          <td>$49.00</td>
-                          <td>
-                            <div class="input-group mb-3 d-flex align-items-center quantity-container" style="max-width: 120px;">
-                              <div class="input-group-prepend">
-                                <button class="btn btn-outline-black decrease" type="button">&minus;</button>
-                              </div>
-                              <input type="text" class="form-control text-center quantity-amount" value="1" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
-                              <div class="input-group-append">
-                                <button class="btn btn-outline-black increase" type="button">&plus;</button>
-                              </div>
-                            </div>
-        
-                          </td>
-                          <td>$49.00</td>
-                          <td><a href="#" class="btn btn-black btn-sm">X</a></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </form>
-              </div>
-        
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="row mb-5">
-                    <div class="col-md-6 mb-3 mb-md-0">
-                      <button class="btn btn-black btn-sm btn-block">Update Cart</button>
-                    </div>
-                    <div class="col-md-6">
-                      <button class="btn btn-outline-black btn-sm btn-block">Continue Shopping</button>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-12">
-                      <label class="text-black h4" for="coupon">Coupon</label>
-                      <p>Enter your coupon code if you have one.</p>
-                    </div>
-                    <div class="col-md-8 mb-3 mb-md-0">
-                      <input type="text" class="form-control py-3" id="coupon" placeholder="Coupon Code">
-                    </div>
-                    <div class="col-md-4">
-                      <button class="btn btn-black">Apply Coupon</button>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6 pl-5">
-                  <div class="row justify-content-end">
-                    <div class="col-md-7">
-                      <div class="row">
-                        <div class="col-md-12 text-right border-bottom mb-5">
-                          <h3 class="text-black h4 text-uppercase">Cart Totals</h3>
-                        </div>
-                      </div>
-                      <div class="row mb-3">
-                        <div class="col-md-6">
-                          <span class="text-black">Subtotal</span>
-                        </div>
-                        <div class="col-md-6 text-right">
-                          <strong class="text-black">$230.00</strong>
-                        </div>
-                      </div>
-                      <div class="row mb-5">
-                        <div class="col-md-6">
-                          <span class="text-black">Total</span>
-                        </div>
-                        <div class="col-md-6 text-right">
-                          <strong class="text-black">$230.00</strong>
-                        </div>
-                      </div>
-        
-                      <div class="row">
-                        <div class="col-md-12">
-                          <button class="btn btn-black btn-lg py-3 btn-block" onclick="window.location='checkout.html'">Proceed To Checkout</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+<!-- Hero Section -->
+<div class="shop-hero" style="padding: 60px 0 40px;">
+    <div class="container shop-hero-content">
+        <div class="row">
+            <div class="col-lg-8">
+                <h1>Votre Panier</h1>
+                <p>Consultez et modifiez vos articles avant de procéder à l'échange</p>
             </div>
-          </div>
-		
+        </div>
+    </div>
+</div>
+
+<!-- Cart Content -->
+<div class="cart-modern">
+    <div class="container">
+        <div class="cart-container">
+            <!-- Cart Items -->
+            <div class="cart-items-card">
+                <div class="cart-header">
+                    <h2>Articles</h2>
+                    <span class="cart-count">2 articles</span>
+                </div>
+
+                <!-- Cart Item 1 -->
+                <div class="cart-item">
+                    <div class="cart-item-image">
+                        <img src="<?= BASE_URL ?>/images/product-1.png" alt="Produit">
+                    </div>
+                    <div class="cart-item-details">
+                        <h4>Nordic Chair</h4>
+                        <p>Chaise design scandinave</p>
+                    </div>
+                    <div class="quantity-control">
+                        <button class="btn-quantity">&minus;</button>
+                        <span class="quantity-value">1</span>
+                        <button class="btn-quantity">&plus;</button>
+                    </div>
+                    <div class="cart-item-price">
+                        <div class="price">120 000 Ar</div>
+                        <button class="btn-remove">
+                            <i class="fas fa-trash"></i> Supprimer
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Cart Item 2 -->
+                <div class="cart-item">
+                    <div class="cart-item-image">
+                        <img src="<?= BASE_URL ?>/images/product-2.png" alt="Produit">
+                    </div>
+                    <div class="cart-item-details">
+                        <h4>Kruzo Aero Chair</h4>
+                        <p>Chaise ergonomique moderne</p>
+                    </div>
+                    <div class="quantity-control">
+                        <button class="btn-quantity">&minus;</button>
+                        <span class="quantity-value">1</span>
+                        <button class="btn-quantity">&plus;</button>
+                    </div>
+                    <div class="cart-item-price">
+                        <div class="price">85 000 Ar</div>
+                        <button class="btn-remove">
+                            <i class="fas fa-trash"></i> Supprimer
+                        </button>
+                    </div>
+                </div>
+
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #f0f0f0;">
+                    <a href="<?= BASE_URL ?>/shop" class="btn btn-outline">
+                        <i class="fas fa-arrow-left"></i> Continuer les achats
+                    </a>
+                </div>
+            </div>
+
+            <!-- Cart Summary -->
+            <div class="cart-summary-card">
+                <h3>Récapitulatif</h3>
+                
+                <div class="summary-row">
+                    <span>Sous-total</span>
+                    <span>205 000 Ar</span>
+                </div>
+                <div class="summary-row">
+                    <span>Frais de service</span>
+                    <span>0 Ar</span>
+                </div>
+                <div class="summary-row">
+                    <span>Livraison</span>
+                    <span style="color: #10b981;">Gratuite</span>
+                </div>
+                
+                <div class="summary-row total">
+                    <span>Total</span>
+                    <span>205 000 Ar</span>
+                </div>
+
+                <button class="btn-checkout" onclick="window.location='<?= BASE_URL ?>/checkout'">
+                    <i class="fas fa-exchange-alt"></i>
+                    Procéder à l'échange
+                </button>
+
+                <div style="text-align: center; margin-top: 20px;">
+                    <p style="font-size: 0.85rem; color: #9ca3af;">
+                        <i class="fas fa-shield-alt"></i> Échange sécurisé
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <?php include __DIR__ . '/../pages/footer.php'; ?>

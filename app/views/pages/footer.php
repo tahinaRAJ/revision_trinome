@@ -1,10 +1,6 @@
 <footer class="footer-section">
 	<div class="container relative">
 
-		<div class="sofa-img">
-			<img src="<?= BASE_URL ?>/images/sofa.png" alt="Image" class="img-fluid">
-		</div>
-
 		<div class="row g-5 mb-5">
 			<div class="col-lg-4">
 				<div class="mb-4 footer-logo-wrap"><a href="#" class="footer-logo">Furni<span>.</span></a></div>

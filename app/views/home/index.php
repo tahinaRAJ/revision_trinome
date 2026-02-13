@@ -1,381 +1,216 @@
 <?php
-$pageTitle = 'Home';
+$pageTitle = 'Accueil';
 $activePage = 'home';
+$pageStyles = ['css/modern-pages.css'];
 include __DIR__ . '/../pages/header.php';
 ?>
 
-		<!-- Start Hero Section -->
-			<div class="hero">
-				<div class="container">
-					<div class="row justify-content-between">
-						<div class="col-lg-5">
-							<div class="intro-excerpt">
-								<h1>Modern Interior <span clsas="d-block">Design Studio</span></h1>
-								<p class="mb-4">Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique.</p>
-								<p><a href="<?= BASE_URL ?>/shop" class="btn btn-secondary me-2">Shop Now</a><a href="<?= BASE_URL ?>/shop" class="btn btn-white-outline">Explore</a></p>
-							</div>
-						</div>
-						<div class="col-lg-7">
-							<div class="hero-img-wrap">
-								<img src="<?= BASE_URL ?>/images/couch.png" class="img-fluid">
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		<!-- End Hero Section -->
+<!-- Start Hero Section -->
+<div class="hero-modern">
+    <div class="container hero-content-modern">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1>Modern Interior <span>Design Studio</span></h1>
+                <p>Découvrez notre collection exclusive de meubles design et échangez avec notre communauté de passionnés.</p>
+                <div class="hero-buttons">
+                    <a href="<?= BASE_URL ?>/shop" class="btn-hero-primary">
+                        <i class="fas fa-shopping-bag"></i>
+                        Explorer
+                    </a>
+                    <a href="<?= BASE_URL ?>/auth/signup" class="btn-hero-outline">
+                        Rejoindre
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <img src="<?= BASE_URL ?>/images/couch.png" class="img-fluid" alt="Meuble design" style="max-height: 400px; filter: drop-shadow(0 30px 40px rgba(0,0,0,0.3));">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Hero Section -->
 
-		<!-- Start Product Section -->
-		<div class="product-section">
-			<div class="container">
-				<div class="row">
+<!-- Start Product Section -->
+<div class="product-section" style="padding: 80px 0;">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- Start Column 1 -->
+            <div class="col-md-12 col-lg-3 mb-5 mb-lg-0">
+                <h2 class="mb-4 section-title" style="font-size: 2rem; font-weight: 700; color: #2f2f2f;">Façonnés avec des matériaux d'excellence.</h2>
+                <p class="mb-4" style="color: #6a6a6a; font-size: 1.1rem;">Chaque pièce est sélectionnée avec soin pour sa qualité et son design unique. Rejoignez notre communauté d'échange.</p>
+                <p><a href="<?= BASE_URL ?>/shop" class="btn-hero-primary" style="display: inline-flex;"><i class="fas fa-arrow-right" style="margin-right: 8px;"></i> Découvrir</a></p>
+            </div> 
+            <!-- End Column 1 -->
 
-					<!-- Start Column 1 -->
-					<div class="col-md-12 col-lg-3 mb-5 mb-lg-0">
-						<h2 class="mb-4 section-title">Crafted with excellent material.</h2>
-						<p class="mb-4">Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. </p>
-						<p><a href="<?= BASE_URL ?>/shop" class="btn">Explore</a></p>
-					</div> 
-					<!-- End Column 1 -->
+            <!-- Start Column 2 -->
+            <div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
+                <div class="product-card-modern">
+                    <div class="product-card-image" style="height: 200px;">
+                        <img src="<?= BASE_URL ?>/images/product-1.png" alt="Nordic Chair" style="max-height: 180px;">
+                    </div>
+                    <div class="product-card-content" style="padding: 20px;">
+                        <div class="product-card-category">Chaise</div>
+                        <h4 class="product-card-title">Nordic Chair</h4>
+                        <div class="product-card-footer" style="padding-top: 12px;">
+                            <span class="product-card-price">50 000 Ar</span>
+                            <button class="btn-exchange" style="padding: 8px 16px; font-size: 0.85rem;">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            <!-- End Column 2 -->
 
-					<!-- Start Column 2 -->
-					<div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-						<a class="product-item" href="<?= BASE_URL ?>/cart">
-							<img src="<?= BASE_URL ?>/images/product-1.png" class="img-fluid product-thumbnail">
-							<h3 class="product-title">Nordic Chair</h3>
-							<strong class="product-price">$50.00</strong>
+            <!-- Start Column 3 -->
+            <div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
+                <div class="product-card-modern">
+                    <div class="product-card-image" style="height: 200px;">
+                        <img src="<?= BASE_URL ?>/images/product-2.png" alt="Kruzo Aero Chair" style="max-height: 180px;">
+                    </div>
+                    <div class="product-card-content" style="padding: 20px;">
+                        <div class="product-card-category">Chaise</div>
+                        <h4 class="product-card-title">Kruzo Aero Chair</h4>
+                        <div class="product-card-footer" style="padding-top: 12px;">
+                            <span class="product-card-price">78 000 Ar</span>
+                            <button class="btn-exchange" style="padding: 8px 16px; font-size: 0.85rem;">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Column 3 -->
 
-							<span class="icon-cross">
-								<img src="<?= BASE_URL ?>/images/cross.svg" class="img-fluid">
-							</span>
-						</a>
-					</div> 
-					<!-- End Column 2 -->
+            <!-- Start Column 4 -->
+            <div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
+                <div class="product-card-modern">
+                    <div class="product-card-image" style="height: 200px;">
+                        <img src="<?= BASE_URL ?>/images/product-3.png" alt="Ergonomic Chair" style="max-height: 180px;">
+                    </div>
+                    <div class="product-card-content" style="padding: 20px;">
+                        <div class="product-card-category">Chaise</div>
+                        <h4 class="product-card-title">Ergonomic Chair</h4>
+                        <div class="product-card-footer" style="padding-top: 12px;">
+                            <span class="product-card-price">43 000 Ar</span>
+                            <button class="btn-exchange" style="padding: 8px 16px; font-size: 0.85rem;">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Column 4 -->
 
-					<!-- Start Column 3 -->
-					<div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-						<a class="product-item" href="<?= BASE_URL ?>/cart">
-							<img src="<?= BASE_URL ?>/images/product-2.png" class="img-fluid product-thumbnail">
-							<h3 class="product-title">Kruzo Aero Chair</h3>
-							<strong class="product-price">$78.00</strong>
+        </div>
+    </div>
+</div>
+<!-- End Product Section -->
 
-							<span class="icon-cross">
-								<img src="<?= BASE_URL ?>/images/cross.svg" class="img-fluid">
-							</span>
-						</a>
-					</div>
-					<!-- End Column 3 -->
+<!-- Start Why Choose Us Section -->
+<div class="why-choose-section" style="background: white; padding: 80px 0;">
+    <div class="container">
+        <div class="row justify-content-between align-items-center">
+            <div class="col-lg-6">
+                <h2 class="section-title" style="font-size: 2.5rem; font-weight: 700; color: #2f2f2f; margin-bottom: 20px;">Pourquoi nous choisir ?</h2>
+                <p style="color: #6a6a6a; font-size: 1.1rem; margin-bottom: 40px;">La première plateforme d'échange de meubles design en ligne. Donnez une seconde vie à vos meubles tout en découvrant de nouvelles pièces uniques.</p>
 
-					<!-- Start Column 4 -->
-					<div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-						<a class="product-item" href="<?= BASE_URL ?>/cart">
-							<img src="<?= BASE_URL ?>/images/product-3.png" class="img-fluid product-thumbnail">
-							<h3 class="product-title">Ergonomic Chair</h3>
-							<strong class="product-price">$43.00</strong>
+                <div class="row my-5">
+                    <div class="col-6 col-md-6 mb-4">
+                        <div style="display: flex; gap: 16px; align-items: flex-start;">
+                            <div style="width: 50px; height: 50px; background: #f0f7f4; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fas fa-sync-alt" style="font-size: 1.3rem; color: #3b5d50;"></i>
+                            </div>
+                            <div>
+                                <h3 style="font-size: 1.1rem; font-weight: 600; color: #2f2f2f; margin-bottom: 8px;">Échange Facile</h3>
+                                <p style="color: #6a6a6a; font-size: 0.9rem; margin: 0;">Trouvez des meubles et échangez en quelques clics</p>
+                            </div>
+                        </div>
+                    </div>
 
-							<span class="icon-cross">
-								<img src="<?= BASE_URL ?>/images/cross.svg" class="img-fluid">
-							</span>
-						</a>
-					</div>
-					<!-- End Column 4 -->
+                    <div class="col-6 col-md-6 mb-4">
+                        <div style="display: flex; gap: 16px; align-items: flex-start;">
+                            <div style="width: 50px; height: 50px; background: #f0f7f4; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fas fa-shield-alt" style="font-size: 1.3rem; color: #3b5d50;"></i>
+                            </div>
+                            <div>
+                                <h3 style="font-size: 1.1rem; font-weight: 600; color: #2f2f2f; margin-bottom: 8px;">Sécurisé</h3>
+                                <p style="color: #6a6a6a; font-size: 0.9rem; margin: 0;">Échanges sécurisés avec vérification des profils</p>
+                            </div>
+                        </div>
+                    </div>
 
-				</div>
-			</div>
-		</div>
-		<!-- End Product Section -->
+                    <div class="col-6 col-md-6 mb-4">
+                        <div style="display: flex; gap: 16px; align-items: flex-start;">
+                            <div style="width: 50px; height: 50px; background: #f0f7f4; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fas fa-leaf" style="font-size: 1.3rem; color: #3b5d50;"></i>
+                            </div>
+                            <div>
+                                <h3 style="font-size: 1.1rem; font-weight: 600; color: #2f2f2f; margin-bottom: 8px;">Écologique</h3>
+                                <p style="color: #6a6a6a; font-size: 0.9rem; margin: 0;">Donnez une seconde vie aux meubles, réduisez le gaspillage</p>
+                            </div>
+                        </div>
+                    </div>
 
-		<!-- Start Why Choose Us Section -->
-		<div class="why-choose-section">
-			<div class="container">
-				<div class="row justify-content-between">
-					<div class="col-lg-6">
-						<h2 class="section-title">Why Choose Us</h2>
-						<p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique.</p>
+                    <div class="col-6 col-md-6 mb-4">
+                        <div style="display: flex; gap: 16px; align-items: flex-start;">
+                            <div style="width: 50px; height: 50px; background: #f0f7f4; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fas fa-users" style="font-size: 1.3rem; color: #3b5d50;"></i>
+                            </div>
+                            <div>
+                                <h3 style="font-size: 1.1rem; font-weight: 600; color: #2f2f2f; margin-bottom: 8px;">Communauté</h3>
+                                <p style="color: #6a6a6a; font-size: 0.9rem; margin: 0;">Rejoignez une communauté de passionnés de design</p>
+                            </div>
+                        </div>
+                    </div>
 
-						<div class="row my-5">
-							<div class="col-6 col-md-6">
-								<div class="feature">
-									<div class="icon">
-										<img src="<?= BASE_URL ?>/images/truck.svg" alt="Image" class="imf-fluid">
-									</div>
-									<h3>Fast &amp; Free Shipping</h3>
-									<p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate.</p>
-								</div>
-							</div>
+                </div>
+            </div>
 
-							<div class="col-6 col-md-6">
-								<div class="feature">
-									<div class="icon">
-										<img src="<?= BASE_URL ?>/images/bag.svg" alt="Image" class="imf-fluid">
-									</div>
-									<h3>Easy to Shop</h3>
-									<p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate.</p>
-								</div>
-							</div>
+            <div class="col-lg-5">
+                <div style="position: relative;">
+                    <img src="<?= BASE_URL ?>/images/why-choose-us-img.jpg" alt="Image" class="img-fluid rounded-4" style="border-radius: 24px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15);">
+                    <div style="position: absolute; bottom: -20px; left: -20px; background: white; padding: 24px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="width: 50px; height: 50px; background: #f9bf29; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-star" style="color: white; font-size: 1.2rem;"></i>
+                            </div>
+                            <div>
+                                <p style="font-weight: 700; color: #2f2f2f; margin: 0;">+1000</p>
+                                <p style="font-size: 0.85rem; color: #6a6a6a; margin: 0;">Échanges réussis</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-							<div class="col-6 col-md-6">
-								<div class="feature">
-									<div class="icon">
-										<img src="<?= BASE_URL ?>/images/support.svg" alt="Image" class="imf-fluid">
-									</div>
-									<h3>24/7 Support</h3>
-									<p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate.</p>
-								</div>
-							</div>
+        </div>
+    </div>
+</div>
+<!-- End Why Choose Us Section -->
 
-							<div class="col-6 col-md-6">
-								<div class="feature">
-									<div class="icon">
-										<img src="<?= BASE_URL ?>/images/return.svg" alt="Image" class="imf-fluid">
-									</div>
-									<h3>Hassle Free Returns</h3>
-									<p>Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate.</p>
-								</div>
-							</div>
+<!-- Start CTA Section -->
+<div style="background: linear-gradient(135deg, #3b5d50 0%, #293d35 100%); padding: 80px 0; position: relative; overflow: hidden;">
+    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('<?= BASE_URL ?>/images/img-grid-1.jpg') center/cover; opacity: 0.1;"></div>
+    <div class="container" style="position: relative; z-index: 1;">
+        <div class="row justify-content-center text-center">
+            <div class="col-lg-8">
+                <h2 style="font-size: 2.5rem; font-weight: 700; color: white; margin-bottom: 20px;">Prêt à échanger ?</h2>
+                <p style="font-size: 1.2rem; color: rgba(255,255,255,0.9); margin-bottom: 40px;">Rejoignez notre communauté et commencez à échanger vos meubles dès aujourd'hui.</p>
+                <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                    <a href="<?= BASE_URL ?>/auth/signup" class="btn-hero-primary" style="background: #f9bf29; color: #2f2f2f;">
+                        <i class="fas fa-user-plus"></i>
+                        Créer un compte
+                    </a>
+                    <a href="<?= BASE_URL ?>/shop" class="btn-hero-outline" style="border-color: white; color: white;">
+                        <i class="fas fa-search"></i>
+                        Explorer les meubles
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End CTA Section -->
 
-						</div>
-					</div>
-
-					<div class="col-lg-5">
-						<div class="img-wrap">
-							<img src="<?= BASE_URL ?>/images/why-choose-us-img.jpg" alt="Image" class="img-fluid">
-						</div>
-					</div>
-
-				</div>
-			</div>
-		</div>
-		<!-- End Why Choose Us Section -->
-
-		<!-- Start We Help Section -->
-		<div class="we-help-section">
-			<div class="container">
-				<div class="row justify-content-between">
-					<div class="col-lg-7 mb-5 mb-lg-0">
-						<div class="imgs-grid">
-							<div class="grid grid-1"><img src="<?= BASE_URL ?>/images/img-grid-1.jpg" alt="Untree.co"></div>
-							<div class="grid grid-2"><img src="<?= BASE_URL ?>/images/img-grid-2.jpg" alt="Untree.co"></div>
-							<div class="grid grid-3"><img src="<?= BASE_URL ?>/images/img-grid-3.jpg" alt="Untree.co"></div>
-						</div>
-					</div>
-					<div class="col-lg-5 ps-lg-5">
-						<h2 class="section-title mb-4">We Help You Make Modern Interior Design</h2>
-						<p>Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant morbi tristique senectus et netus et malesuada</p>
-
-						<ul class="list-unstyled custom-list my-4">
-							<li>Donec vitae odio quis nisl dapibus malesuada</li>
-							<li>Donec vitae odio quis nisl dapibus malesuada</li>
-							<li>Donec vitae odio quis nisl dapibus malesuada</li>
-							<li>Donec vitae odio quis nisl dapibus malesuada</li>
-						</ul>
-						<p><a herf="#" class="btn">Explore</a></p>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- End We Help Section -->
-
-		<!-- Start Popular Product -->
-		<div class="popular-product">
-			<div class="container">
-				<div class="row">
-
-					<div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
-						<div class="product-item-sm d-flex">
-							<div class="thumbnail">
-								<img src="<?= BASE_URL ?>/images/product-1.png" alt="Image" class="img-fluid">
-							</div>
-							<div class="pt-3">
-								<h3>Nordic Chair</h3>
-								<p>Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio </p>
-								<p><a href="#">Read More</a></p>
-							</div>
-						</div>
-					</div>
-
-					<div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
-						<div class="product-item-sm d-flex">
-							<div class="thumbnail">
-								<img src="<?= BASE_URL ?>/images/product-2.png" alt="Image" class="img-fluid">
-							</div>
-							<div class="pt-3">
-								<h3>Kruzo Aero Chair</h3>
-								<p>Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio </p>
-								<p><a href="#">Read More</a></p>
-							</div>
-						</div>
-					</div>
-
-					<div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
-						<div class="product-item-sm d-flex">
-							<div class="thumbnail">
-								<img src="<?= BASE_URL ?>/images/product-3.png" alt="Image" class="img-fluid">
-							</div>
-							<div class="pt-3">
-								<h3>Ergonomic Chair</h3>
-								<p>Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio </p>
-								<p><a href="#">Read More</a></p>
-							</div>
-						</div>
-					</div>
-
-				</div>
-			</div>
-		</div>
-		<!-- End Popular Product -->
-
-		<!-- Start Testimonial Slider -->
-		<div class="testimonial-section">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-7 mx-auto text-center">
-						<h2 class="section-title">Testimonials</h2>
-					</div>
-				</div>
-
-				<div class="row justify-content-center">
-					<div class="col-lg-12">
-						<div class="testimonial-slider-wrap text-center">
-
-							<div id="testimonial-nav">
-								<span class="prev" data-controls="prev"><span class="fa fa-chevron-left"></span></span>
-								<span class="next" data-controls="next"><span class="fa fa-chevron-right"></span></span>
-							</div>
-
-							<div class="testimonial-slider">
-								
-								<div class="item">
-									<div class="row justify-content-center">
-										<div class="col-lg-8 mx-auto">
-
-											<div class="testimonial-block text-center">
-												<blockquote class="mb-5">
-													<p>&ldquo;Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer convallis volutpat dui quis scelerisque.&rdquo;</p>
-												</blockquote>
-
-												<div class="author-info">
-													<div class="author-pic">
-														<img src="<?= BASE_URL ?>/images/person-1.png" alt="Maria Jones" class="img-fluid">
-													</div>
-													<h3 class="font-weight-bold">Maria Jones</h3>
-													<span class="position d-block mb-3">CEO, Co-Founder, XYZ Inc.</span>
-												</div>
-											</div>
-
-										</div>
-									</div>
-								</div> 
-								<!-- END item -->
-
-								<div class="item">
-									<div class="row justify-content-center">
-										<div class="col-lg-8 mx-auto">
-
-											<div class="testimonial-block text-center">
-												<blockquote class="mb-5">
-													<p>&ldquo;Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer convallis volutpat dui quis scelerisque.&rdquo;</p>
-												</blockquote>
-
-												<div class="author-info">
-													<div class="author-pic">
-														<img src="<?= BASE_URL ?>/images/person-1.png" alt="Maria Jones" class="img-fluid">
-													</div>
-													<h3 class="font-weight-bold">Maria Jones</h3>
-													<span class="position d-block mb-3">CEO, Co-Founder, XYZ Inc.</span>
-												</div>
-											</div>
-
-										</div>
-									</div>
-								</div> 
-								<!-- END item -->
-
-								<div class="item">
-									<div class="row justify-content-center">
-										<div class="col-lg-8 mx-auto">
-
-											<div class="testimonial-block text-center">
-												<blockquote class="mb-5">
-													<p>&ldquo;Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer convallis volutpat dui quis scelerisque.&rdquo;</p>
-												</blockquote>
-
-												<div class="author-info">
-													<div class="author-pic">
-														<img src="<?= BASE_URL ?>/images/person-1.png" alt="Maria Jones" class="img-fluid">
-													</div>
-													<h3 class="font-weight-bold">Maria Jones</h3>
-													<span class="position d-block mb-3">CEO, Co-Founder, XYZ Inc.</span>
-												</div>
-											</div>
-
-										</div>
-									</div>
-								</div> 
-								<!-- END item -->
-
-							</div>
-
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- End Testimonial Slider -->
-
-		<!-- Start Blog Section -->
-		<div class="blog-section">
-			<div class="container">
-				<div class="row mb-5">
-					<div class="col-md-6">
-						<h2 class="section-title">Recent Blog</h2>
-					</div>
-					<div class="col-md-6 text-start text-md-end">
-						<a href="<?= BASE_URL ?>/blog" class="more">View All Posts</a>
-					</div>
-				</div>
-
-				<div class="row">
-
-					<div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
-						<div class="post-entry">
-							<a href="#" class="post-thumbnail"><img src="<?= BASE_URL ?>/images/post-1.jpg" alt="Image" class="img-fluid"></a>
-							<div class="post-content-entry">
-								<h3><a href="#">First Time Home Owner Ideas</a></h3>
-								<div class="meta">
-									<span>by <a href="#">Kristin Watson</a></span> <span>on <a href="#">Dec 19, 2021</a></span>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
-						<div class="post-entry">
-							<a href="#" class="post-thumbnail"><img src="<?= BASE_URL ?>/images/post-2.jpg" alt="Image" class="img-fluid"></a>
-							<div class="post-content-entry">
-								<h3><a href="#">How To Keep Your Furniture Clean</a></h3>
-								<div class="meta">
-									<span>by <a href="#">Robert Fox</a></span> <span>on <a href="#">Dec 15, 2021</a></span>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
-						<div class="post-entry">
-							<a href="#" class="post-thumbnail"><img src="<?= BASE_URL ?>/images/post-3.jpg" alt="Image" class="img-fluid"></a>
-							<div class="post-content-entry">
-								<h3><a href="#">Small Space Furniture Apartment Ideas</a></h3>
-								<div class="meta">
-									<span>by <a href="#">Kristin Watson</a></span> <span>on <a href="#">Dec 12, 2021</a></span>
-								</div>
-							</div>
-						</div>
-					</div>
-
-				</div>
-			</div>
-		</div>
-		<!-- End Blog Section -->	
-
-		<?php include __DIR__ . '/../pages/footer.php'; ?>
+<?php include __DIR__ . '/../pages/footer.php'; ?>
