@@ -10,9 +10,11 @@ require_once __DIR__ . '/../../config.php';
 try {
     $pdo = Flight::db();
     $produitRepo = new ProduitRepository($pdo);
+    $userProducts = [];
     if (!empty($_SESSION['user']) && isset($_SESSION['user']['id'])) {
         // Si connecté, on ne montre pas ses propres produits
         $idUser = (int)$_SESSION['user']['id'];
+        $userProducts = $produitRepo->produitsUtilisateur($idUser);
         $produits = $produitRepo->produitsAutres($idUser);
         // enrichir avec details (catégorie, propriétaire)
         // On va chercher les détails pour chaque produit
@@ -101,10 +103,31 @@ include __DIR__ . '/../pages/header.php';
                                     <span class="product-card-price">
                                         <?= number_format($produit['prix'], 0, ',', ' ') ?> Ar
                                     </span>
-                                    <button class="btn-exchange">
-                                        <i class="fas fa-exchange-alt"></i>
-                                        Échanger
-                                    </button>
+                                    <?php if (empty($_SESSION['user'])): ?>
+                                        <a class="btn-exchange" href="<?= BASE_URL ?>/auth/login">
+                                            <i class="fas fa-sign-in-alt"></i>
+                                            Se connecter
+                                        </a>
+                                    <?php elseif (empty($userProducts)): ?>
+                                        <button class="btn-exchange" type="button" disabled title="Ajoutez d'abord un produit à offrir">
+                                            <i class="fas fa-exchange-alt"></i>
+                                            Échanger
+                                        </button>
+                                    <?php else: ?>
+                                        <form class="d-flex flex-column gap-2" method="POST" action="<?= BASE_URL ?>/demande-echange">
+                                            <input type="hidden" name="produit_demande_id" value="<?= (int)$produit['id'] ?>">
+                                            <select name="produit_offert_id" class="form-select form-select-sm" required>
+                                                <option value="">Choisir mon produit à offrir</option>
+                                                <?php foreach ($userProducts as $up): ?>
+                                                    <option value="<?= (int)$up['id'] ?>"><?= htmlspecialchars($up['nom']) ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                            <button class="btn-exchange" type="submit">
+                                                <i class="fas fa-exchange-alt"></i>
+                                                Proposer un échange
+                                            </button>
+                                        </form>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>

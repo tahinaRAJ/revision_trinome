@@ -5,7 +5,7 @@ include __DIR__ . '/../pages/header.php';
 
 $user = $user ?? null;
 $produits = $produits ?? [];
-$demandes = $demandes ?? [];
+$demandes = $demandes ?? ($receivedDemandes ?? []);
 $categories = $categories ?? [];
 $imagesByProduct = $imagesByProduct ?? [];
 $errors = $errors ?? [];
@@ -962,12 +962,13 @@ $userMail = htmlspecialchars($user['mail'] ?? '', ENT_QUOTES, 'UTF-8');
                       <td><?= htmlspecialchars($d['produit_offert'], ENT_QUOTES, 'UTF-8') ?></td>
                       <td style="color: #6b7280; font-size: 0.9rem;"><i class="fa fa-calendar-alt me-1"></i><?= htmlspecialchars($d['date_demande'], ENT_QUOTES, 'UTF-8') ?></td>
                       <td class="text-center">
-                        <form class="ajax-form d-inline-block" method="POST" action="<?= BASE_URL ?>/user/profile/demande/<?= (int)$d['id'] ?>/accept">
+                        <form class="ajax-form d-inline-block" method="POST" action="<?= BASE_URL ?>/echange/<?= (int)$d['id'] ?>/accepter">
                           <button class="btn-glow btn-sm" style="background: linear-gradient(135deg, #d1fae5, #dcfce7); color: #065f46; border: none; padding: 8px 16px;">
                             <i class="fa fa-check"></i> Accepter
                           </button>
                         </form>
-                        <form class="ajax-form d-inline-block" method="POST" action="<?= BASE_URL ?>/user/profile/demande/<?= (int)$d['id'] ?>/refuse">
+                        <form class="ajax-form d-inline-block" method="POST" action="<?= BASE_URL ?>/demande/<?= (int)$d['id'] ?>/status">
+                          <input type="hidden" name="id_status" value="refuse">
                           <button class="btn-glow btn-sm" style="background: linear-gradient(135deg, #fee2e2, #fef2f2); color: #991b1b; border: none; padding: 8px 16px; margin-left: 8px;">
                             <i class="fa fa-times"></i> Refuser
                           </button>
@@ -1179,7 +1180,7 @@ document.addEventListener('submit', function (e) {
       }
 
       // Request accept/refuse
-      if (action.indexOf('/user/profile/demande/') !== -1) {
+      if (action.indexOf('/echange/') !== -1 || action.indexOf('/demande/') !== -1) {
         var row = form.closest('tr');
         if (row) {
           row.style.background = action.indexOf('/accept') !== -1 ? '#d1fae5' : '#fee2e2';
