@@ -71,6 +71,9 @@ Flight::route('POST /system/admin/users/@id/grant', function($id) {
 Flight::route('POST /system/admin/users/@id/revoke', function($id) {
     AdminController::revokeAdmin((int)$id);
 });
+Flight::route('GET /system/admin/users/@id/details', function($id) {
+    AdminController::userDetails((int)$id);
+});
 Flight::route('POST /system/admin/categories/create', ['AdminController', 'createCategory']);
 Flight::route('POST /system/admin/categories/@id/update', function($id) {
     AdminController::updateCategory((int)$id);
@@ -80,6 +83,7 @@ Flight::route('POST /system/admin/categories/@id/delete', function($id) {
 });
 Flight::route('GET /system/admin/exchanges', ['AdminController', 'exchanges']);
 Flight::route('GET /system/admin/exchanges/api', ['AdminController', 'exchangesApi']);
+Flight::route('GET /system/admin/demandes', ['AdminController', 'demandes']);
 
 //system
 Flight::route('GET /system/@file', function($file) { 

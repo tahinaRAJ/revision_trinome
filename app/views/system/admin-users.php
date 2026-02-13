@@ -52,12 +52,22 @@ ob_start();
             </thead>
             <tbody>
                 <?php foreach ($users as $user): ?>
-                    <tr onclick="showUserDetails('<?= htmlspecialchars(json_encode($user), ENT_QUOTES, 'UTF-8') ?>')" style="cursor: pointer;">
+                    <tr class="user-row" data-user="<?= htmlspecialchars(json_encode($user, JSON_HEX_QUOT | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS), ENT_QUOTES, 'UTF-8') ?>" style="cursor: pointer;">
                         <td>
                             <div class="user-cell">
-                                <div class="user-avatar">
-                                    <?= strtoupper(substr($user['nom'] ?? 'U', 0, 1)) ?>
-                                </div>
+                                <?php
+                                    $avatar = $user['avatar'] ?? '';
+                                    if ($avatar !== '') {
+                                        if (preg_match('#^https?://#i', $avatar) || strpos($avatar, '/') === 0) {
+                                            $avatarUrl = $avatar;
+                                        } else {
+                                            $avatarUrl = rtrim(BASE_URL, '/') . '/' . ltrim($avatar, '/');
+                                        }
+                                    } else {
+                                        $avatarUrl = BASE_URL . '/images/user.svg';
+                                    }
+                                ?>
+                                <img class="user-avatar" src="<?= $esc($avatarUrl) ?>" alt="avatar" style="object-fit: cover;">
                                 <div class="user-info">
                                     <h4><?= $esc(trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? ''))) ?></h4>
                                     <p>ID: #<?= $esc($user['id']) ?></p>
@@ -118,7 +128,7 @@ ob_start();
         </div>
     </div>
 
-    <div class="grid-2">
+        <div class="grid-2">
         <!-- Profile Card -->
         <div class="card animate-fade-in">
             <div class="card-body" style="text-align: center; padding: 40px;">
@@ -191,19 +201,126 @@ ob_start();
     </div>
 </div>
 
+<div id="user-details-extra" style="display: none; margin-top: 24px;">
+    <div class="card animate-fade-in mb-4">
+        <div class="card-header">
+            <h3><i class="fas fa-box me-2" style="color: var(--primary-500);"></i>Produits</h3>
+        </div>
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Prix</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody id="detail-products"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card animate-fade-in mb-4">
+        <div class="card-header">
+            <h3><i class="fas fa-exchange-alt me-2" style="color: var(--primary-500);"></i>Historique d'échanges</h3>
+        </div>
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Date</th>
+                        <th>Produit 1</th>
+                        <th>Utilisateur 1</th>
+                        <th>Produit 2</th>
+                        <th>Utilisateur 2</th>
+                    </tr>
+                </thead>
+                <tbody id="detail-exchanges"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card animate-fade-in">
+        <div class="card-header">
+            <h3><i class="fas fa-handshake me-2" style="color: var(--primary-500);"></i>Demandes</h3>
+        </div>
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Date</th>
+                        <th>Demandeur</th>
+                        <th>Receveur</th>
+                        <th>Objet demandé</th>
+                        <th>Objet offert</th>
+                        <th>Statut</th>
+                    </tr>
+                </thead>
+                <tbody id="detail-demandes"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
 <script>
 let requestsChart = null;
 
+document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.user-detail-btn');
+    if (btn) {
+        const row = btn.closest('.user-row');
+        if (row) {
+            const payload = row.dataset.user || '{}';
+            showUserDetails(payload);
+        }
+        return;
+    }
+    const row = e.target.closest('.user-row');
+    if (row) {
+        const payload = row.dataset.user || '{}';
+        showUserDetails(payload);
+    }
+});
+
 function showUserDetails(userJson) {
-    const user = JSON.parse(userJson);
+    console.log('Raw user JSON:', userJson);
+    
+    let user;
+    try {
+        user = JSON.parse(userJson);
+    } catch (e) {
+        console.error('JSON parse error:', e);
+        console.error('Failed to parse:', userJson);
+        alert('Erreur lors du chargement des détails utilisateur');
+        return;
+    }
+    
+    console.log('Parsed user:', user);
+    
     document.querySelector('.card.animate-fade-in').style.display = 'none';
     document.querySelector('.page-header').style.display = 'none';
     document.getElementById('user-details-view').style.display = 'block';
+    document.getElementById('user-details-extra').style.display = 'block';
 
     // Populate User Info
     document.getElementById('detail-name').textContent = (user.prenom || '') + ' ' + (user.nom || '');
     document.getElementById('detail-email').textContent = user.mail || '';
-    document.getElementById('detail-avatar').textContent = (user.nom ? user.nom.charAt(0).toUpperCase() : 'U');
+    const detailAvatar = document.getElementById('detail-avatar');
+    const avatarRaw = user.avatar || '';
+    let avatarUrl = '';
+    if (avatarRaw) {
+        if (avatarRaw.startsWith('http') || avatarRaw.startsWith('/')) {
+            avatarUrl = avatarRaw;
+        } else {
+            avatarUrl = '<?= BASE_URL ?>/' + avatarRaw.replace(/^\//, '');
+        }
+    } else {
+        avatarUrl = '<?= BASE_URL ?>/images/user.svg';
+    }
+    detailAvatar.innerHTML = '<img src="' + avatarUrl + '" alt="avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />';
 
     // Chart
     const ctx = document.getElementById('requestsChart').getContext('2d');
@@ -244,16 +361,103 @@ function showUserDetails(userJson) {
             cutout: '70%'
         }
     });
+
+    // Load extra details
+    fetch('<?= BASE_URL ?>/system/admin/users/' + user.id + '/details', {
+        headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
+    })
+    .then(r => r.json())
+    .then(payload => {
+        if (!payload || !payload.ok) return;
+
+        const productsTbody = document.getElementById('detail-products');
+        const exchangesTbody = document.getElementById('detail-exchanges');
+        const demandesTbody = document.getElementById('detail-demandes');
+
+        // Products
+        if (productsTbody) {
+            if (!payload.products || payload.products.length === 0) {
+                productsTbody.innerHTML = '<tr><td colspan="4" class="text-muted">Aucun produit.</td></tr>';
+            } else {
+                productsTbody.innerHTML = payload.products.map(p => `
+                    <tr>
+                        <td>#${p.id}</td>
+                        <td>${escapeHtml(p.nom || '')}</td>
+                        <td>${escapeHtml(p.prix || '')}</td>
+                        <td>${escapeHtml(p.description || '')}</td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        // Exchanges
+        if (exchangesTbody) {
+            if (!payload.exchanges || payload.exchanges.length === 0) {
+                exchangesTbody.innerHTML = '<tr><td colspan="6" class="text-muted">Aucun échange.</td></tr>';
+            } else {
+                exchangesTbody.innerHTML = payload.exchanges.map(e => `
+                    <tr>
+                        <td>#${e.id}</td>
+                        <td>${formatDate(e.date_echange)}</td>
+                        <td>${escapeHtml(e.produit1_nom || '')}</td>
+                        <td>${escapeHtml(e.user1_nom || '')}</td>
+                        <td>${escapeHtml(e.produit2_nom || '')}</td>
+                        <td>${escapeHtml(e.user2_nom || '')}</td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        // Demandes
+        if (demandesTbody) {
+            if (!payload.demandes || payload.demandes.length === 0) {
+                demandesTbody.innerHTML = '<tr><td colspan="7" class="text-muted">Aucune demande.</td></tr>';
+            } else {
+                demandesTbody.innerHTML = payload.demandes.map(d => `
+                    <tr>
+                        <td>#${d.id}</td>
+                        <td>${formatDate(d.date_demande)}</td>
+                        <td>${escapeHtml(d.demandeur_nom || '')}</td>
+                        <td>${escapeHtml(d.receveur_nom || '')}</td>
+                        <td>${escapeHtml(d.produit_demande || '')}</td>
+                        <td>${escapeHtml(d.produit_offert || '')}</td>
+                        <td>${escapeHtml(d.status || '')}</td>
+                    </tr>
+                `).join('');
+            }
+        }
+    })
+    .catch(() => {});
 }
 
 function hideUserDetails() {
     document.querySelector('.card.animate-fade-in').style.display = 'block';
     document.querySelector('.page-header').style.display = 'flex';
     document.getElementById('user-details-view').style.display = 'none';
+    document.getElementById('user-details-extra').style.display = 'none';
     if (requestsChart) {
         requestsChart.destroy();
         requestsChart = null;
     }
+}
+
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function formatDate(dateStr) {
+    if (!dateStr) return '';
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('fr-FR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
 }
 </script>
 

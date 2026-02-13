@@ -85,4 +85,65 @@ class DemandeEchangeRepository {
     $st->execute([$idDemande, $idOwner]);
     return $st->fetch(PDO::FETCH_ASSOC) ?: null;
   }
+
+  public function listAllDetailed(?string $status = null): array {
+    $sql = "
+      SELECT
+        d.id,
+        d.date_demande,
+        s.status,
+        pd.nom AS produit_demande,
+        po.nom AS produit_offert,
+        u_dem.id AS demandeur_id,
+        CONCAT(u_dem.prenom, ' ', u_dem.nom) AS demandeur_nom,
+        u_dem.mail AS demandeur_email,
+        u_rec.id AS receveur_id,
+        CONCAT(u_rec.prenom, ' ', u_rec.nom) AS receveur_nom,
+        u_rec.mail AS receveur_email
+      FROM tk_demande_echange d
+      JOIN tk_status_demande s ON d.id_status = s.id
+      JOIN tk_produit pd ON d.id_produit_demande = pd.id
+      JOIN tk_produit po ON d.id_produit_offert = po.id
+      JOIN tk_users u_dem ON d.id_demandeur = u_dem.id
+      JOIN tk_users u_rec ON pd.id_proprietaire = u_rec.id
+      WHERE 1=1
+    ";
+    $params = [];
+    if ($status !== null && $status !== '') {
+      $sql .= " AND s.status = ?";
+      $params[] = $status;
+    }
+    $sql .= " ORDER BY d.date_demande DESC";
+    $st = $this->pdo->prepare($sql);
+    $st->execute($params);
+    return $st->fetchAll(PDO::FETCH_ASSOC);
+  }
+
+  public function listAllDetailedByUser(int $userId): array {
+    $sql = "
+      SELECT
+        d.id,
+        d.date_demande,
+        s.status,
+        pd.nom AS produit_demande,
+        po.nom AS produit_offert,
+        u_dem.id AS demandeur_id,
+        CONCAT(u_dem.prenom, ' ', u_dem.nom) AS demandeur_nom,
+        u_dem.mail AS demandeur_email,
+        u_rec.id AS receveur_id,
+        CONCAT(u_rec.prenom, ' ', u_rec.nom) AS receveur_nom,
+        u_rec.mail AS receveur_email
+      FROM tk_demande_echange d
+      JOIN tk_status_demande s ON d.id_status = s.id
+      JOIN tk_produit pd ON d.id_produit_demande = pd.id
+      JOIN tk_produit po ON d.id_produit_offert = po.id
+      JOIN tk_users u_dem ON d.id_demandeur = u_dem.id
+      JOIN tk_users u_rec ON pd.id_proprietaire = u_rec.id
+      WHERE d.id_demandeur = ? OR pd.id_proprietaire = ?
+      ORDER BY d.date_demande DESC
+    ";
+    $st = $this->pdo->prepare($sql);
+    $st->execute([$userId, $userId]);
+    return $st->fetchAll(PDO::FETCH_ASSOC);
+  }
 }

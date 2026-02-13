@@ -88,6 +88,13 @@ $currentUser = $_SESSION['user'] ?? [];
                     Échanges
                 </a>
             </div>
+
+            <div class="sidebar-nav-item">
+                <a href="<?= BASE_URL ?>/system/admin/demandes" class="sidebar-nav-link <?= ($activeAdmin ?? '') === 'demandes' ? 'active' : '' ?>">
+                    <span class="sidebar-nav-icon"><i class="fas fa-handshake"></i></span>
+                    Demandes
+                </a>
+            </div>
             
             <div class="sidebar-section">Système</div>
             

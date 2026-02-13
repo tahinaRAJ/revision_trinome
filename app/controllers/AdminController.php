@@ -208,6 +208,36 @@ class AdminController
         Flight::redirect(BASE_URL . '/system/admin/users');
     }
 
+    public static function userDetails(int $id): void
+    {
+        $pdo = Flight::db();
+        $userRepo = new UserRepository($pdo);
+        $prodRepo = new ProduitRepository($pdo);
+        $exchangeRepo = new EchangeRepository($pdo);
+        $demandeRepo = new DemandeEchangeRepository($pdo);
+
+        $user = $userRepo->findById($id);
+        if (!$user) {
+            header('Content-Type: application/json; charset=utf-8');
+            echo json_encode(['ok' => false, 'message' => 'Utilisateur introuvable.']);
+            exit;
+        }
+
+        $products = $prodRepo->produitsUtilisateur($id);
+        $exchanges = $exchangeRepo->listAllDetailedByUser($id);
+        $demandes = $demandeRepo->listAllDetailedByUser($id);
+
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode([
+            'ok' => true,
+            'user' => $user,
+            'products' => $products,
+            'exchanges' => $exchanges,
+            'demandes' => $demandes
+        ]);
+        exit;
+    }
+
     public static function createCategory(): void
     {
         $name = trim((string)(Flight::request()->data['name'] ?? ''));
@@ -291,5 +321,25 @@ class AdminController
             'count' => count($exchanges)
         ]);
         exit;
+    }
+
+    public static function demandes(): void
+    {
+        $pdo = Flight::db();
+        $demandeRepo = new DemandeEchangeRepository($pdo);
+        $statusRepo = new StatusDemandeRepository($pdo);
+
+        $filters = [
+            'status' => trim((string)(Flight::request()->query['status'] ?? '')),
+        ];
+
+        $demandes = $demandeRepo->listAllDetailed($filters['status'] ?: null);
+        $statuses = $statusRepo->lister();
+
+        Flight::render('system/admin-demandes', [
+            'demandes' => $demandes,
+            'statuses' => $statuses,
+            'filters' => $filters,
+        ]);
     }
 }

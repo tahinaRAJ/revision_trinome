@@ -71,7 +71,7 @@ class UserRepository {
   }
 
   public function listAll(): array {
-    $st = $this->pdo->query("SELECT id, nom, prenom, mail, role FROM tk_users ORDER BY id DESC");
+    $st = $this->pdo->query("SELECT id, nom, prenom, mail, role, avatar FROM tk_users ORDER BY id DESC");
     return $st->fetchAll(PDO::FETCH_ASSOC);
   }
 
@@ -83,7 +83,7 @@ class UserRepository {
 
   public function listRecent(int $limit = 5): array {
     $limit = max(1, (int)$limit);
-    $st = $this->pdo->query("SELECT id, nom, prenom, mail, role FROM tk_users ORDER BY id DESC LIMIT $limit");
+    $st = $this->pdo->query("SELECT id, nom, prenom, mail, role, avatar FROM tk_users ORDER BY id DESC LIMIT $limit");
     return $st->fetchAll(PDO::FETCH_ASSOC);
   }
 
