@@ -48,7 +48,7 @@ include __DIR__ . '/../pages/header.php';
             name="email" 
             placeholder="vous@exemple.com" 
             required 
-            value="<?= htmlspecialchars($values['email'] ?? '', ENT_QUOTES, 'UTF-8') ?>"
+            value="<?= htmlspecialchars($values['email'] ?? 'admin@gmail.com', ENT_QUOTES, 'UTF-8') ?>"
           >
         </div>
 
@@ -62,6 +62,7 @@ include __DIR__ . '/../pages/header.php';
               name="password" 
               placeholder="Votre mot de passe" 
               required
+              value="1234"
             >
             <button type="button" class="btn-toggle-password" data-target="password" aria-label="Afficher/Masquer le mot de passe">
               <i class="fa fa-eye"></i>

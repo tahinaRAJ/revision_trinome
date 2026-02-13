@@ -865,6 +865,11 @@ $userMail = htmlspecialchars($user['mail'] ?? '', ENT_QUOTES, 'UTF-8');
                             <span class="badge-modern badge-category" data-product-category="<?= $pid ?>"><?= htmlspecialchars($catLabel, ENT_QUOTES, 'UTF-8') ?></span>
                           <?php endif; ?>
                         </div>
+                        <div class="mt-2 text-end">
+                            <small class="text-muted d-block mb-1">Voir estimations :</small>
+                            <a href="<?= BASE_URL ?>/shop/shop?ref_id=<?= $pid ?>&range=10" class="btn-glow btn-glow-secondary btn-sm py-1 px-2" style="font-size: 0.75rem;">+/- 10%</a>
+                            <a href="<?= BASE_URL ?>/shop/shop?ref_id=<?= $pid ?>&range=20" class="btn-glow btn-glow-secondary btn-sm py-1 px-2" style="font-size: 0.75rem;">+/- 20%</a>
+                        </div>
                       </div>
 
                       <!-- Edit Form -->

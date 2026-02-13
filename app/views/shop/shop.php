@@ -11,25 +11,54 @@ try {
     $pdo = Flight::db();
     $produitRepo = new ProduitRepository($pdo);
     $userProducts = [];
-    if (!empty($_SESSION['user']) && isset($_SESSION['user']['id'])) {
-        // Si connecté, on ne montre pas ses propres produits
-        $idUser = (int)$_SESSION['user']['id'];
+    $activeUser = !empty($_SESSION['user']) ? $_SESSION['user'] : null;
+    $refProduct = null;
+    $refIdParam = isset($_GET['ref_id']) ? (int)$_GET['ref_id'] : 0;
+
+    // Filter Logic
+    $range = isset($_GET['range']) ? (float)$_GET['range'] : 0;
+
+    if ($refIdParam > 0 && $range > 0) {
+        $refProduct = $produitRepo->findById($refIdParam);
+    }
+
+    if ($activeUser) {
+        $idUser = (int)$activeUser['id'];
         $userProducts = $produitRepo->produitsUtilisateur($idUser);
-        $produits = $produitRepo->produitsAutres($idUser);
-        // enrichir avec details (catégorie, propriétaire)
-        // On va chercher les détails pour chaque produit
-        foreach ($produits as &$prod) {
-            $details = $produitRepo->findWithDetails($prod['id']);
-            if ($details) $prod = $details;
+        
+        if ($refProduct) {
+             $price = (float)$refProduct['prix'];
+             $min = $price * (1 - ($range / 100));
+             $max = $price * (1 + ($range / 100));
+             
+             $allFiltered = $produitRepo->filtrebyprix($min, $max);
+             
+             $produits = array_filter($allFiltered, function($p) use ($idUser) {
+                 return (int)$p['id_proprietaire'] !== $idUser;
+             });
+        } else {
+            $produits = $produitRepo->produitsAutres($idUser);
+             foreach ($produits as &$prod) {
+                $details = $produitRepo->findWithDetails($prod['id']);
+                if ($details) $prod = $details;
+            }
+            unset($prod);
         }
-        unset($prod);
     } else {
-        // Sinon, on montre tout
-        $produits = $produitRepo->listerAvecDetails();
+        // Guest
+         if ($refProduct) {
+             $price = (float)$refProduct['prix'];
+             $min = $price * (1 - ($range / 100));
+             $max = $price * (1 + ($range / 100));
+             $produits = $produitRepo->filtrebyprix($min, $max);
+         } else {
+            $produits = $produitRepo->listerAvecDetails();
+         }
     }
 } catch (Exception $e) {
     $produits = [];
 }
+
 
 include __DIR__ . '/../pages/header.php';
 ?>
@@ -100,9 +129,21 @@ include __DIR__ . '/../pages/header.php';
                                     <span><?= htmlspecialchars($produit['proprietaire_prenom'] . ' ' . $produit['proprietaire_nom']) ?></span>
                                 </div>
                                 <div class="product-card-footer">
-                                    <span class="product-card-price">
-                                        <?= number_format($produit['prix'], 0, ',', ' ') ?> Ar
-                                    </span>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="product-card-price">
+                                            <?= number_format($produit['prix'], 0, ',', ' ') ?> Ar
+                                        </span>
+                                        <?php if (isset($refProduct) && $refProduct): 
+                                            $diff = (float)$produit['prix'] - (float)$refProduct['prix'];
+                                            $percent = $refProduct['prix'] > 0 ? round(($diff / $refProduct['prix']) * 100) : 0;
+                                            $badgeClass = $percent > 0 ? 'bg-danger' : ($percent < 0 ? 'bg-success' : 'bg-secondary');
+                                            $sign = $percent > 0 ? '+' : '';
+                                        ?>
+                                            <span class="badge <?= $badgeClass ?>">
+                                                Diff : <?= $sign . $percent ?>%
+                                            </span>
+                                        <?php endif; ?>
+                                    </div>
                                     <?php if (empty($_SESSION['user'])): ?>
                                         <a class="btn-exchange" href="<?= BASE_URL ?>/auth/login">
                                             <i class="fas fa-sign-in-alt"></i>
@@ -119,7 +160,7 @@ include __DIR__ . '/../pages/header.php';
                                             <select name="produit_offert_id" class="form-select form-select-sm" required>
                                                 <option value="">Choisir mon produit à offrir</option>
                                                 <?php foreach ($userProducts as $up): ?>
-                                                    <option value="<?= (int)$up['id'] ?>"><?= htmlspecialchars($up['nom']) ?></option>
+                                                    <option value="<?= (int)$up['id'] ?>" <?= (isset($_GET['ref_id']) && $_GET['ref_id'] == $up['id']) ? 'selected' : '' ?>><?= htmlspecialchars($up['nom']) ?></option>
                                                 <?php endforeach; ?>
                                             </select>
                                             <button class="btn-exchange" type="submit">

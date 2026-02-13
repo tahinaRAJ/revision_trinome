@@ -133,4 +133,49 @@ class ProduitRepository {
     $st->execute([$id]);
     return $st->fetch(PDO::FETCH_ASSOC) ?: null;
   }
+  public function filtrebyprix(float $min, float $max): array {
+    $sql = "
+      SELECT p.id, p.nom, p.description, p.prix,
+             p.id_categorie, c.nom AS categorie,
+             p.id_proprietaire, u.nom AS proprietaire_nom, u.prenom AS proprietaire_prenom
+      FROM tk_produit p
+      JOIN tk_categorie c ON c.id = p.id_categorie
+      JOIN tk_users u ON u.id = p.id_proprietaire
+      WHERE p.prix BETWEEN ? AND ?
+      ORDER BY p.id DESC
+    ";
+    $st = $this->pdo->prepare($sql);
+    $st->execute([$min, $max]);
+    return $st->fetchAll(PDO::FETCH_ASSOC);
+  }
+  public function filtrebyprixmax(float $max): array {
+    $sql = "
+      SELECT p.id, p.nom, p.description, p.prix,
+             p.id_categorie, c.nom AS categorie,
+             p.id_proprietaire, u.nom AS proprietaire_nom, u.prenom AS proprietaire_prenom
+      FROM tk_produit p
+      JOIN tk_categorie c ON c.id = p.id_categorie
+      JOIN tk_users u ON u.id = p.id_proprietaire
+      WHERE p.prix <= ?
+      ORDER BY p.id DESC
+    ";
+    $st = $this->pdo->prepare($sql);
+    $st->execute([$max]);
+    return $st->fetchAll(PDO::FETCH_ASSOC);
+  }
+  public function filtrebyprixmin(float $min): array {
+    $sql = "
+      SELECT p.id, p.nom, p.description, p.prix,
+             p.id_categorie, c.nom AS categorie,
+             p.id_proprietaire, u.nom AS proprietaire_nom, u.prenom AS proprietaire_prenom
+      FROM tk_produit p
+      JOIN tk_categorie c ON c.id = p.id_categorie
+      JOIN tk_users u ON u.id = p.id_proprietaire
+      WHERE p.prix >= ?
+      ORDER BY p.id DESC
+    ";
+    $st = $this->pdo->prepare($sql);
+    $st->execute([$min]);
+    return $st->fetchAll(PDO::FETCH_ASSOC);
+  }
 }
