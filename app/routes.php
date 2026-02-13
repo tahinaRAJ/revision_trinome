@@ -78,6 +78,8 @@ Flight::route('POST /system/admin/categories/@id/update', function($id) {
 Flight::route('POST /system/admin/categories/@id/delete', function($id) {
     AdminController::deleteCategory((int)$id);
 });
+Flight::route('GET /system/admin/exchanges', ['AdminController', 'exchanges']);
+Flight::route('GET /system/admin/exchanges/api', ['AdminController', 'exchangesApi']);
 
 //system
 Flight::route('GET /system/@file', function($file) { 

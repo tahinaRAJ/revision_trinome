@@ -234,4 +234,62 @@ class AdminController
         $repo->supprimer($id);
         Flight::redirect(BASE_URL . '/system/admin/categories');
     }
+
+    public static function exchanges(): void
+    {
+        $pdo = Flight::db();
+        $exchangeRepo = new EchangeRepository($pdo);
+
+        // Get filter parameters from query string
+        $filters = [
+            'objet' => trim((string)(Flight::request()->query['objet'] ?? '')),
+            'date_from' => trim((string)(Flight::request()->query['date_from'] ?? '')),
+            'date_to' => trim((string)(Flight::request()->query['date_to'] ?? '')),
+            'user1' => trim((string)(Flight::request()->query['user1'] ?? '')),
+            'user2' => trim((string)(Flight::request()->query['user2'] ?? '')),
+        ];
+
+        // Get filtered exchanges
+        $exchanges = $exchangeRepo->listAllDetailed(
+            $filters['objet'] ?: null,
+            $filters['date_from'] ?: null,
+            $filters['date_to'] ?: null,
+            $filters['user1'] ?: null,
+            $filters['user2'] ?: null
+        );
+
+        Flight::render('system/admin-exchanges', [
+            'exchanges' => $exchanges,
+            'filters' => $filters,
+        ]);
+    }
+
+    public static function exchangesApi(): void
+    {
+        $pdo = Flight::db();
+        $exchangeRepo = new EchangeRepository($pdo);
+
+        // Get filter parameters from query string
+        $objet = Flight::request()->query['objet'] ?? '';
+        $dateFrom = Flight::request()->query['date_from'] ?? '';
+        $dateTo = Flight::request()->query['date_to'] ?? '';
+        $user1 = Flight::request()->query['user1'] ?? '';
+        $user2 = Flight::request()->query['user2'] ?? '';
+
+        $exchanges = $exchangeRepo->listAllDetailed(
+            $objet !== '' ? $objet : null,
+            $dateFrom !== '' ? $dateFrom : null,
+            $dateTo !== '' ? $dateTo : null,
+            $user1 !== '' ? $user1 : null,
+            $user2 !== '' ? $user2 : null
+        );
+
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode([
+            'ok' => true,
+            'exchanges' => $exchanges,
+            'count' => count($exchanges)
+        ]);
+        exit;
+    }
 }

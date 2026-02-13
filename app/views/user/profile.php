@@ -1065,7 +1065,17 @@ document.addEventListener('submit', function (e) {
     },
     body: formData
   })
-    .then(function (res) { return res.json(); })
+    .then(function (res) {
+      return res.text().then(function (text) {
+        var payload = null;
+        try {
+          payload = JSON.parse(text);
+        } catch (e) {
+          payload = { ok: res.ok, message: res.ok ? 'Action enregistrée.' : 'Erreur.', data: {} };
+        }
+        return payload;
+      });
+    })
     .then(function (payload) {
       if (!payload || payload.ok !== true) {
         var errors = (payload && payload.data && payload.data.errors) ? payload.data.errors : [];

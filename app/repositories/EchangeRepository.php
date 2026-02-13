@@ -94,4 +94,69 @@ class EchangeRepository {
     $st->execute([$months]);
     return $st->fetchAll(PDO::FETCH_ASSOC);
   }
+
+  public function listAllDetailed(?string $objet = null, ?string $dateFrom = null, ?string $dateTo = null, ?string $user1 = null, ?string $user2 = null): array {
+    $sql = "
+      SELECT 
+        e.id,
+        e.date_echange,
+        p1.id AS produit1_id,
+        p1.nom AS produit1_nom,
+        p2.id AS produit2_id,
+        p2.nom AS produit2_nom,
+        u1.id AS user1_id,
+        CONCAT(u1.prenom, ' ', u1.nom) AS user1_nom,
+        u1.mail AS user1_email,
+        u2.id AS user2_id,
+        CONCAT(u2.prenom, ' ', u2.nom) AS user2_nom,
+        u2.mail AS user2_email
+      FROM tk_echange e
+      JOIN tk_info_echange ie ON e.id = ie.id_echange
+      JOIN tk_produit p1 ON ie.id_produit1 = p1.id
+      JOIN tk_produit p2 ON ie.id_produit2 = p2.id
+      JOIN tk_users u1 ON p1.id_proprietaire = u1.id
+      JOIN tk_users u2 ON p2.id_proprietaire = u2.id
+      WHERE 1=1
+    ";
+    $params = [];
+
+    if ($objet !== null && $objet !== '') {
+      $sql .= " AND (p1.nom LIKE ? OR p2.nom LIKE ?)";
+      $like = '%' . $objet . '%';
+      $params[] = $like;
+      $params[] = $like;
+    }
+
+    if ($dateFrom !== null && $dateFrom !== '') {
+      $sql .= " AND e.date_echange >= ?";
+      $params[] = $dateFrom;
+    }
+
+    if ($dateTo !== null && $dateTo !== '') {
+      $sql .= " AND e.date_echange <= ?";
+      $params[] = $dateTo . ' 23:59:59';
+    }
+
+    if ($user1 !== null && $user1 !== '') {
+      $sql .= " AND (u1.nom LIKE ? OR u1.prenom LIKE ? OR u1.mail LIKE ?)";
+      $like = '%' . $user1 . '%';
+      $params[] = $like;
+      $params[] = $like;
+      $params[] = $like;
+    }
+
+    if ($user2 !== null && $user2 !== '') {
+      $sql .= " AND (u2.nom LIKE ? OR u2.prenom LIKE ? OR u2.mail LIKE ?)";
+      $like = '%' . $user2 . '%';
+      $params[] = $like;
+      $params[] = $like;
+      $params[] = $like;
+    }
+
+    $sql .= " ORDER BY e.date_echange DESC";
+
+    $st = $this->pdo->prepare($sql);
+    $st->execute($params);
+    return $st->fetchAll(PDO::FETCH_ASSOC);
+  }
 }

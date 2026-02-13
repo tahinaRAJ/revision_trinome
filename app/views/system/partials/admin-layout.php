@@ -82,6 +82,13 @@ $currentUser = $_SESSION['user'] ?? [];
                 </a>
             </div>
             
+            <div class="sidebar-nav-item">
+                <a href="<?= BASE_URL ?>/system/admin/exchanges" class="sidebar-nav-link <?= ($activeAdmin ?? '') === 'exchanges' ? 'active' : '' ?>">
+                    <span class="sidebar-nav-icon"><i class="fas fa-exchange-alt"></i></span>
+                    Échanges
+                </a>
+            </div>
+            
             <div class="sidebar-section">Système</div>
             
             <div class="sidebar-nav-item">
