@@ -49,6 +49,27 @@ class ProduitRepository {
     return $st->fetch(PDO::FETCH_ASSOC) ?: null;
   }
 
+  public function countProducts(): int {
+    $st = $this->pdo->query("SELECT COUNT(*) FROM tk_produit");
+    return (int)$st->fetchColumn();
+  }
+
+  public function listRecent(int $limit = 5): array {
+    $limit = max(1, (int)$limit);
+    $sql = "
+      SELECT p.id, p.nom, p.prix,
+             u.nom AS proprietaire_nom, u.prenom AS proprietaire_prenom,
+             c.nom AS categorie
+      FROM tk_produit p
+      LEFT JOIN tk_users u ON u.id = p.id_proprietaire
+      LEFT JOIN tk_categorie c ON c.id = p.id_categorie
+      ORDER BY p.id DESC
+      LIMIT $limit
+    ";
+    $st = $this->pdo->query($sql);
+    return $st->fetchAll(PDO::FETCH_ASSOC);
+  }
+
   public function produitsAutres(int $idUser): array {
     $st = $this->pdo->prepare("SELECT * FROM tk_produit WHERE id_proprietaire <> ? ORDER BY id DESC");
     $st->execute([$idUser]);

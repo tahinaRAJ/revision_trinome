@@ -80,4 +80,38 @@ class UserRepository {
     $st = $this->pdo->prepare("UPDATE tk_users SET role = ? WHERE id = ?");
     return $st->execute([$role, $id]);
   }
+
+  public function listRecent(int $limit = 5): array {
+    $limit = max(1, (int)$limit);
+    $st = $this->pdo->query("SELECT id, nom, prenom, mail, role FROM tk_users ORDER BY id DESC LIMIT $limit");
+    return $st->fetchAll(PDO::FETCH_ASSOC);
+  }
+
+  public function usersByDay(int $days): array {
+    $days = max(1, (int)$days);
+    $sql = "
+      SELECT DATE(created_at) AS jour, COUNT(*) AS total
+      FROM tk_users
+      WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL ? DAY)
+      GROUP BY jour
+      ORDER BY jour ASC
+    ";
+    $st = $this->pdo->prepare($sql);
+    $st->execute([$days]);
+    return $st->fetchAll(PDO::FETCH_ASSOC);
+  }
+
+  public function usersByMonth(int $months): array {
+    $months = max(1, (int)$months);
+    $sql = "
+      SELECT DATE_FORMAT(created_at, '%Y-%m') AS mois, COUNT(*) AS total
+      FROM tk_users
+      WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL ? MONTH)
+      GROUP BY mois
+      ORDER BY mois ASC
+    ";
+    $st = $this->pdo->prepare($sql);
+    $st->execute([$months]);
+    return $st->fetchAll(PDO::FETCH_ASSOC);
+  }
 }

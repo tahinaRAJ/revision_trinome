@@ -2,6 +2,72 @@
 
 class AdminController
 {
+    private static function buildSeries(int $days, UserRepository $userRepo, EchangeRepository $exchangeRepo): array
+    {
+        if ($days >= 365) {
+            $months = 12;
+            $exchangeRows = $exchangeRepo->exchangesByMonth($months);
+            $userRows = $userRepo->usersByMonth($months);
+
+            $labels = [];
+            $exchangeData = [];
+            $userData = [];
+
+            $exchangeMap = [];
+            foreach ($exchangeRows as $row) {
+                $exchangeMap[$row['mois']] = (int)$row['total'];
+            }
+            $userMap = [];
+            foreach ($userRows as $row) {
+                $userMap[$row['mois']] = (int)$row['total'];
+            }
+
+            for ($i = $months - 1; $i >= 0; $i--) {
+                $date = new DateTimeImmutable("first day of -$i month");
+                $key = $date->format('Y-m');
+                $labels[] = $date->format('m/Y');
+                $exchangeData[] = $exchangeMap[$key] ?? 0;
+                $userData[] = $userMap[$key] ?? 0;
+            }
+
+            return [
+                'labels' => $labels,
+                'exchange' => $exchangeData,
+                'users' => $userData
+            ];
+        }
+
+        $labels = [];
+        $exchangeData = [];
+        $userData = [];
+
+        $exchangeRows = $exchangeRepo->exchangesByDay($days);
+        $exchangeMap = [];
+        foreach ($exchangeRows as $row) {
+            $exchangeMap[$row['jour']] = (int)$row['total'];
+        }
+
+        $userRows = $userRepo->usersByDay($days);
+        $userMap = [];
+        foreach ($userRows as $row) {
+            $userMap[$row['jour']] = (int)$row['total'];
+        }
+
+        for ($i = $days; $i >= 0; $i--) {
+            $date = new DateTimeImmutable("-$i days");
+            $key = $date->format('Y-m-d');
+            $labels[] = $date->format('d/m');
+            $exchangeData[] = $exchangeMap[$key] ?? 0;
+            $userData[] = $userMap[$key] ?? 0;
+        }
+
+        return [
+            'labels' => $labels,
+            'exchange' => $exchangeData,
+            'users' => $userData
+        ];
+    }
+
     public static function index(): void
     {
         // Dashboard data gathering
@@ -12,15 +78,54 @@ class AdminController
         $exchangeRepo = new EchangeRepository($pdo);
 
         $stats = [
-            'users_count' => count($userRepo->listAll()),
-            'products_count' => count($prodRepo->listerAvecDetails()),
-            'categories_count' => count($catRepo->lister()),
-            'active_exchanges' => count($exchangeRepo->listerEchanges(null)), 
+            'users_count' => $userRepo->countUsers(),
+            'products_count' => $prodRepo->countProducts(),
+            'categories_count' => $catRepo->countCategories(),
+            'active_exchanges' => $exchangeRepo->countExchanges(),
+            'exchanges_last7' => $exchangeRepo->countExchangesLastDays(7),
         ];
 
+        $recentProducts = $prodRepo->listRecent(5);
+        $recentUsers = $userRepo->listRecent(5);
+
+        $series = self::buildSeries(6, $userRepo, $exchangeRepo);
+
         Flight::render('system/admin-dashboard', [
-            'stats' => $stats
+            'stats' => $stats,
+            'recentProducts' => $recentProducts,
+            'recentUsers' => $recentUsers,
+            'exchangeSeries' => [
+                'labels' => $series['labels'],
+                'data' => $series['exchange']
+            ],
+            'userSeries' => [
+                'labels' => $series['labels'],
+                'data' => $series['users']
+            ],
         ]);
+    }
+
+    public static function statsApi(): void
+    {
+        $range = (int)(Flight::request()->query['range'] ?? 7);
+        if (!in_array($range, [7, 30, 365], true)) {
+            $range = 7;
+        }
+        $days = ($range === 7) ? 6 : ($range === 30 ? 29 : 365);
+
+        $pdo = Flight::db();
+        $userRepo = new UserRepository($pdo);
+        $exchangeRepo = new EchangeRepository($pdo);
+
+        $series = self::buildSeries($days, $userRepo, $exchangeRepo);
+
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode([
+            'labels' => $series['labels'],
+            'exchange' => $series['exchange'],
+            'users' => $series['users']
+        ]);
+        exit;
     }
 
     public static function users(): void

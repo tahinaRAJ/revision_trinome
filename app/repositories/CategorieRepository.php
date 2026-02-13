@@ -24,4 +24,9 @@ class CategorieRepository {
     $st = $this->pdo->prepare("DELETE FROM tk_categorie WHERE id=?");
     return $st->execute([$id]);
   }
+
+  public function countCategories(): int {
+    $st = $this->pdo->query("SELECT COUNT(*) FROM tk_categorie");
+    return (int)$st->fetchColumn();
+  }
 }

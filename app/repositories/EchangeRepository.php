@@ -54,4 +54,44 @@ class EchangeRepository {
       'par_mois' => $perMonth
     ];
   }
+
+  public function countExchanges(): int {
+    $st = $this->pdo->query("SELECT COUNT(*) FROM tk_echange");
+    return (int)$st->fetchColumn();
+  }
+
+  public function countExchangesLastDays(int $days): int {
+    $days = max(1, (int)$days);
+    $st = $this->pdo->prepare("SELECT COUNT(*) FROM tk_echange WHERE date_echange >= DATE_SUB(CURDATE(), INTERVAL ? DAY)");
+    $st->execute([$days]);
+    return (int)$st->fetchColumn();
+  }
+
+  public function exchangesByDay(int $days): array {
+    $days = max(1, (int)$days);
+    $sql = "
+      SELECT DATE(date_echange) AS jour, COUNT(*) AS total
+      FROM tk_echange
+      WHERE date_echange >= DATE_SUB(CURDATE(), INTERVAL ? DAY)
+      GROUP BY jour
+      ORDER BY jour ASC
+    ";
+    $st = $this->pdo->prepare($sql);
+    $st->execute([$days]);
+    return $st->fetchAll(PDO::FETCH_ASSOC);
+  }
+
+  public function exchangesByMonth(int $months): array {
+    $months = max(1, (int)$months);
+    $sql = "
+      SELECT DATE_FORMAT(date_echange, '%Y-%m') AS mois, COUNT(*) AS total
+      FROM tk_echange
+      WHERE date_echange >= DATE_SUB(CURDATE(), INTERVAL ? MONTH)
+      GROUP BY mois
+      ORDER BY mois ASC
+    ";
+    $st = $this->pdo->prepare($sql);
+    $st->execute([$months]);
+    return $st->fetchAll(PDO::FETCH_ASSOC);
+  }
 }
