@@ -13,7 +13,7 @@ include __DIR__ . '/../pages/header.php';
                 <h1>Modern Interior <span>Design Studio</span></h1>
                 <p>Découvrez notre collection exclusive de meubles design et échangez avec notre communauté de passionnés.</p>
                 <div class="hero-buttons">
-                    <a href="<?= BASE_URL ?>/shop" class="btn-hero-primary">
+                    <a href="<?= BASE_URL ?>/shop/shop" class="btn-hero-primary">
                         <i class="fas fa-shopping-bag"></i>
                         Explorer
                     </a>
@@ -38,7 +38,7 @@ include __DIR__ . '/../pages/header.php';
             <div class="col-md-12 col-lg-3 mb-5 mb-lg-0">
                 <h2 class="mb-4 section-title" style="font-size: 2rem; font-weight: 700; color: #2f2f2f;">Façonnés avec des matériaux d'excellence.</h2>
                 <p class="mb-4" style="color: #6a6a6a; font-size: 1.1rem;">Chaque pièce est sélectionnée avec soin pour sa qualité et son design unique. Rejoignez notre communauté d'échange.</p>
-                <p><a href="<?= BASE_URL ?>/shop" class="btn-hero-primary" style="display: inline-flex;"><i class="fas fa-arrow-right" style="margin-right: 8px;"></i> Découvrir</a></p>
+                <p><a href="<?= BASE_URL ?>/shop/shop" class="btn-hero-primary" style="display: inline-flex;"><i class="fas fa-arrow-right" style="margin-right: 8px;"></i> Découvrir</a></p>
             </div> 
             <!-- End Column 1 -->
 
@@ -202,7 +202,7 @@ include __DIR__ . '/../pages/header.php';
                         <i class="fas fa-user-plus"></i>
                         Créer un compte
                     </a>
-                    <a href="<?= BASE_URL ?>/shop" class="btn-hero-outline" style="border-color: white; color: white;">
+                    <a href="<?= BASE_URL ?>/shop/shop" class="btn-hero-outline" style="border-color: white; color: white;">
                         <i class="fas fa-search"></i>
                         Explorer les meubles
                     </a>
