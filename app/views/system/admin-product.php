@@ -3,14 +3,7 @@ $pageTitle = 'Administration - Détail Produit';
 $activePage = 'admin';
 $activeAdmin = 'products';
 
-$pageStyles = ['css/admin-furni.css'];
-include __DIR__ . '/../pages/header.php';
-
 $productDetails = $productDetails ?? null;
-// Use productDetails as the main variable, consistent with previous controller logic if possible, or adapt.
-// Previous code used $product or $productDetails. Let's stick to $product if I were writing the controller,
-// but looking at previous file it used $productDetails. I'll check what variables are passed ideally.
-// Actually, I can support both or alias it.
 $product = $productDetails ?? ($product ?? null);
 
 $esc = function ($value) {
@@ -18,95 +11,90 @@ $esc = function ($value) {
 };
 
 if (!$product) {
-    echo "<div class='container py-5'><div class='alert alert-danger'>Produit introuvable.</div></div>";
-    include __DIR__ . '/../pages/footer.php';
+    ob_start();
+    echo '<div class="alert alert-danger">Produit introuvable.</div>';
+    $adminContent = ob_get_clean();
+    include __DIR__ . '/partials/admin-layout.php';
     return;
 }
+
+ob_start();
 ?>
 
-<div class="admin-dashboard-container">
-    <div class="container">
-        <div class="row">
-            <!-- Sidebar -->
-            <?php include __DIR__ . '/partials/sidebar.php'; ?>
+<!-- Back Button -->
+<div class="mb-4">
+    <a href="<?= BASE_URL ?>/system/admin/products" class="btn btn-outline btn-sm">
+        <i class="fas fa-arrow-left me-2"></i> Retour à la liste
+    </a>
+</div>
 
-            <!-- Main Content -->
-            <div class="col-lg-9">
-                 <div class="mb-4">
-                    <a href="<?= BASE_URL ?>/system/admin/products" class="text-decoration-none text-muted"><i class="fas fa-arrow-left me-2"></i> Retour à la liste</a>
-                </div>
+<div class="grid-2">
+    <!-- Product Image & Basic Info -->
+    <div class="card animate-fade-in">
+        <div class="card-body" style="text-align: center; padding: 40px;">
+            <div style="background: linear-gradient(135deg, var(--primary-100), var(--primary-200)); border-radius: 16px; height: 250px; display: flex; align-items: center; justify-content: center; color: var(--primary-600); margin-bottom: 24px;">
+                <i class="fas fa-image fa-4x"></i>
+            </div>
+            <h3 style="color: var(--primary-700); margin-bottom: 8px;"><?= $esc($product['nom']) ?></h3>
+            <span class="badge badge-primary" style="margin-bottom: 16px;"><?= $esc($product['categorie'] ?? 'Catégorie inconnue') ?></span>
+            <h2 style="font-weight: 700; color: var(--gray-800); margin: 0;"><?= $esc($product['prix']) ?> €</h2>
+        </div>
+    </div>
 
-                <div class="row">
-                    <!-- Product Image & Basic Info -->
-                    <div class="col-md-5 mb-4">
-                         <div class="admin-content-card shadow-sm p-4 text-center h-100">
-                            <div class="mb-4" style="background: #eff2f1; border-radius: 10px; height: 250px; display: flex; align-items: center; justify-content: center; color: #ccc;">
-                                <i class="fas fa-image fa-4x"></i>
-                            </div>
-                            <h4 class="mb-2" style="color: #3b5d50;"><?= $esc($product['nom']) ?></h4>
-                            <p class="text-muted mb-3"><?= $esc($product['categorie'] ?? 'Catégorie inconnue') ?></p>
-                            <h3 class="fw-bold mb-0 text-dark"><?= $esc($product['prix']) ?> €</h3>
-                        </div>
+    <!-- Details & Stats -->
+    <div class="card animate-fade-in">
+        <div class="card-header">
+            <h3><i class="fas fa-info-circle me-2" style="color: var(--primary-500);"></i>Détails du Produit</h3>
+        </div>
+        <div class="card-body">
+            <div style="margin-bottom: 20px;">
+                <label class="form-label" style="color: var(--gray-500); font-size: 0.85rem;">Description</label>
+                <p style="color: var(--gray-700); margin: 0;"><?= nl2br($esc($product['description'])) ?></p>
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <label class="form-label" style="color: var(--gray-500); font-size: 0.85rem;">Propriétaire</label>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <div style="width: 32px; height: 32px; background: linear-gradient(135deg, var(--primary-500), var(--primary-700)); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 0.9rem;">
+                        <?= strtoupper(substr($product['proprietaire_prenom'] ?? 'U', 0, 1)) ?>
                     </div>
+                    <strong style="color: var(--gray-800);"><?= $esc(($product['proprietaire_prenom'] ?? '') . ' ' . ($product['proprietaire_nom'] ?? 'Unknown')) ?></strong>
+                </div>
+            </div>
 
-                    <!-- Details & Stats -->
-                    <div class="col-md-7 mb-4">
-                         <div class="admin-content-card shadow-sm p-4 h-100">
-                            <h5 class="border-bottom pb-3 mb-4" style="color: #3b5d50;">Détails du Produit</h5>
-                            
-                            <div class="row mb-3">
-                                <div class="col-sm-4 text-muted">Description</div>
-                                <div class="col-sm-8"><?= nl2br($esc($product['description'])) ?></div>
-                            </div>
-                            
-                            <div class="row mb-3">
-                                <div class="col-sm-4 text-muted">Propriétaire</div>
-                                <div class="col-sm-8 fw-bold">
-                                    <i class="fas fa-user-circle me-1 text-muted"></i>
-                                    <?= $esc(($product['proprietaire_prenom'] ?? '') . ' ' . ($product['proprietaire_nom'] ?? 'Unknown')) ?>
-                                </div>
-                            </div>
+            <div style="margin-bottom: 24px;">
+                <label class="form-label" style="color: var(--gray-500); font-size: 0.85rem;">Date d'ajout</label>
+                <p style="color: var(--gray-700); margin: 0;"><?= $esc($product['date_ajout'] ?? 'N/A') ?></p>
+            </div>
 
-                             <div class="row mb-3">
-                                <div class="col-sm-4 text-muted">Date d'ajout</div>
-                                <div class="col-sm-8"><?= $esc($product['date_ajout'] ?? 'N/A') ?></div>
-                            </div>
-
-                            <div class="mt-4 pt-4 border-top">
-                                <h6 class="text-muted mb-3">Statistiques d'échange</h6>
-                                <div class="row text-center">
-                                    <div class="col-4">
-                                        <div class="p-2 rounded bg-light">
-                                            <div class="h4 mb-0 text-primary">0</div>
-                                            <small class="text-muted">Vues</small>
-                                        </div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="p-2 rounded bg-light">
-                                            <div class="h4 mb-0 text-success">0</div>
-                                            <small class="text-muted">Offres</small>
-                                        </div>
-                                    </div>
-                                    <div class="col-4">
-                                         <div class="p-2 rounded bg-light">
-                                            <div class="h4 mb-0 text-warning">Wait</div>
-                                            <small class="text-muted">Statut</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mt-4 text-end">
-                                <button class="btn btn-outline-danger btn-sm"><i class="fas fa-trash me-2"></i> Supprimer le produit</button>
-                            </div>
-
-                        </div>
+            <div style="border-top: 1px solid var(--gray-200); padding-top: 24px;">
+                <h5 style="color: var(--gray-600); font-size: 0.9rem; margin-bottom: 16px;">Statistiques d'échange</h5>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+                    <div style="text-align: center; padding: 16px; background: var(--gray-50); border-radius: 8px;">
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--info);">0</div>
+                        <small style="color: var(--gray-500);">Vues</small>
+                    </div>
+                    <div style="text-align: center; padding: 16px; background: var(--gray-50); border-radius: 8px;">
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--success);">0</div>
+                        <small style="color: var(--gray-500);">Offres</small>
+                    </div>
+                    <div style="text-align: center; padding: 16px; background: var(--gray-50); border-radius: 8px;">
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--warning);">Actif</div>
+                        <small style="color: var(--gray-500);">Statut</small>
                     </div>
                 </div>
+            </div>
 
+            <div style="margin-top: 24px; text-align: right;">
+                <button class="btn btn-danger btn-sm">
+                    <i class="fas fa-trash me-2"></i> Supprimer le produit
+                </button>
             </div>
         </div>
     </div>
 </div>
 
-<?php include __DIR__ . '/../pages/footer.php'; ?>
+<?php
+$adminContent = ob_get_clean();
+include __DIR__ . '/partials/admin-layout.php';
+?>

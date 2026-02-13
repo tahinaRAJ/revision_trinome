@@ -1,330 +1,263 @@
 <?php
-$pageTitle = 'Administration - Utilisateurs';
-$activePage = 'admin'; // active item for header nav
-$activeAdmin = 'users'; // active sidebar item
-
-// Include default Furni header
-$pageStyles = ['css/admin-furni.css'];
-include __DIR__ . '/../pages/header.php';
+$pageTitle = 'Gestion des Utilisateurs';
+$activeAdmin = 'users';
 
 $users = $users ?? [];
 $esc = function ($value) {
     return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 };
+
+ob_start();
 ?>
 
-<!-- Include Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Page Header -->
+<div class="page-header">
+    <div class="page-header-left">
+        <h1>Gestion des Utilisateurs</h1>
+        <p>Gérez les comptes utilisateurs et leurs permissions</p>
+    </div>
+    <div class="page-header-actions">
+        <button class="btn btn-outline">
+            <i class="fas fa-file-export"></i>
+            Exporter
+        </button>
+        <button class="btn btn-primary" onclick="alert('Fonctionnalité à venir')">
+            <i class="fas fa-plus"></i>
+            Ajouter
+        </button>
+    </div>
+</div>
 
-<div class="admin-dashboard-container">
-    <div class="container">
-        <div class="row">
-            <!-- Sidebar (Furni Style) -->
-            <?php include __DIR__ . '/partials/sidebar.php'; ?>
+<!-- Users Table -->
+<div class="card animate-fade-in">
+    <div class="card-header">
+        <h3><i class="fas fa-users me-2" style="color: var(--primary-500);"></i>Liste des Utilisateurs</h3>
+        <div style="display: flex; gap: 8px;">
+            <input type="text" class="form-control" placeholder="Rechercher..." style="width: 200px;">
+            <button class="btn btn-secondary btn-sm">
+                <i class="fas fa-filter"></i>
+            </button>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Utilisateur</th>
+                    <th>Email</th>
+                    <th>Rôle</th>
+                    <th>Status</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($users as $user): ?>
+                    <tr onclick="showUserDetails('<?= htmlspecialchars(json_encode($user), ENT_QUOTES, 'UTF-8') ?>')" style="cursor: pointer;">
+                        <td>
+                            <div class="user-cell">
+                                <div class="user-avatar">
+                                    <?= strtoupper(substr($user['nom'] ?? 'U', 0, 1)) ?>
+                                </div>
+                                <div class="user-info">
+                                    <h4><?= $esc(trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? ''))) ?></h4>
+                                    <p>ID: #<?= $esc($user['id']) ?></p>
+                                </div>
+                            </div>
+                        </td>
+                        <td><?= $esc($user['mail'] ?? '') ?></td>
+                        <td>
+                            <?php if (($user['role'] ?? '') === 'admin'): ?>
+                                <span class="badge badge-danger">Admin</span>
+                            <?php else: ?>
+                                <span class="badge badge-primary">Utilisateur</span>
+                            <?php endif; ?>
+                        </td>
+                        <td><span class="badge badge-success">Actif</span></td>
+                        <td class="text-end" onclick="event.stopPropagation()">
+                            <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                                <form method="post" action="<?= BASE_URL ?>/system/admin/users/<?= $esc($user['id']) ?>/grant" style="display:inline;">
+                                    <button class="btn btn-sm btn-ghost" title="Promouvoir Admin">
+                                        <i class="fas fa-user-shield"></i>
+                                    </button>
+                                </form>
+                                <form method="post" action="<?= BASE_URL ?>/system/admin/users/<?= $esc($user['id']) ?>/revoke" style="display:inline;">
+                                    <button class="btn btn-sm btn-ghost" title="Rétrograder">
+                                        <i class="fas fa-user-slash" style="color: var(--danger);"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                <?php if (empty($users)): ?>
+                    <tr>
+                        <td colspan="5">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <h4>Aucun utilisateur</h4>
+                                <p>Il n'y a pas encore d'utilisateurs dans le système.</p>
+                            </div>
+                        </td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
 
-            <!-- Main Content (Furni Style) -->
-            <div class="col-lg-9">
+<!-- User Details Modal -->
+<div id="user-details-view" style="display: none;">
+    <div class="page-header">
+        <div class="page-header-left">
+            <button class="btn btn-outline btn-sm" onclick="hideUserDetails()">
+                <i class="fas fa-arrow-left"></i>
+                Retour
+            </button>
+        </div>
+    </div>
+
+    <div class="grid-2">
+        <!-- Profile Card -->
+        <div class="card animate-fade-in">
+            <div class="card-body" style="text-align: center; padding: 40px;">
+                <div id="detail-avatar" class="user-avatar" style="width: 100px; height: 100px; font-size: 2.5rem; margin: 0 auto 20px;">U</div>
+                <h3 id="detail-name" style="margin-bottom: 8px;">Nom Utilisateur</h3>
+                <p id="detail-email" style="color: var(--gray-500); margin-bottom: 24px;">email@example.com</p>
                 
-                <!-- Users List View -->
-                <div id="users-list-view">
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h2 class="h3 admin-page-title">Gestion des Utilisateurs</h2>
-                        <button class="btn btn-outline-dark btn-sm rounded-pill px-3"><i class="fas fa-file-export me-2"></i> Exporter</button>
-                    </div>
+                <div style="display: flex; gap: 12px; justify-content: center; margin-bottom: 24px;">
+                    <button class="btn btn-primary btn-sm">
+                        <i class="fas fa-envelope"></i>
+                        Message
+                    </button>
+                    <button class="btn btn-outline btn-sm" style="color: var(--danger); border-color: var(--danger);">
+                        <i class="fas fa-ban"></i>
+                        Bloquer
+                    </button>
+                </div>
 
-                    <div class="admin-content-card border-0 shadow-sm p-0 overflow-hidden">
-                        <div class="table-responsive">
-                            <table class="table admin-table m-0">
-                                <thead>
-                                    <tr>
-                                        <th class="ps-4">Utilisateur</th>
-                                        <th>Email</th>
-                                        <th>Rôle</th>
-                                        <th>Status</th>
-                                        <th class="text-end pe-4">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($users as $user): ?>
-                                        <tr style="cursor: pointer;" onclick="showUserDetails('<?= htmlspecialchars(json_encode($user), ENT_QUOTES, 'UTF-8') ?>')">
-                                            <td class="ps-4">
-                                                <div class="d-flex align-items-center">
-                                                    <div style="width: 40px; height: 40px; background: #eff2f1; border-radius: 50%; color: #3b5d50; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 15px;">
-                                                        <?= strtoupper(substr($user['nom'] ?? 'U', 0, 1)) ?>
-                                                    </div>
-                                                    <div>
-                                                        <div class="fw-bold text-dark"><?= $esc(trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? ''))) ?></div>
-                                                        <small class="text-muted">ID: #<?= $esc($user['id']) ?></small>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td><?= $esc($user['mail'] ?? '') ?></td>
-                                            <td>
-                                                <?php if (($user['role'] ?? '') === 'admin'): ?>
-                                                    <span class="badge badge-furni-danger">Admin</span>
-                                                <?php else: ?>
-                                                    <span class="badge badge-furni-secondary">Utilisateur</span>
-                                                <?php endif; ?>
-                                            </td>
-                                            <td><span class="badge badge-furni-primary">Actif</span></td>
-                                            <td class="text-end pe-4" onclick="event.stopPropagation()">
-                                                <div class="btn-group">
-                                                    <form method="post" action="<?= BASE_URL ?>/system/admin/users/<?= $esc($user['id']) ?>/grant" style="display:inline;">
-                                                        <button class="btn btn-sm btn-link text-dark" title="Promouvoir"><i class="fas fa-user-shield"></i></button>
-                                                    </form>
-                                                    <form method="post" action="<?= BASE_URL ?>/system/admin/users/<?= $esc($user['id']) ?>/revoke" style="display:inline;">
-                                                        <button class="btn btn-sm btn-link text-danger" title="Rétrograder"><i class="fas fa-user-slash"></i></button>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                    <?php if (empty($users)): ?>
-                                        <tr>
-                                            <td colspan="5" class="text-center py-5 text-muted">Aucun utilisateur trouvé.</td>
-                                        </tr>
-                                    <?php endif; ?>
-                                </tbody>
-                            </table>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; padding-top: 24px; border-top: 1px solid var(--gray-200);">
+                    <div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--gray-800);">12</div>
+                        <div style="font-size: 0.8rem; color: var(--gray-500);">Produits</div>
+                    </div>
+                    <div style="border-left: 1px solid var(--gray-200); border-right: 1px solid var(--gray-200);">
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--gray-800);">85</div>
+                        <div style="font-size: 0.8rem; color: var(--gray-500);">Ventes</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--gray-800);">4.8</div>
+                        <div style="font-size: 0.8rem; color: var(--gray-500);">Note</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Chart -->
+        <div class="card animate-fade-in">
+            <div class="card-header">
+                <h3><i class="fas fa-chart-pie me-2" style="color: var(--primary-500);"></i>Résumé des Activités</h3>
+            </div>
+            <div class="card-body">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: center;">
+                    <canvas id="requestsChart" style="max-height: 200px;"></canvas>
+                    <div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: var(--success-light); border-radius: 8px; margin-bottom: 12px;">
+                            <span style="display: flex; align-items: center; gap: 8px;">
+                                <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                                Acceptées
+                            </span>
+                            <strong id="accepted-count" style="color: var(--success);">0</strong>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: var(--danger-light); border-radius: 8px; margin-bottom: 12px;">
+                            <span style="display: flex; align-items: center; gap: 8px;">
+                                <i class="fas fa-times-circle" style="color: var(--danger);"></i>
+                                Refusées
+                            </span>
+                            <strong id="refused-count" style="color: var(--danger);">0</strong>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: var(--warning-light); border-radius: 8px;">
+                            <span style="display: flex; align-items: center; gap: 8px;">
+                                <i class="fas fa-hourglass-half" style="color: var(--warning);"></i>
+                                En attente
+                            </span>
+                            <strong style="color: var(--warning);">1</strong>
                         </div>
                     </div>
                 </div>
-
-                <!-- User Details View (Using Furni Style) -->
-                <div id="user-details-view" style="display: none;">
-                    <div class="mb-4">
-                        <button class="btn btn-secondary btn-sm rounded-pill px-3" onclick="hideUserDetails()">
-                            <i class="fas fa-arrow-left me-2"></i> Retour à la liste
-                        </button>
-                    </div>
-
-                    <div class="row g-4">
-                        <!-- Profile Card -->
-                        <div class="col-md-4">
-                            <div class="admin-content-card shadow-sm text-center h-100">
-                                <div id="detail-avatar" class="user-avatar-large shadow-sm mb-3">U</div>
-                                <h4 id="detail-name" class="mb-1 fw-bold text-dark">Nom Utilisateur</h4>
-                                <p id="detail-email" class="text-muted mb-4">email@example.com</p>
-                                
-                                <div class="d-flex justify-content-center gap-2 mb-4">
-                                    <button class="btn btn-primary btn-sm rounded-pill px-4">Message</button>
-                                    <button class="btn btn-outline-danger btn-sm rounded-pill px-4">Bloquer</button>
-                                </div>
-
-                                <div class="row pt-4 border-top">
-                                    <div class="col">
-                                        <h5 class="mb-0 fw-bold text-dark">12</h5>
-                                        <small class="text-muted">Produits</small>
-                                    </div>
-                                    <div class="col border-start border-end">
-                                        <h5 class="mb-0 fw-bold text-dark">85</h5>
-                                        <small class="text-muted">Ventes</small>
-                                    </div>
-                                    <div class="col">
-                                        <h5 class="mb-0 fw-bold text-dark">4.8</h5>
-                                        <small class="text-muted">Note</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Stats Chart -->
-                        <div class="col-md-8">
-                            <div class="admin-content-card shadow-sm h-100">
-                                <h5 class="admin-page-title mb-4 border-bottom pb-2">Résumé des Activités</h5>
-                                <div class="row align-items-center h-100">
-                                    <div class="col-md-6">
-                                        <canvas id="requestsChart" style="max-height: 250px;"></canvas>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <ul class="list-unstyled">
-                                            <li class="mb-3 d-flex align-items-center justify-content-between p-2 rounded bg-light">
-                                                <span><i class="fas fa-check-circle text-success me-2"></i> Acceptées</span>
-                                                <span class="fw-bold" id="accepted-count">0</span>
-                                            </li>
-                                            <li class="mb-3 d-flex align-items-center justify-content-between p-2 rounded bg-light">
-                                                <span><i class="fas fa-times-circle text-danger me-2"></i> Refusées</span>
-                                                <span class="fw-bold" id="refused-count">0</span>
-                                            </li>
-                                            <li class="d-flex align-items-center justify-content-between p-2 rounded bg-light">
-                                                <span><i class="fas fa-hourglass-half text-warning me-2"></i> En attente</span>
-                                                <span class="fw-bold">1</span>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Detailed Tabs -->
-                        <div class="col-12">
-                            <div class="admin-content-card shadow-sm p-4">
-                                <ul class="nav nav-tabs nav-tabs-furni mb-4" id="userDetailsTabs" role="tablist">
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link active" id="products-tab" data-bs-toggle="tab" data-bs-target="#products" type="button" role="tab">Produits en vente</button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="accepted-tab" data-bs-toggle="tab" data-bs-target="#accepted" type="button" role="tab">Demandes Acceptées</button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="refused-tab" data-bs-toggle="tab" data-bs-target="#refused" type="button" role="tab">Demandes Refusées</button>
-                                    </li>
-                                </ul>
-                                
-                                <div class="tab-content" id="userDetailsTabsContent">
-                                    <div class="tab-pane fade show active" id="products" role="tabpanel">
-                                        <div class="table-responsive">
-                                            <table class="table admin-table">
-                                                <thead>
-                                                    <tr><th>Produit</th><th>Catégorie</th><th>Prix</th><th>Date</th></tr>
-                                                </thead>
-                                                <tbody id="products-list-body"></tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="accepted" role="tabpanel">
-                                        <div class="table-responsive">
-                                            <table class="table admin-table">
-                                                <thead>
-                                                    <tr><th>Produit</th><th>Date</th><th>Montant</th><th>Status</th></tr>
-                                                </thead>
-                                                <tbody id="accepted-requests-body"></tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="refused" role="tabpanel">
-                                        <div class="table-responsive">
-                                            <table class="table admin-table">
-                                                <thead>
-                                                    <tr><th>Produit</th><th>Date</th><th>Raison</th><th>Status</th></tr>
-                                                </thead>
-                                                <tbody id="refused-requests-body"></tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    let requestsChart = null;
+let requestsChart = null;
 
-    function showUserDetails(userJson) {
-        const user = JSON.parse(userJson);
-        document.getElementById('users-list-view').style.display = 'none';
-        document.getElementById('user-details-view').style.display = 'block';
+function showUserDetails(userJson) {
+    const user = JSON.parse(userJson);
+    document.querySelector('.card.animate-fade-in').style.display = 'none';
+    document.querySelector('.page-header').style.display = 'none';
+    document.getElementById('user-details-view').style.display = 'block';
 
-        // Populate User Info
-        document.getElementById('detail-name').textContent = (user.prenom || '') + ' ' + (user.nom || '');
-        document.getElementById('detail-email').textContent = user.mail || '';
-        document.getElementById('detail-avatar').textContent = (user.nom ? user.nom.charAt(0).toUpperCase() : 'U');
+    // Populate User Info
+    document.getElementById('detail-name').textContent = (user.prenom || '') + ' ' + (user.nom || '');
+    document.getElementById('detail-email').textContent = user.mail || '';
+    document.getElementById('detail-avatar').textContent = (user.nom ? user.nom.charAt(0).toUpperCase() : 'U');
 
-        // Reset Tabs
-        var firstTabEl = document.querySelector('#userDetailsTabs button[data-bs-target="#products"]');
-        var tab = new bootstrap.Tab(firstTabEl);
-        tab.show();
-
-        // Simulate Data
-        const productsList = ['Canapé Cuir', 'Table Basse', 'Lampe Vintage', 'Chaise Bureau', 'Tapis Persan', 'Miroir Ancien'];
-        const cats = ['Salon', 'Bureau', 'Décoration', 'Chambre'];
-        const dates = ['2023-01-15', '2023-02-10', '2023-03-05', '2023-04-20', '2023-05-12'];
-
-        // 1. Products
-        const productsBody = document.getElementById('products-list-body');
-        productsBody.innerHTML = '';
-        for(let i=0; i<4; i++) {
-            productsBody.innerHTML += `
-                <tr>
-                    <td class="fw-bold" style="color:#3b5d50;">${productsList[i]}</td>
-                    <td><span class="badge badge-furni-secondary">${cats[i % cats.length]}</span></td>
-                    <td>$${(Math.random() * 200 + 50).toFixed(0)}</td>
-                    <td class="text-muted">${dates[i]}</td>
-                </tr>
-            `;
-        }
-
-        // 2. Accepted
-        const acceptedBody = document.getElementById('accepted-requests-body');
-        acceptedBody.innerHTML = '';
-        const acceptedCount = Math.floor(Math.random() * 5) + 1;
-        document.getElementById('accepted-count').textContent = acceptedCount;
-
-        for(let i=0; i<acceptedCount; i++) {
-            acceptedBody.innerHTML += `
-                <tr>
-                    <td>${productsList[i % productsList.length]}</td>
-                    <td>${dates[i % dates.length]}</td>
-                    <td>$${(Math.random() * 500 + 50).toFixed(2)}</td>
-                    <td><span class="badge badge-furni-primary">Accepté</span></td>
-                </tr>
-            `;
-        }
-
-        // 3. Refused
-        const refusedBody = document.getElementById('refused-requests-body');
-        refusedBody.innerHTML = '';
-        const refusedCount = Math.floor(Math.random() * 4);
-        document.getElementById('refused-count').textContent = refusedCount;
-
-        for(let i=0; i<refusedCount; i++) {
-            refusedBody.innerHTML += `
-                <tr>
-                    <td>${productsList[(i+3) % productsList.length]}</td>
-                    <td>${dates[(i+3) % dates.length]}</td>
-                    <td>Stock insuffisant</td>
-                    <td><span class="badge badge-furni-danger">Refusé</span></td>
-                </tr>
-            `;
-        }
-
-        // Chart
-        const ctx = document.getElementById('requestsChart').getContext('2d');
-        if (requestsChart) {
-            requestsChart.destroy();
-        }
-        requestsChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Acceptées', 'Refusées', 'En attente'],
-                datasets: [{
-                    data: [acceptedCount, refusedCount, 1],
-                    backgroundColor: ['#3b5d50', '#dc3545', '#f9bf29'],
-                    borderWidth: 0,
-                    hoverOffset: 4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            usePointStyle: true,
-                            font: { family: "'Inter', sans-serif" }
-                        }
+    // Chart
+    const ctx = document.getElementById('requestsChart').getContext('2d');
+    if (requestsChart) {
+        requestsChart.destroy();
+    }
+    
+    const acceptedCount = Math.floor(Math.random() * 5) + 1;
+    const refusedCount = Math.floor(Math.random() * 4);
+    
+    document.getElementById('accepted-count').textContent = acceptedCount;
+    document.getElementById('refused-count').textContent = refusedCount;
+    
+    requestsChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Acceptées', 'Refusées', 'En attente'],
+            datasets: [{
+                data: [acceptedCount, refusedCount, 1],
+                backgroundColor: ['#10b981', '#ef4444', '#f59e0b'],
+                borderWidth: 0,
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 16,
+                        font: { family: 'Inter', size: 11 }
                     }
-                },
-                cutout: '75%'
-            }
-        });
-    }
-
-    function hideUserDetails() {
-        document.getElementById('users-list-view').style.display = 'block';
-        document.getElementById('user-details-view').style.display = 'none';
-        if (requestsChart) {
-            requestsChart.destroy();
-            requestsChart = null;
+                }
+            },
+            cutout: '70%'
         }
+    });
+}
+
+function hideUserDetails() {
+    document.querySelector('.card.animate-fade-in').style.display = 'block';
+    document.querySelector('.page-header').style.display = 'flex';
+    document.getElementById('user-details-view').style.display = 'none';
+    if (requestsChart) {
+        requestsChart.destroy();
+        requestsChart = null;
     }
+}
 </script>
 
-<?php include __DIR__ . '/../pages/footer.php'; ?>
+<?php
+$adminContent = ob_get_clean();
+include __DIR__ . '/partials/admin-layout.php';
+?>
