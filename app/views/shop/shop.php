@@ -140,3 +140,33 @@ include __DIR__ . '/../pages/header.php';
 
 <?php include __DIR__ . '/../pages/footer.php'; ?>
 
+<script>
+// AJAX pour proposer un échange (évite erreur réseau, rafraîchit la page après succès)
+document.querySelectorAll('.product-card-footer form').forEach(function(form) {
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var fd = new FormData(form);
+        fetch(form.action, {
+            method: 'POST',
+            body: fd,
+            credentials: 'same-origin'
+        }).then(function(resp) {
+            if (resp.ok) {
+                location.reload();
+            } else {
+                alert('Erreur lors de la demande d\'échange.');
+            }
+        }).catch(function() {
+            alert('Erreur réseau.');
+        });
+    });
+});
+
+// AJAX pour les boutons d'échange (si besoin)
+document.querySelectorAll('.btn-card-action[title="Échanger"]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+        btn.closest('.product-card-modern').querySelector('form').scrollIntoView({behavior:'smooth'});
+    });
+});
+</script>
+
