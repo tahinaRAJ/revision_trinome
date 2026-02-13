@@ -11,7 +11,8 @@ CREATE TABLE tk_users (
     mail VARCHAR(255) UNIQUE NOT NULL,
     pwd VARCHAR(255) NOT NULL,
     role ENUM('user', 'admin') DEFAULT 'user',
-    avatar VARCHAR(255) DEFAULT 'images/avatar-placeholder.svg'
+    avatar VARCHAR(255) DEFAULT 'images/avatar-placeholder.svg',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Table des catégories

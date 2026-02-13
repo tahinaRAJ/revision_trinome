@@ -23,7 +23,7 @@ ob_start();
             <p>Utilisateurs</p>
             <div class="stat-trend up">
                 <i class="fas fa-arrow-up"></i>
-                <span>+12% ce mois</span>
+                <span>Total dans la base</span>
             </div>
         </div>
     </div>
@@ -37,7 +37,7 @@ ob_start();
             <p>Produits</p>
             <div class="stat-trend up">
                 <i class="fas fa-arrow-up"></i>
-                <span>+8% ce mois</span>
+                <span>Total dans la base</span>
             </div>
         </div>
     </div>
@@ -50,7 +50,7 @@ ob_start();
             <h4><?= number_format($stats['categories_count']) ?></h4>
             <p>Catégories</p>
             <div class="stat-trend">
-                <span>Stable</span>
+                <span>Total dans la base</span>
             </div>
         </div>
     </div>
@@ -64,7 +64,7 @@ ob_start();
             <p>Échanges</p>
             <div class="stat-trend up">
                 <i class="fas fa-arrow-up"></i>
-                <span>+24% ce mois</span>
+                <span>Derniers 7 jours: <?= (int)($stats['exchanges_last7'] ?? 0) ?></span>
             </div>
         </div>
     </div>
@@ -77,13 +77,27 @@ ob_start();
         <div class="chart-header">
             <h4><i class="fas fa-chart-line me-2" style="color: var(--primary-500);"></i>Activité des Échanges</h4>
             <div class="tabs">
-                <button class="tab active">7 jours</button>
-                <button class="tab">30 jours</button>
-                <button class="tab">Année</button>
+                <button class="tab active" data-range="7">7 jours</button>
+                <button class="tab" data-range="30">30 jours</button>
+                <button class="tab" data-range="365">Année</button>
             </div>
         </div>
         <div style="height: 350px; position: relative;">
             <canvas id="mainActivityChart"></canvas>
+        </div>
+    </div>
+    <!-- Users Chart -->
+    <div class="chart-container animate-fade-in" style="grid-column: span 2; margin-top: 24px;">
+        <div class="chart-header">
+            <h4><i class="fas fa-user-plus me-2" style="color: var(--info);"></i>Inscriptions (7 derniers jours)</h4>
+            <div class="tabs">
+                <button class="tab active" data-range="7">7 jours</button>
+                <button class="tab" data-range="30">30 jours</button>
+                <button class="tab" data-range="365">Année</button>
+            </div>
+        </div>
+        <div style="height: 300px; position: relative;">
+            <canvas id="usersChart"></canvas>
         </div>
     </div>
 </div>
@@ -102,55 +116,89 @@ ob_start();
                     <tr>
                         <th>Produit</th>
                         <th>Prix</th>
-                        <th>Status</th>
+                        <th>Catégorie</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>
-                            <div class="user-cell">
-                                <div class="user-avatar" style="width: 36px; height: 36px; font-size: 0.8rem;">CM</div>
-                                <div class="user-info">
-                                    <h4>Chaise Moderne</h4>
-                                    <p>Ajouté aujourd'hui</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td><strong style="color: var(--success);">120 €</strong></td>
-                        <td><span class="badge badge-success">Nouveau</span></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="user-cell">
-                                <div class="user-avatar" style="width: 36px; height: 36px; font-size: 0.8rem; background: var(--warning);">LV</div>
-                                <div class="user-info">
-                                    <h4>Lampe Vintage</h4>
-                                    <p>Ajouté hier</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td><strong style="color: var(--success);">45 €</strong></td>
-                        <td><span class="badge badge-warning">En attente</span></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="user-cell">
-                                <div class="user-avatar" style="width: 36px; height: 36px; font-size: 0.8rem; background: var(--info);">TB</div>
-                                <div class="user-info">
-                                    <h4>Table Basse</h4>
-                                    <p>Il y a 2 jours</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td><strong style="color: var(--success);">250 €</strong></td>
-                        <td><span class="badge badge-success">Nouveau</span></td>
-                    </tr>
+                    <?php if (empty($recentProducts)) : ?>
+                        <tr>
+                            <td colspan="3" class="text-muted">Aucun produit.</td>
+                        </tr>
+                    <?php else : ?>
+                        <?php foreach ($recentProducts as $prod) : ?>
+                            <?php
+                                $ownerInitials = '';
+                                $ownerInitials .= strtoupper(substr($prod['proprietaire_prenom'] ?? 'U', 0, 1));
+                                $ownerInitials .= strtoupper(substr($prod['proprietaire_nom'] ?? 'N', 0, 1));
+                            ?>
+                            <tr>
+                                <td>
+                                    <div class="user-cell">
+                                        <div class="user-avatar" style="width: 36px; height: 36px; font-size: 0.8rem;"><?= $ownerInitials ?></div>
+                                        <div class="user-info">
+                                            <h4><?= htmlspecialchars($prod['nom'] ?? '', ENT_QUOTES, 'UTF-8') ?></h4>
+                                            <p>Propriétaire: <?= htmlspecialchars(trim(($prod['proprietaire_prenom'] ?? '') . ' ' . ($prod['proprietaire_nom'] ?? '')), ENT_QUOTES, 'UTF-8') ?></p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><strong style="color: var(--success);"><?= htmlspecialchars($prod['prix'] ?? '', ENT_QUOTES, 'UTF-8') ?> €</strong></td>
+                                <td><span class="badge badge-success"><?= htmlspecialchars($prod['categorie'] ?? '—', ENT_QUOTES, 'UTF-8') ?></span></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- Quick Actions -->
+<!-- Recent Users -->
+    <div class="card animate-fade-in" style="margin-top: 24px;">
+        <div class="card-header">
+            <h3><i class="fas fa-user-plus me-2" style="color: var(--info);"></i>Derniers Utilisateurs Inscrits</h3>
+            <a href="<?= BASE_URL ?>/system/admin/users" class="btn btn-sm btn-outline">Voir tout</a>
+        </div>
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Utilisateur</th>
+                        <th>Email</th>
+                        <th>Rôle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (empty($recentUsers)) : ?>
+                        <tr>
+                            <td colspan="3" class="text-muted">Aucun utilisateur.</td>
+                        </tr>
+                    <?php else : ?>
+                        <?php foreach ($recentUsers as $u) : ?>
+                            <?php
+                                $initials = '';
+                                $initials .= strtoupper(substr($u['prenom'] ?? 'U', 0, 1));
+                                $initials .= strtoupper(substr($u['nom'] ?? 'N', 0, 1));
+                            ?>
+                            <tr>
+                                <td>
+                                    <div class="user-cell">
+                                        <div class="user-avatar" style="width: 36px; height: 36px; font-size: 0.8rem; background: var(--info);"><?= $initials ?></div>
+                                        <div class="user-info">
+                                            <h4><?= htmlspecialchars(trim(($u['prenom'] ?? '') . ' ' . ($u['nom'] ?? '')), ENT_QUOTES, 'UTF-8') ?></h4>
+                                            <p>ID #<?= (int)$u['id'] ?></p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><?= htmlspecialchars($u['mail'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
+                                <td><span class="badge badge-success"><?= htmlspecialchars($u['role'] ?? 'user', ENT_QUOTES, 'UTF-8') ?></span></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<!-- Quick Actions -->
     <div class="card animate-fade-in">
         <div class="card-header">
             <h3><i class="fas fa-bolt me-2" style="color: var(--warning);"></i>Actions Rapides</h3>
@@ -192,19 +240,20 @@ ob_start();
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const ctx = document.getElementById('mainActivityChart').getContext('2d');
+    const usersCtx = document.getElementById('usersChart').getContext('2d');
     
     // Modern gradient
     const gradient = ctx.createLinearGradient(0, 0, 0, 300);
     gradient.addColorStop(0, 'rgba(16, 185, 129, 0.3)');
     gradient.addColorStop(1, 'rgba(16, 185, 129, 0.0)');
 
-    new Chart(ctx, {
+    const mainChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
+            labels: <?= json_encode($exchangeSeries['labels'] ?? ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim']) ?>,
             datasets: [{
                 label: 'Échanges',
-                data: [12, 19, 15, 25, 22, 30, 45],
+                data: <?= json_encode($exchangeSeries['data'] ?? [0,0,0,0,0,0,0]) ?>,
                 borderColor: '#10b981',
                 backgroundColor: gradient,
                 borderWidth: 3,
@@ -254,6 +303,79 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         }
+    });
+
+    const usersGradient = usersCtx.createLinearGradient(0, 0, 0, 250);
+    usersGradient.addColorStop(0, 'rgba(59, 93, 80, 0.3)');
+    usersGradient.addColorStop(1, 'rgba(59, 93, 80, 0.0)');
+
+    const usersChart = new Chart(usersCtx, {
+        type: 'bar',
+        data: {
+            labels: <?= json_encode($userSeries['labels'] ?? ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim']) ?>,
+            datasets: [{
+                label: 'Inscriptions',
+                data: <?= json_encode($userSeries['data'] ?? [0,0,0,0,0,0,0]) ?>,
+                backgroundColor: usersGradient,
+                borderColor: '#3b5d50',
+                borderWidth: 2,
+                borderRadius: 6,
+                maxBarThickness: 22
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(0,0,0,0.05)', drawBorder: false },
+                    ticks: { color: '#6b7280', font: { family: 'Inter', size: 11 } }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#6b7280', font: { family: 'Inter', size: 11 } }
+                }
+            }
+        }
+    });
+
+    function setActiveTabs(range) {
+        document.querySelectorAll('.tabs .tab').forEach(function (btn) {
+            if (btn.getAttribute('data-range') === String(range)) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    }
+
+    function loadStats(range) {
+        fetch('<?= BASE_URL ?>/system/admin/dashboard/stats?range=' + range, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (payload) {
+            if (!payload || !payload.labels) return;
+            mainChart.data.labels = payload.labels;
+            mainChart.data.datasets[0].data = payload.exchange || [];
+            mainChart.update();
+
+            usersChart.data.labels = payload.labels;
+            usersChart.data.datasets[0].data = payload.users || [];
+            usersChart.update();
+            setActiveTabs(range);
+        })
+        .catch(function () {});
+    }
+
+    document.querySelectorAll('.tabs .tab').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var range = btn.getAttribute('data-range');
+            if (!range) return;
+            loadStats(range);
+        });
     });
 });
 </script>

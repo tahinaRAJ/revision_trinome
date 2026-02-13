@@ -58,6 +58,7 @@ Flight::route('GET /system/admin/users', ['AdminController', 'users']);
 Flight::route('GET /system/admin/categories', ['AdminController', 'categories']);
 Flight::route('GET /system/admin/products', ['AdminController', 'products']);
 Flight::route('GET /system/admin/dashboard', ['AdminController', 'index']);
+Flight::route('GET /system/admin/dashboard/stats', ['AdminController', 'statsApi']);
 Flight::route('GET /system/admin/products/@id', function($id) {
     AdminController::productDetails((int)$id);
 });
