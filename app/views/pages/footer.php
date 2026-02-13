@@ -31,9 +31,9 @@
 
 					<div class="col-6 col-sm-6 col-md-3">
 						<ul class="list-unstyled">
-							<li><a href="#">Support</a></li>
-							<li><a href="#">Knowledge base</a></li>
-							<li><a href="#">Live chat</a></li>
+							<li><a href="#">ETU004351</a></li>
+							<li><a href="#">ETU004109</a></li>
+							<li><a href="#">ETU004547</a></li>
 						</ul>
 					</div>
 
