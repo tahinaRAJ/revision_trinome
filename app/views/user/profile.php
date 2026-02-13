@@ -34,7 +34,7 @@ $success = $success ?? '';
 
     <!-- ====== Nouveau header profil (bannière + avatar + contact) ====== -->
     <?php
-      $avatarSrc = (!empty($user['avatar'])) ? BASE_URL . $user['avatar'] : BASE_URL . '/images/user.svg';
+      $avatarSrc = (!empty($user['avatar'])) ? BASE_URL . '/' . $user['avatar'] : BASE_URL . '/images/user.svg';
       $fullName = htmlspecialchars(trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? '')), ENT_QUOTES, 'UTF-8');
       $userMail = htmlspecialchars($user['mail'] ?? '', ENT_QUOTES, 'UTF-8');
     ?>
