@@ -16,6 +16,7 @@ require_once __DIR__ . '/controllers/ProduitController.php';
 require_once __DIR__ . '/controllers/DemandeEchangeController.php';
 require_once __DIR__ . '/controllers/EchangeController.php';
 require_once __DIR__ . '/controllers/AdminController.php';
+require_once __DIR__ . '/controllers/ShopController.php';
 
 Flight::route('GET /', ['RedirectController', 'redirectAccueil']);
 
@@ -89,6 +90,9 @@ Flight::route('GET /system/admin/demandes', ['AdminController', 'demandes']);
 Flight::route('GET /system/@file', function($file) { 
     RedirectController::redirectSystem($file);
 });
+
+// shop page
+Flight::route('GET /shop/shop', ['ShopController', 'showShop']);
 
 //shop
 Flight::route('GET /shop/@file', function($file) { 
