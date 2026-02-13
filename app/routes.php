@@ -12,6 +12,9 @@ require_once __DIR__ . '/repositories/CategorieRepository.php';
 require_once __DIR__ . '/repositories/ImageProduitRepository.php';
 require_once __DIR__ . '/repositories/HistoriqueProprieteRepository.php';
 require_once __DIR__ . '/repositories/EchangeRepository.php';
+require_once __DIR__ . '/controllers/ProduitController.php';
+require_once __DIR__ . '/controllers/DemandeEchangeController.php';
+require_once __DIR__ . '/controllers/EchangeController.php';
 require_once __DIR__ . '/controllers/AdminController.php';
 
 Flight::route('GET /', ['RedirectController', 'redirectAccueil']);
@@ -85,6 +88,22 @@ Flight::route('GET /system/@file', function($file) {
 Flight::route('GET /shop/@file', function($file) { 
     RedirectController::redirectShop($file);
 });
+
+// produits
+Flight::route('GET /produits', ['ProduitController', 'listAll']);
+Flight::route('GET /mes-produits', ['ProduitController', 'myProducts']);
+Flight::route('GET /produit/ajout', ['ProduitController', 'showCreateForm']);
+Flight::route('POST /produit/ajout', ['ProduitController', 'create']);
+
+// demandes d'échange
+Flight::route('POST /demande-echange', ['DemandeEchangeController', 'create']);
+Flight::route('GET /demandes/envoyees', ['DemandeEchangeController', 'listSent']);
+Flight::route('GET /demandes/reçues', ['DemandeEchangeController', 'listReceived']);
+Flight::route('POST /demande/@id/status', ['DemandeEchangeController', 'setStatus']);
+
+// échanges
+Flight::route('POST /echange/@id/accepter', ['EchangeController', 'accept']);
+Flight::route('GET /echanges', ['EchangeController', 'listAll']);
 
 // auth fallback views
 Flight::route('GET /auth/@file', function($file) { 
