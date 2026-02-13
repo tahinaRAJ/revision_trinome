@@ -116,20 +116,21 @@ class ProfileController {
     }
 
     $file = $_FILES['avatar'];
-    $allowed = [
-      'image/jpeg' => 'jpg',
-      'image/png' => 'png',
-      'image/gif' => 'gif',
-      'image/webp' => 'webp'
-    ];
+    $maxBytes = 100 * 1024 * 1024; // 100 Mo
+    if (($file['size'] ?? 0) > $maxBytes) {
+      return self::renderProfileWith($userId, ["La taille de l'image dépasse 100 Mo."], '');
+    }
 
     $finfo = new finfo(FILEINFO_MIME_TYPE);
     $mime = $finfo->file($file['tmp_name']);
-    if (!isset($allowed[$mime])) {
+    if (strpos((string)$mime, 'image/') !== 0) {
       return self::renderProfileWith($userId, ["Format d'image non supporté."], '');
     }
 
-    $ext = $allowed[$mime];
+    $ext = strtolower(pathinfo((string)$file['name'], PATHINFO_EXTENSION));
+    if ($ext === '' || !preg_match('/^[a-z0-9]+$/', $ext)) {
+      $ext = 'img';
+    }
     $name = 'avatar_' . $userId . '_' . bin2hex(random_bytes(6)) . '.' . $ext;
     $dir = __DIR__ . '/../../public/uploads/avatars';
     if (!is_dir($dir)) {

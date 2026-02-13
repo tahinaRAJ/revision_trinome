@@ -78,7 +78,7 @@ $isActive = function (string $name) use ($activePage): string {
 							<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenuRight">
 								<?php if (!empty($_SESSION['user'])): ?>
 									<li><a class="dropdown-item" href="<?= BASE_URL ?>/user/profile">Profile</a></li>
-									<li><a class="dropdown-item" href="<?= BASE_URL ?>/auth/signup">Logout</a></li>
+									<li><a class="dropdown-item" href="<?= BASE_URL ?>/auth/logout">Logout</a></li>
 								<?php else: ?>
 									<li><a class="dropdown-item" href="<?= BASE_URL ?>/auth/login">Login</a></li>
 									<li><a class="dropdown-item" href="<?= BASE_URL ?>/auth/signup">Sign up</a></li>

@@ -63,8 +63,19 @@ class AuthController {
         'email' => $validation['values']['email']
       ];
       $service = new UserService($repo);
-      $service->register($values, (string)($data['password'] ?? ''));
-      Flight::redirect(BASE_URL . '/auth/login');
+      $userId = $service->register($values, (string)($data['password'] ?? ''));
+      $user = $repo->findById((int)$userId);
+      if ($user) {
+        $_SESSION['user'] = [
+          'id' => $user['id'],
+          'nom' => $user['nom'],
+          'prenom' => $user['prenom'],
+          'email' => $user['mail'],
+          'role' => $user['role'],
+          'avatar' => $user['avatar']
+        ];
+      }
+      Flight::redirect(BASE_URL . '/home/index');
       return;
     }
 
@@ -72,5 +83,18 @@ class AuthController {
       'errors' => $validation['errors'],
       'values' => $validation['values']
     ]);
+  }
+
+  public static function logout() {
+    if (session_status() === PHP_SESSION_ACTIVE) {
+      $_SESSION = [];
+      if (ini_get('session.use_cookies')) {
+        $params = session_get_cookie_params();
+        setcookie(session_name(), '', time() - 42000, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+      }
+      session_destroy();
+    }
+
+    Flight::redirect(BASE_URL . '/auth/login');
   }
 }

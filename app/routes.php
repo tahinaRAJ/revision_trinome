@@ -32,6 +32,7 @@ Flight::route('GET /auth/login', ['AuthController', 'showLogin']);
 Flight::route('POST /auth/login', ['AuthController', 'postLogin']);
 Flight::route('GET /auth/signup', ['AuthController', 'showSignup']);
 Flight::route('POST /auth/signup', ['AuthController', 'postSignup']);
+Flight::route('GET /auth/logout', ['AuthController', 'logout']);
 
 //home pages
 Flight::route('GET /home/@file', function($file) { 
