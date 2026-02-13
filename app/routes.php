@@ -20,6 +20,12 @@ Flight::route('GET /user/profile', ['ProfileController', 'showProfile']);
 Flight::route('POST /user/profile/update', ['ProfileController', 'updateProfile']);
 Flight::route('POST /user/profile/password', ['ProfileController', 'updatePassword']);
 Flight::route('POST /user/profile/avatar', ['ProfileController', 'updateAvatar']);
+Flight::route('POST /user/profile/product/@id/update', function($id) {
+    ProfileController::updateProduct($id);
+});
+Flight::route('POST /user/profile/product/@id/images', function($id) {
+    ProfileController::addProductImages($id);
+});
 Flight::route('POST /user/profile/demande/@id/accept', function($id) {
     ProfileController::accepterDemande($id);
 });

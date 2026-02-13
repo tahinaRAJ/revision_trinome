@@ -33,6 +33,18 @@ class ProduitRepository {
     return $st->fetchAll(PDO::FETCH_ASSOC);
   }
 
+  public function findById(int $id): ?array {
+    $st = $this->pdo->prepare("SELECT * FROM tk_produit WHERE id = ? LIMIT 1");
+    $st->execute([$id]);
+    return $st->fetch(PDO::FETCH_ASSOC) ?: null;
+  }
+
+  public function findByIdForOwner(int $id, int $ownerId): ?array {
+    $st = $this->pdo->prepare("SELECT * FROM tk_produit WHERE id = ? AND id_proprietaire = ? LIMIT 1");
+    $st->execute([$id, $ownerId]);
+    return $st->fetch(PDO::FETCH_ASSOC) ?: null;
+  }
+
   public function produitsAutres(int $idUser): array {
     $st = $this->pdo->prepare("SELECT * FROM tk_produit WHERE id_proprietaire <> ? ORDER BY id DESC");
     $st->execute([$idUser]);

@@ -20,4 +20,13 @@ class ImageProduitRepository {
     $st->execute([$idProduit]);
     return $st->fetchAll(PDO::FETCH_ASSOC);
   }
+
+  public function getImagesByProductIds(array $ids): array {
+    if (empty($ids)) return [];
+    $placeholders = implode(',', array_fill(0, count($ids), '?'));
+    $sql = "SELECT id, id_produit, image FROM tk_image_produit WHERE id_produit IN ($placeholders) ORDER BY id ASC";
+    $st = $this->pdo->prepare($sql);
+    $st->execute($ids);
+    return $st->fetchAll(PDO::FETCH_ASSOC);
+  }
 }
