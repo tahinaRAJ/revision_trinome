@@ -395,4 +395,72 @@ class ProfileController {
     }
     return self::renderProfileWith($userId, [], 'Images ajoutées.');
   }
+
+  public static function createProduct() {
+    self::requireAuth();
+    $userId = (int)$_SESSION['user']['id'];
+
+    $data = Flight::request()->data->getData();
+    $nom = trim((string)($data['nom'] ?? ''));
+    $description = trim((string)($data['description'] ?? ''));
+    $prix = (float)($data['prix'] ?? 0);
+    $idCategorie = (int)($data['id_categorie'] ?? 0);
+
+    $errors = [];
+    if ($nom === '') $errors[] = "Le nom du produit est obligatoire.";
+    if ($idCategorie <= 0) $errors[] = "La categorie est obligatoire.";
+
+    if ($errors) {
+      if (self::wantsJson()) {
+        self::jsonResponse(false, 'Validation échouée.', ['errors' => $errors]);
+      }
+      return self::renderProfileWith($userId, $errors, '');
+    }
+
+    $repoProduit = new ProduitRepository(Flight::db());
+    $repoImage = new ImageProduitRepository(Flight::db());
+    $newId = (int)$repoProduit->createProduit($nom, $description, $prix, $userId, $idCategorie);
+
+    $saved = 0;
+    if (!empty($_FILES['images'])) {
+      $files = $_FILES['images'];
+      $count = is_array($files['name']) ? count($files['name']) : 0;
+      if ($count > 0) {
+        $dir = __DIR__ . '/../../public/uploads/products';
+        if (!is_dir($dir)) {
+          mkdir($dir, 0775, true);
+        }
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        for ($i = 0; $i < $count; $i++) {
+          if (($files['error'][$i] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) continue;
+          $tmp = $files['tmp_name'][$i] ?? '';
+          if ($tmp === '') continue;
+          $mime = $finfo->file($tmp);
+          if (strpos((string)$mime, 'image/') !== 0) continue;
+
+          $ext = strtolower(pathinfo((string)$files['name'][$i], PATHINFO_EXTENSION));
+          if ($ext === '' || !preg_match('/^[a-z0-9]+$/', $ext)) $ext = 'img';
+          $name = 'prod_' . $newId . '_' . bin2hex(random_bytes(6)) . '.' . $ext;
+          $path = $dir . '/' . $name;
+          if (move_uploaded_file($tmp, $path)) {
+            $repoImage->ajouterImage($newId, '/uploads/products/' . $name);
+            $saved++;
+          }
+        }
+      }
+    }
+
+    if (self::wantsJson()) {
+      self::jsonResponse(true, 'Produit ajouté.', [
+        'id' => $newId,
+        'nom' => $nom,
+        'description' => $description,
+        'prix' => $prix,
+        'id_categorie' => $idCategorie,
+        'images_count' => $saved
+      ]);
+    }
+
+    return self::renderProfileWith($userId, [], 'Produit ajouté.');
+  }
 }

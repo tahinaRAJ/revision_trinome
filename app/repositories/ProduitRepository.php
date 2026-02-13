@@ -13,6 +13,10 @@ class ProduitRepository {
     return $this->pdo->lastInsertId();
   }
 
+  public function createProduit(string $nom, string $description, float $prix, int $idProprietaire, int $idCategorie) {
+    return $this->ajouterProduit($nom, $description, $prix, $idProprietaire, $idCategorie);
+  }
+
   public function modifierProduit(int $id, string $nom, string $description, float $prix, int $idCategorie): bool {
     $st = $this->pdo->prepare("
       UPDATE tk_produit

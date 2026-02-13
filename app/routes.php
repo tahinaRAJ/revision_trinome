@@ -27,6 +27,7 @@ Flight::route('POST /user/profile/product/@id/update', function($id) {
 Flight::route('POST /user/profile/product/@id/images', function($id) {
     ProfileController::addProductImages($id);
 });
+Flight::route('POST /user/profile/product/create', ['ProfileController', 'createProduct']);
 Flight::route('POST /user/profile/demande/@id/accept', function($id) {
     ProfileController::accepterDemande($id);
 });

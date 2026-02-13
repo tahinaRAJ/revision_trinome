@@ -409,6 +409,47 @@ $userMail = htmlspecialchars($user['mail'] ?? '', ENT_QUOTES, 'UTF-8');
       </div>
     </div>
 
+    <!-- Ajouter un produit -->
+    <div class="profile-card mb-5">
+      <div class="profile-card-header">
+        <h3><i class="fa fa-plus" style="color: #3b5d50;"></i>Ajouter un produit</h3>
+      </div>
+      <div class="profile-card-body" data-products-body>
+        <form class="ajax-form" method="POST" action="<?= BASE_URL ?>/user/profile/product/create" enctype="multipart/form-data" data-create-product>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label-modern">Nom</label>
+              <input type="text" class="form-control-modern" name="nom" required>
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label-modern">Prix</label>
+              <input type="number" step="0.01" class="form-control-modern" name="prix">
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label-modern">Catégorie</label>
+              <select class="form-control-modern" name="id_categorie" required>
+                <option value="">Choisir...</option>
+                <?php foreach ($categories as $cat) : ?>
+                  <option value="<?= (int)$cat['id'] ?>"><?= htmlspecialchars($cat['nom'], ENT_QUOTES, 'UTF-8') ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label-modern">Description</label>
+            <textarea class="form-control-modern" name="description" rows="2"></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label-modern">Images</label>
+            <input type="file" class="form-control-modern" name="images[]" accept="image/*" multiple>
+          </div>
+          <button type="submit" class="btn-modern btn-modern-primary">
+            <i class="fa fa-plus"></i> Ajouter
+          </button>
+        </form>
+      </div>
+    </div>
+
     <!-- Mes objets -->
     <div class="profile-card mb-5">
       <div class="profile-card-header">
@@ -416,13 +457,13 @@ $userMail = htmlspecialchars($user['mail'] ?? '', ENT_QUOTES, 'UTF-8');
       </div>
       <div class="profile-card-body">
         <?php if (empty($produits)) : ?>
-          <div class="empty-state-modern">
+          <div class="empty-state-modern" data-products-empty>
             <i class="fa fa-inbox"></i>
             <h4>Aucun objet</h4>
             <p>Vous n'avez pas encore ajouté d'objets.</p>
           </div>
         <?php else : ?>
-          <div class="row g-4">
+          <div class="row g-4" data-products-list>
             <?php foreach ($produits as $p) : ?>
               <?php $pid = (int)($p['id'] ?? 0); ?>
               <?php $images = $imagesByProduct[$pid] ?? []; ?>
@@ -533,7 +574,7 @@ $userMail = htmlspecialchars($user['mail'] ?? '', ENT_QUOTES, 'UTF-8');
       <div class="profile-card-header">
         <h3><i class="fa fa-exchange-alt" style="color: #3b5d50;"></i>Demandes en attente</h3>
       </div>
-      <div class="profile-card-body p-0">
+      <div class="profile-card-body p-0" data-demands-body>
         <?php if (empty($demandes)) : ?>
           <div class="empty-state-modern">
             <i class="fa fa-bell-slash"></i>
@@ -618,131 +659,224 @@ $userMail = htmlspecialchars($user['mail'] ?? '', ENT_QUOTES, 'UTF-8');
   }
 
   function toggleEdit(id, isEdit) {
-    var view = document.querySelector('[data-product-view="' + id + '"');
-    var form = document.querySelector('[data-product-form="' + id + '"');
-    var images = document.querySelector('[data-product-images="' + id + '"');
+    var view = document.querySelector('[data-product-view="' + id + '"]');
+    var form = document.querySelector('[data-product-form="' + id + '"]');
+    var images = document.querySelector('[data-product-images="' + id + '"]');
     if (view) view.style.display = isEdit ? 'none' : 'block';
     if (form) form.style.display = isEdit ? 'block' : 'none';
     if (images) images.style.display = isEdit ? 'block' : 'none';
   }
 
-  document.querySelectorAll('[data-edit-toggle]').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var id = btn.getAttribute('data-edit-toggle');
+  document.addEventListener('click', function (e) {
+    var toggleBtn = e.target.closest('[data-edit-toggle]');
+    if (toggleBtn) {
+      var id = toggleBtn.getAttribute('data-edit-toggle');
       toggleEdit(id, true);
-    });
-  });
-
-  document.querySelectorAll('[data-edit-cancel]').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var id = btn.getAttribute('data-edit-cancel');
+      return;
+    }
+    var cancelBtn = e.target.closest('[data-edit-cancel]');
+    if (cancelBtn) {
+      var id = cancelBtn.getAttribute('data-edit-cancel');
       toggleEdit(id, false);
-    });
+    }
   });
 
-  document.querySelectorAll('form.ajax-form').forEach(function (form) {
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var action = form.getAttribute('action') || '';
-      var formData = new FormData(form);
-      fetch(action, {
-        method: form.method || 'POST',
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest',
-          'Accept': 'application/json'
-        },
-        body: formData
+  document.addEventListener('submit', function (e) {
+    var form = e.target.closest('form.ajax-form');
+    if (!form) return;
+    e.preventDefault();
+    var action = form.getAttribute('action') || '';
+    var formData = new FormData(form);
+    fetch(action, {
+      method: form.method || 'POST',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'Accept': 'application/json'
+      },
+      body: formData
+    })
+      .then(function (res) { return res.json(); })
+      .then(function (payload) {
+        if (!payload || payload.ok !== true) {
+          var errors = (payload && payload.data && payload.data.errors) ? payload.data.errors : [];
+          showAjaxAlert('danger', payload && payload.message ? payload.message : 'Erreur.', errors);
+          return;
+        }
+
+        showAjaxAlert('success', payload.message || 'Succès.');
+
+        if (action.indexOf('/user/profile/update') !== -1 && payload.data) {
+          var nameEl = document.querySelector('[data-profile-name]');
+          var mailEl = document.querySelector('[data-profile-email]');
+          if (nameEl) nameEl.textContent = (payload.data.prenom || '') + ' ' + (payload.data.nom || '');
+          if (mailEl) mailEl.textContent = payload.data.mail || '';
+        }
+
+        if (action.indexOf('/user/profile/avatar') !== -1 && payload.data && payload.data.avatar) {
+          var avatarSrc = payload.data.avatar;
+          if (avatarSrc.charAt(0) !== '/') avatarSrc = '/' + avatarSrc;
+          avatarSrc = '<?= BASE_URL ?>' + avatarSrc;
+          var avatar = document.querySelector('.profile-avatar');
+          if (avatar) avatar.src = avatarSrc;
+        }
+
+        if (action.indexOf('/user/profile/product/') !== -1 && action.indexOf('/update') !== -1 && payload.data) {
+          var pid = payload.data.id;
+          var name = document.querySelector('[data-product-name="' + pid + '"]');
+          var desc = document.querySelector('[data-product-desc="' + pid + '"]');
+          var price = document.querySelector('[data-product-price="' + pid + '"]');
+          var cat = document.querySelector('[data-product-category="' + pid + '"]');
+          if (name) name.textContent = payload.data.nom || '';
+          if (desc) desc.textContent = payload.data.description || '';
+          if (price) {
+            if (payload.data.prix && Number(payload.data.prix) > 0) {
+              price.textContent = payload.data.prix + ' €';
+              price.style.display = 'inline-block';
+            } else {
+              price.style.display = 'none';
+            }
+          }
+          if (cat) {
+            var select = form.querySelector('select[name="id_categorie"]');
+            if (select) {
+              var label = select.options[select.selectedIndex].text;
+              cat.textContent = label;
+              cat.style.display = 'inline-block';
+            }
+          }
+          toggleEdit(pid, false);
+        }
+
+        if (action.indexOf('/user/profile/product/') !== -1 && action.indexOf('/images') !== -1 && payload.data) {
+          var pidImg = payload.data.id;
+          var strip = document.querySelector('[data-product-strip="' + pidImg + '"]');
+          if (strip) {
+            var files = form.querySelector('input[type="file"]').files;
+            for (var i = 0; i < files.length; i++) {
+              var img = document.createElement('img');
+              img.src = URL.createObjectURL(files[i]);
+              img.alt = 'Objet';
+              strip.appendChild(img);
+            }
+          }
+          form.reset();
+        }
+
+        if (action.indexOf('/user/profile/product/create') !== -1 && payload.data) {
+          var list = document.querySelector('[data-products-list]');
+          var empty = document.querySelector('[data-products-empty]');
+          if (empty) empty.remove();
+          if (!list) {
+            var body = document.querySelector('[data-products-body]');
+            list = document.createElement('div');
+            list.className = 'row g-4';
+            list.setAttribute('data-products-list', '1');
+            if (body) body.appendChild(list);
+          }
+
+          var pidNew = payload.data.id;
+          var nameNew = payload.data.nom || 'Nouveau produit';
+          var descNew = payload.data.description || '';
+          var priceNew = payload.data.prix && Number(payload.data.prix) > 0 ? (payload.data.prix + ' €') : '';
+          var catLabel = '';
+          var selectNew = form.querySelector('select[name="id_categorie"]');
+          if (selectNew) catLabel = selectNew.options[selectNew.selectedIndex].text;
+          var filesNew = form.querySelector('input[type="file"]').files;
+
+          var imagesHtml = '';
+          if (filesNew && filesNew.length > 0) {
+            imagesHtml += '<div class="product-image-strip" data-product-strip="' + pidNew + '">';
+            for (var i = 0; i < filesNew.length; i++) {
+              imagesHtml += '<img src="' + URL.createObjectURL(filesNew[i]) + '" alt="Objet">';
+            }
+            imagesHtml += '</div>';
+          } else {
+            imagesHtml += '<div data-product-strip="' + pidNew + '"><img src="<?= BASE_URL ?>/images/product-1.png" alt="Objet" class="img-fluid rounded"></div>';
+          }
+
+          var priceHtml = priceNew ? ('<span class="badge-modern" data-product-price="' + pidNew + '" style="background: #3b5d50; color: white;">' + priceNew + '</span>') : '';
+          var catHtml = catLabel ? ('<span class="badge-modern" data-product-category="' + pidNew + '" style="background: #f3f4f6; color: #4b5563;">' + catLabel + '</span>') : '';
+
+          var card = document.createElement('div');
+          card.className = 'col-12';
+          card.innerHTML =
+            '<div class="product-card-modern p-4">' +
+              '<div class="row g-4">' +
+                '<div class="col-lg-5">' + imagesHtml + '</div>' +
+                '<div class="col-lg-7">' +
+                  '<div class="product-view" data-product-view="' + pidNew + '">' +
+                    '<div class="d-flex justify-content-between align-items-start mb-3">' +
+                      '<div>' +
+                        '<h4 data-product-name="' + pidNew + '" style="font-weight: 600; color: #1f2937;">' + nameNew + '</h4>' +
+                        '<p data-product-desc="' + pidNew + '" style="color: #6b7280; margin: 0;">' + descNew + '</p>' +
+                      '</div>' +
+                      '<button class="btn-modern btn-modern-outline btn-sm" type="button" data-edit-toggle="' + pidNew + '"><i class="fa fa-pen"></i> Modifier</button>' +
+                    '</div>' +
+                    '<div class="d-flex gap-2">' + priceHtml + catHtml + '</div>' +
+                  '</div>' +
+                  '<form class="product-edit-form mt-3 ajax-form" data-product-form="' + pidNew + '" method="POST" action="<?= BASE_URL ?>/user/profile/product/' + pidNew + '/update" style="display: none; padding: 20px; background: #f9fafb; border-radius: 8px;">' +
+                    '<div class="row">' +
+                      '<div class="col-md-6 mb-3">' +
+                        '<label class="form-label-modern">Nom</label>' +
+                        '<input type="text" class="form-control-modern" name="nom" value="' + nameNew + '" required>' +
+                      '</div>' +
+                      '<div class="col-md-6 mb-3">' +
+                        '<label class="form-label-modern">Prix</label>' +
+                        '<input type="number" step="0.01" class="form-control-modern" name="prix" value="' + (payload.data.prix || '') + '">' +
+                      '</div>' +
+                    '</div>' +
+                    '<div class="mb-3">' +
+                      '<label class="form-label-modern">Description</label>' +
+                      '<textarea class="form-control-modern" name="description" rows="2">' + descNew + '</textarea>' +
+                    '</div>' +
+                    '<div class="mb-3">' +
+                      '<label class="form-label-modern">Catégorie</label>' +
+                      '<select class="form-control-modern" name="id_categorie" required>' +
+                        (selectNew ? selectNew.innerHTML : '') +
+                      '</select>' +
+                    '</div>' +
+                    '<div class="d-flex gap-2">' +
+                      '<button class="btn-modern btn-modern-primary btn-sm" type="submit"><i class="fa fa-save"></i> Enregistrer</button>' +
+                      '<button class="btn-modern btn-modern-outline btn-sm" type="button" data-edit-cancel="' + pidNew + '">Annuler</button>' +
+                    '</div>' +
+                  '</form>' +
+                  '<form class="product-edit-form mt-3 ajax-form" data-product-images="' + pidNew + '" method="POST" action="<?= BASE_URL ?>/user/profile/product/' + pidNew + '/images" enctype="multipart/form-data" style="display: none;">' +
+                    '<label class="form-label-modern">Ajouter des images</label>' +
+                    '<div class="input-group">' +
+                      '<input type="file" class="form-control-modern" name="images[]" accept="image/*" multiple required>' +
+                      '<button class="btn-modern btn-modern-primary btn-sm" type="submit" style="margin-left: 8px;">Ajouter</button>' +
+                    '</div>' +
+                  '</form>' +
+                '</div>' +
+              '</div>' +
+            '</div>';
+
+          list.prepend(card);
+          if (selectNew) {
+            var newSelect = card.querySelector('select[name="id_categorie"]');
+            if (newSelect) newSelect.value = selectNew.value;
+          }
+          form.reset();
+        }
+
+        if (action.indexOf('/user/profile/demande/') !== -1) {
+          var row = form.closest('tr');
+          if (row) row.remove();
+          var tbody = document.querySelector('.table-modern tbody');
+          if (tbody && tbody.children.length === 0) {
+            var emptyDiv = document.createElement('div');
+            emptyDiv.className = 'empty-state-modern';
+            emptyDiv.innerHTML = '<i class="fa fa-bell-slash"></i><h4>Aucune demande</h4><p>Vous n\'avez pas de demandes en attente.</p>';
+            var cardBody = document.querySelector('[data-demands-body]');
+            if (cardBody) {
+              cardBody.innerHTML = '';
+              cardBody.appendChild(emptyDiv);
+            }
+          }
+        }
       })
-        .then(function (res) { return res.json(); })
-        .then(function (payload) {
-          if (!payload || payload.ok !== true) {
-            var errors = (payload && payload.data && payload.data.errors) ? payload.data.errors : [];
-            showAjaxAlert('danger', payload && payload.message ? payload.message : 'Erreur.', errors);
-            return;
-          }
-
-          showAjaxAlert('success', payload.message || 'Succès.');
-
-          if (action.indexOf('/user/profile/update') !== -1 && payload.data) {
-            var nameEl = document.querySelector('[data-profile-name]');
-            var mailEl = document.querySelector('[data-profile-email]');
-            if (nameEl) nameEl.textContent = (payload.data.prenom || '') + ' ' + (payload.data.nom || '');
-            if (mailEl) mailEl.textContent = payload.data.mail || '';
-          }
-
-          if (action.indexOf('/user/profile/avatar') !== -1 && payload.data && payload.data.avatar) {
-            var avatarSrc = payload.data.avatar;
-            if (avatarSrc.charAt(0) !== '/') avatarSrc = '/' + avatarSrc;
-            avatarSrc = '<?= BASE_URL ?>' + avatarSrc;
-            var avatar = document.querySelector('.profile-avatar');
-            if (avatar) avatar.src = avatarSrc;
-          }
-
-          if (action.indexOf('/user/profile/product/') !== -1 && action.indexOf('/update') !== -1 && payload.data) {
-            var pid = payload.data.id;
-            var name = document.querySelector('[data-product-name="' + pid + '"]');
-            var desc = document.querySelector('[data-product-desc="' + pid + '"]');
-            var price = document.querySelector('[data-product-price="' + pid + '"]');
-            var cat = document.querySelector('[data-product-category="' + pid + '"]');
-            if (name) name.textContent = payload.data.nom || '';
-            if (desc) desc.textContent = payload.data.description || '';
-            if (price) {
-              if (payload.data.prix && Number(payload.data.prix) > 0) {
-                price.textContent = payload.data.prix + ' €';
-                price.style.display = 'inline-block';
-              } else {
-                price.style.display = 'none';
-              }
-            }
-            if (cat) {
-              var select = form.querySelector('select[name="id_categorie"]');
-              if (select) {
-                var label = select.options[select.selectedIndex].text;
-                cat.textContent = label;
-                cat.style.display = 'inline-block';
-              }
-            }
-            toggleEdit(pid, false);
-          }
-
-          if (action.indexOf('/user/profile/product/') !== -1 && action.indexOf('/images') !== -1 && payload.data) {
-            var pidImg = payload.data.id;
-            var strip = document.querySelector('[data-product-strip="' + pidImg + '"]');
-            if (strip) {
-              var files = form.querySelector('input[type="file"]').files;
-              for (var i = 0; i < files.length; i++) {
-                var img = document.createElement('img');
-                img.src = URL.createObjectURL(files[i]);
-                img.alt = 'Objet';
-                img.style.width = '100px';
-                img.style.height = '100px';
-                img.style.objectFit = 'cover';
-                img.style.borderRadius = '8px';
-                strip.appendChild(img);
-              }
-            }
-            form.reset();
-          }
-
-          if (action.indexOf('/user/profile/demande/') !== -1) {
-            var row = form.closest('tr');
-            if (row) row.remove();
-            var tbody = document.querySelector('.table-modern tbody');
-            if (tbody && tbody.children.length === 0) {
-              var emptyDiv = document.createElement('div');
-              emptyDiv.className = 'empty-state-modern';
-              emptyDiv.innerHTML = '<i class="fa fa-bell-slash"></i><h4>Aucune demande</h4><p>Vous n\'avez pas de demandes en attente.</p>';
-              var cardBody = document.querySelector('.profile-card-body');
-              if (cardBody) {
-                cardBody.innerHTML = '';
-                cardBody.appendChild(emptyDiv);
-              }
-            }
-          }
-        })
-        .catch(function () {
-          showAjaxAlert('danger', 'Erreur réseau.');
-        });
-    });
+      .catch(function () {
+        showAjaxAlert('danger', 'Erreur réseau.');
+      });
   });
 </script>
