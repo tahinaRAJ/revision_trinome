@@ -39,8 +39,8 @@ include __DIR__ . '/../pages/header.php';
     <div class="container shop-hero-content">
         <div class="row">
             <div class="col-lg-8">
-                <h1>Découvrez nos meubles</h1>
-                <p>Trouvez le meuble parfait pour votre intérieur parmi notre collection unique</p>
+                <h1>Trouvez le produit de vos rêves</h1>
+                <p>Découvrez et échangez librement avec notre vaste communauté</p>
             </div>
         </div>
     </div>
