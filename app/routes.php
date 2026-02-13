@@ -11,6 +11,7 @@ require_once __DIR__ . '/repositories/StatusDemandeRepository.php';
 require_once __DIR__ . '/repositories/CategorieRepository.php';
 require_once __DIR__ . '/repositories/ImageProduitRepository.php';
 require_once __DIR__ . '/repositories/HistoriqueProprieteRepository.php';
+require_once __DIR__ . '/repositories/EchangeRepository.php';
 require_once __DIR__ . '/controllers/AdminController.php';
 
 Flight::route('GET /', ['RedirectController', 'redirectAccueil']);
@@ -55,6 +56,7 @@ Flight::route('GET /system/admin', ['AdminController', 'index']);
 Flight::route('GET /system/admin/users', ['AdminController', 'users']);
 Flight::route('GET /system/admin/categories', ['AdminController', 'categories']);
 Flight::route('GET /system/admin/products', ['AdminController', 'products']);
+Flight::route('GET /system/admin/dashboard', ['AdminController', 'index']);
 Flight::route('GET /system/admin/products/@id', function($id) {
     AdminController::productDetails((int)$id);
 });

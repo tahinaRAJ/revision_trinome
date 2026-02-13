@@ -18,14 +18,14 @@
                 <?php foreach ($categories as $category): ?>
                     <tr>
                         <td><?= $esc($category['nom']) ?></td>
-                        <td>
-                            <div class="d-flex flex-wrap gap-2">
+                            <td>
+                            <div class="d-flex flex-wrap gap-2 action-group">
                                 <form class="d-flex gap-2" method="post" action="<?= BASE_URL ?>/system/admin/categories/<?= $esc($category['id']) ?>/update">
                                     <input class="form-control form-control-sm" type="text" name="name" value="<?= $esc($category['nom']) ?>">
-                                    <button class="btn btn-sm btn-outline-dark" type="submit">Modifier</button>
+                                    <button class="btn btn-sm btn-outline-dark" type="submit"><span class="fa fa-solid fa-pen-to-square admin-action-icon" aria-hidden="true"></span><span class="visually-hidden">Modifier</span></button>
                                 </form>
                                 <form method="post" action="<?= BASE_URL ?>/system/admin/categories/<?= $esc($category['id']) ?>/delete">
-                                    <button class="btn btn-sm btn-outline-danger" type="submit">Supprimer</button>
+                                    <button class="btn btn-sm btn-outline-danger" type="submit"><span class="fa fa-solid fa-trash admin-action-icon" aria-hidden="true"></span><span class="visually-hidden">Supprimer</span></button>
                                 </form>
                             </div>
                         </td>

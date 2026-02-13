@@ -22,7 +22,7 @@
                         <td><?= $esc(trim(($product['proprietaire_prenom'] ?? '') . ' ' . ($product['proprietaire_nom'] ?? ''))) ?></td>
                         <td><?= $esc($product['prix']) ?></td>
                         <td>
-                            <a class="btn btn-sm btn-outline-primary" href="<?= BASE_URL ?>/system/admin/products/<?= $esc($product['id']) ?>">Voir details</a>
+                            <a class="btn btn-sm btn-outline-primary" href="<?= BASE_URL ?>/system/admin/products/<?= $esc($product['id']) ?>"><span class="fa fa-regular fa-eye admin-action-icon" aria-hidden="true"></span><span class="visually-hidden">Voir details</span></a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

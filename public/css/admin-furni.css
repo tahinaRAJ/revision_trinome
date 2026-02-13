@@ -1,0 +1,242 @@
+/* Furni Admin Dashboard - Light Theme Integration */
+:root {
+  --furni-primary: #3b5d50;
+  --furni-secondary: #eff2f1;
+  --furni-accent: #f9bf29;
+  --furni-text: #2f2f2f;
+  --furni-bg: #f8f9fa;
+  --admin-card-border: #e6e9ed;
+}
+
+body {
+  background-color: var(--furni-bg) !important;
+}
+
+/* Override Bootstrap containers for full-width like dashboard if desired, 
+   but for now let's stick to container or container-fluid within the theme */
+
+.admin-dashboard-container {
+  padding-top: 50px;
+  padding-bottom: 80px;
+}
+
+.admin-sidebar-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  position: sticky;
+  top: 100px;
+}
+
+.admin-nav-link {
+  display: flex;
+  align-items: center;
+  padding: 15px 25px;
+  color: var(--furni-text);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border-left: 4px solid transparent;
+}
+
+.admin-nav-link:hover {
+  background-color: var(--furni-secondary);
+  color: var(--furni-primary);
+}
+
+.admin-nav-link.active {
+  background-color: var(--furni-secondary);
+  color: var(--furni-primary);
+  border-left-color: var(--furni-primary);
+}
+
+.admin-nav-icon {
+  margin-right: 12px;
+  width: 20px;
+  text-align: center;
+}
+
+.admin-content-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  padding: 30px;
+  margin-bottom: 30px;
+}
+
+.admin-page-title {
+  color: var(--furni-primary);
+  font-weight: 600;
+  margin-bottom: 0;
+}
+
+.admin-table {
+  width: 100%;
+}
+
+.admin-table thead th {
+  background-color: var(--furni-secondary);
+  color: var(--furni-primary);
+  border: none;
+  padding: 15px;
+  font-weight: 600;
+}
+
+.admin-table tbody td {
+  padding: 15px;
+  border-bottom: 1px solid #f0f0f0;
+  vertical-align: middle;
+}
+
+.admin-table tbody tr:hover {
+  background-color: #fafafa;
+}
+
+/* Badges override to match Furni style if needed */
+.badge-furni {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+.badge-furni-primary {
+  background-color: var(--furni-primary);
+  color: #fff;
+}
+.badge-furni-secondary {
+  background-color: var(--furni-secondary);
+  color: var(--furni-primary);
+}
+.badge-furni-accent {
+  background-color: var(--furni-accent);
+  color: var(--furni-text);
+}
+.badge-furni-danger {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+/* Dashboard Widgets */
+.stat-widget {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.stat-icon-wrapper {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: var(--furni-secondary);
+  color: var(--furni-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  margin-right: 15px;
+}
+
+/* User Detailed View */
+.user-profile-header {
+  text-align: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 20px;
+}
+
+.user-avatar-large {
+  width: 100px;
+  height: 100px;
+  background-color: var(--furni-primary);
+  color: #fff;
+  font-size: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin: 0 auto 15px;
+}
+
+.nav-tabs-furni .nav-link {
+  color: var(--furni-text);
+  border: none;
+  border-bottom: 3px solid transparent;
+  padding: 10px 20px;
+  font-weight: 500;
+}
+
+.nav-tabs-furni .nav-link.active {
+  color: var(--furni-primary);
+  border-bottom-color: var(--furni-primary);
+  background: transparent;
+}
+
+.nav-tabs-furni {
+  border-bottom: 1px solid #eee;
+}
+
+/* Dashboard Info Boxes */
+.admin-stat-card {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s;
+  height: 100px;
+  width: 100%;
+}
+
+.admin-stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.stat-icon-box {
+  width: 90px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  color: #fff;
+}
+
+.stat-content-box {
+  padding: 15px 20px;
+  flex: 1;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: #6c757d;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--furni-primary);
+  line-height: 1;
+}
+
+.bg-furni-primary { background-color: var(--furni-primary) !important; color: #fff; }
+.bg-furni-accent { background-color: var(--furni-accent) !important; color: #fff; }
+.bg-furni-info { background-color: #17a2b8 !important; color: #fff; }
+.bg-furni-danger { background-color: #dc3545 !important; color: #fff; }
+
+/* Sidebar Active State Enhancements */
+.admin-nav-link.active i {
+  color: var(--furni-primary);
+}

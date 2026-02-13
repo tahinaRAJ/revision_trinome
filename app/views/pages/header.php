@@ -21,6 +21,11 @@ $isActive = function (string $name) use ($activePage): string {
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 	<link href="<?= BASE_URL ?>/css/tiny-slider.css" rel="stylesheet">
 	<link href="<?= BASE_URL ?>/css/style.css" rel="stylesheet">
+	<?php if (!empty($pageStyles) && is_array($pageStyles)) : ?>
+		<?php foreach ($pageStyles as $stylePath) : ?>
+			<link href="<?= BASE_URL . '/' . ltrim($stylePath, '/') ?>" rel="stylesheet">
+		<?php endforeach; ?>
+	<?php endif; ?>
 	<title><?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?></title>
 </head>
 

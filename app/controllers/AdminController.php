@@ -4,7 +4,23 @@ class AdminController
 {
     public static function index(): void
     {
-        Flight::redirect(BASE_URL . '/system/admin/users');
+        // Dashboard data gathering
+        $pdo = Flight::db();
+        $userRepo = new UserRepository($pdo);
+        $catRepo = new CategorieRepository($pdo);
+        $prodRepo = new ProduitRepository($pdo);
+        $exchangeRepo = new EchangeRepository($pdo);
+
+        $stats = [
+            'users_count' => count($userRepo->listAll()),
+            'products_count' => count($prodRepo->listerAvecDetails()),
+            'categories_count' => count($catRepo->lister()),
+            'active_exchanges' => count($exchangeRepo->listerEchanges(null)), 
+        ];
+
+        Flight::render('system/admin-dashboard', [
+            'stats' => $stats
+        ]);
     }
 
     public static function users(): void

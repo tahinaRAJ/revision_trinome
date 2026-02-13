@@ -22,14 +22,14 @@
                             <span class="admin-pill"><?= $esc($user['role']) ?></span>
                         </td>
                         <td>
-                            <div class="d-flex flex-wrap gap-2">
-                                <form method="post" action="<?= BASE_URL ?>/system/admin/users/<?= $esc($user['id']) ?>/grant">
-                                    <button class="btn btn-sm btn-dark" type="submit">Grant admin</button>
-                                </form>
-                                <form method="post" action="<?= BASE_URL ?>/system/admin/users/<?= $esc($user['id']) ?>/revoke">
-                                    <button class="btn btn-sm btn-outline-secondary" type="submit">Mettre user</button>
-                                </form>
-                            </div>
+                            <div class="d-flex flex-wrap gap-2 action-group">
+                                    <form method="post" action="<?= BASE_URL ?>/system/admin/users/<?= $esc($user['id']) ?>/grant">
+                                        <button class="btn btn-sm btn-dark" type="submit"><span class="fa fa-solid fa-user-shield admin-action-icon" aria-hidden="true"></span><span class="visually-hidden">Grant admin</span></button>
+                                    </form>
+                                    <form method="post" action="<?= BASE_URL ?>/system/admin/users/<?= $esc($user['id']) ?>/revoke">
+                                        <button class="btn btn-sm btn-outline-secondary" type="submit"><span class="fa fa-solid fa-user admin-action-icon" aria-hidden="true"></span><span class="visually-hidden">Mettre user</span></button>
+                                    </form>
+                                </div>
                         </td>
                     </tr>
                 <?php endforeach; ?>

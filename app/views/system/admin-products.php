@@ -1,7 +1,9 @@
 <?php
-$pageTitle = 'Admin - Produits';
-$activePage = '';
+$pageTitle = 'Administration - Produits';
+$activePage = 'admin';
 $activeAdmin = 'products';
+
+$pageStyles = ['css/admin-furni.css'];
 include __DIR__ . '/../pages/header.php';
 
 $products = $products ?? [];
@@ -10,52 +12,60 @@ $esc = function ($value) {
 };
 ?>
 
-<style>
-    .admin-shell {
-        background: #f7f7f7;
-        padding: 32px 0 64px;
-    }
-    .admin-sidebar {
-        position: sticky;
-        top: 100px;
-    }
-    .admin-card {
-        background: #fff;
-        border: 1px solid #e7e7e7;
-        border-radius: 12px;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.04);
-    }
-    .admin-card + .admin-card {
-        margin-top: 24px;
-    }
-    .admin-section-title {
-        font-weight: 700;
-        font-size: 1.2rem;
-        margin-bottom: 12px;
-    }
-    .admin-table th {
-        font-size: 0.85rem;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        color: #6c757d;
-    }
-    .admin-pill {
-        padding: 2px 10px;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        background: #f1f1f1;
-        display: inline-block;
-    }
-</style>
-
-<div class="admin-shell">
+<div class="admin-dashboard-container">
     <div class="container">
         <div class="row">
-            <div class="col-12 col-lg-3 mb-4">
-                <?php include __DIR__ . '/partials/sidebar.php'; ?>
-            </div>
-            <div class="col-12 col-lg-9">
-                <?php include __DIR__ . '/partials/products.php'; ?>
+            <!-- Sidebar -->
+            <?php include __DIR__ . '/partials/sidebar.php'; ?>
+
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="h3 admin-page-title">Gestion des Produits</h2>
+                    <a href="#" class="btn btn-primary rounded-pill px-4"><i class="fas fa-plus me-2"></i> Nouveau Produit</a>
+                </div>
+
+                <div class="admin-content-card shadow-sm p-0 overflow-hidden">
+                    <div class="table-responsive">
+                        <table class="table admin-table m-0">
+                            <thead>
+                                <tr>
+                                    <th class="ps-4">Image</th>
+                                    <th>Produit</th>
+                                    <th>Catégorie</th>
+                                    <th>Propriétaire</th>
+                                    <th>Prix</th>
+                                    <th class="text-end pe-4">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($products as $product): ?>
+                                    <tr>
+                                        <td class="ps-4">
+                                            <div style="width: 50px; height: 50px; background: #eff2f1; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #ccc;">
+                                                <i class="fas fa-image fa-lg"></i>
+                                            </div>
+                                        </td>
+                                        <td class="fw-bold text-dark"><?= $esc($product['nom']) ?></td>
+                                        <td><span class="badge badge-furni-secondary"><?= $esc($product['categorie']) ?></span></td>
+                                        <td class="text-muted"><?= $esc(trim(($product['proprietaire_prenom'] ?? '') . ' ' . ($product['proprietaire_nom'] ?? ''))) ?></td>
+                                        <td class="font-weight-bold" style="color:#3b5d50;"><?= $esc($product['prix']) ?> €</td>
+                                        <td class="text-end pe-4">
+                                            <a href="<?= BASE_URL ?>/system/admin/products/<?= $esc($product['id']) ?>" class="btn btn-sm btn-outline-dark" title="Voir détails">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                                <?php if (empty($products)): ?>
+                                    <tr>
+                                        <td colspan="6" class="text-center py-5 text-muted">Aucun produit trouvé.</td>
+                                    </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
